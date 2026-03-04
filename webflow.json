@@ -1,0 +1,7 @@
+{
+  "library": {
+    "id": "867a2cd5-80de-491a-bdfc-b6b48ef4ba7d",
+    "name": "Rewiring Components",
+    "components": ["./src/components/**/*.webflow.@(js|jsx|mjs|ts|tsx)"]
+  }
+}
