@@ -1,41 +1,39 @@
 "use client";
 
-import React, { useRef, useCallback, Children } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { useEffect, useRef, useCallback } from "react";
+import Swiper from "swiper";
 import { Navigation, Autoplay } from "swiper/modules";
-import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 
 interface ArcCarouselProps {
-  children?: React.ReactNode;
+  targetSelector?: string;
   autoplayDelay?: number;
   rotationDeg?: number;
   dropPx?: number;
   cardWidth?: number;
-  cardHeight?: number;
   showOverlay?: boolean;
 }
 
 export default function ArcCarousel({
-  children,
+  targetSelector = "#venues-section .w-dyn-items",
   autoplayDelay = 3500,
   rotationDeg = 12,
   dropPx = 30,
   cardWidth = 280,
-  cardHeight = 380,
   showOverlay = true,
 }: ArcCarouselProps) {
-  const swiperRef = useRef<SwiperType | null>(null);
-  const childArray = Children.toArray(children);
-  const count = childArray.length;
+  const swiperRef = useRef<Swiper | null>(null);
+
+  const rot = rotationDeg;
+  const drop = dropPx;
 
   const applyTransforms = useCallback(
-    (swiper: SwiperType) => {
+    (swiper: Swiper) => {
       swiper.slides.forEach((el: HTMLElement) => {
         const p = (el as any).progress ?? 0;
         const a = Math.abs(p);
         const z = 50 - Math.round(a) * 10;
-        el.style.transform = `rotate(${p * -rotationDeg}deg) translateY(${a * a * dropPx}px) scale(${Math.max(0.75, 1 - a * 0.08)})`;
+        el.style.transform = `rotate(${p * -rot}deg) translateY(${a * a * drop}px) scale(${Math.max(0.75, 1 - a * 0.08)})`;
         el.style.opacity = a > 3 ? "0" : String(Math.max(0.25, 1 - a * 0.3));
         el.style.zIndex = String(z);
         el.style.position = "relative";
@@ -47,105 +45,123 @@ export default function ArcCarousel({
         }
       });
     },
-    [rotationDeg, dropPx]
+    [rot, drop]
   );
 
-  if (count === 0) return null;
+  useEffect(() => {
+    const dl = document.querySelector(targetSelector);
+    if (!dl) return;
+
+    const dyns = dl.querySelectorAll(":scope > .w-dyn-item");
+    if (!dyns.length) return;
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "swiper-wrapper";
+
+    dyns.forEach((d) => {
+      const card = d.querySelector(".venue-card") || d.firstElementChild;
+      if (card) {
+        (card as HTMLElement).classList.add("swiper-slide");
+        if (showOverlay) {
+          const img = card.querySelector("img");
+          if (img) {
+            const imgWrap = document.createElement("div");
+            imgWrap.style.cssText = "position:relative;overflow:hidden;border-radius:12px";
+            img.parentNode?.insertBefore(imgWrap, img);
+            imgWrap.appendChild(img);
+            const ov = document.createElement("div");
+            ov.className = "arc-card-ov";
+            imgWrap.appendChild(ov);
+          }
+        }
+        wrapper.appendChild(card);
+      }
+    });
+
+    const swiperEl = document.createElement("div");
+    swiperEl.className = "swiper arc-swiper";
+    dl.parentNode?.insertBefore(swiperEl, dl);
+    swiperEl.appendChild(wrapper);
+    (dl as HTMLElement).style.display = "none";
+
+    const n = wrapper.querySelectorAll(".swiper-slide").length;
+    if (!n) return;
+
+    const mob = window.innerWidth <= 767;
+    if (mob) {
+      wrapper.querySelectorAll(".swiper-slide").forEach((c) => {
+        (c as HTMLElement).style.width = "60vw";
+      });
+    }
+
+    const sw = new Swiper(swiperEl, {
+      modules: [Navigation, Autoplay],
+      initialSlide: Math.floor(n / 2),
+      centeredSlides: true,
+      slidesPerView: mob ? ("auto" as const) : 5,
+      spaceBetween: mob ? -30 : 10,
+      loop: true,
+      speed: 500,
+      watchSlidesProgress: true,
+      slideToClickedSlide: true,
+      autoplay: {
+        delay: autoplayDelay,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true,
+      },
+      navigation: {
+        nextEl: ".arc-next",
+        prevEl: ".arc-prev",
+      },
+      on: {
+        setTranslate(swiper: Swiper) {
+          applyTransforms(swiper);
+        },
+        setTransition(swiper: Swiper, duration: number) {
+          swiper.slides.forEach((el: HTMLElement) => {
+            el.style.transition = `transform ${duration}ms ease, opacity ${duration}ms ease`;
+            const ov = el.querySelector(".arc-card-ov") as HTMLElement | null;
+            if (ov) ov.style.transition = `opacity ${duration}ms ease`;
+          });
+        },
+      },
+    } as any);
+
+    swiperRef.current = sw;
+
+    const nb = document.createElement("div");
+    nb.className = "arc-next swiper-button-next";
+    swiperEl.appendChild(nb);
+    const pb = document.createElement("div");
+    pb.className = "arc-prev swiper-button-prev";
+    swiperEl.appendChild(pb);
+    sw.navigation.init();
+    sw.navigation.update();
+
+    return () => {
+      sw.destroy(true, true);
+    };
+  }, [targetSelector, autoplayDelay, showOverlay, applyTransforms]);
 
   return (
-    <div
-      style={{
-        width: "100%",
-        overflow: "hidden",
-        padding: "20px 0 0",
-        position: "relative",
-      }}
-    >
-      <style>{`
-        .arc-swiper { overflow: visible !important; padding: 10px 0 50px; }
-        .arc-swiper .swiper-slide { transform-origin: center top !important; width: ${cardWidth}px !important; }
-        .arc-nav {
-          position: absolute; top: 50%; transform: translateY(-50%);
-          width: 48px; height: 48px; border-radius: 50%;
-          border: 2px solid #1a1a2e; background: #fff;
-          cursor: pointer; display: flex; align-items: center;
-          justify-content: center; z-index: 100;
-          font-size: 18px; color: #1a1a2e;
-        }
-        .arc-nav:hover { background: #f5f5f5; }
-        .arc-prev { left: 40px; }
-        .arc-next { right: 40px; }
-        .arc-card-ov {
-          position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-          background: rgba(255,255,255,0.6); border-radius: 12px;
-          pointer-events: none; opacity: 0; transition: opacity 500ms ease;
-        }
-        @media (max-width: 767px) {
-          .arc-swiper .swiper-slide { width: 60vw !important; }
-          .arc-nav { width: 36px; height: 36px; font-size: 14px; top: 35%; }
-          .arc-prev { left: 10px; }
-          .arc-next { right: 10px; }
-        }
-      `}</style>
-
-      <div style={{ position: "relative" }}>
-        <Swiper
-          className="arc-swiper"
-          modules={[Navigation, Autoplay]}
-          onSwiper={(s) => {
-            swiperRef.current = s;
-          }}
-          onSetTranslate={(swiper) => applyTransforms(swiper)}
-          onSetTransition={(swiper, duration) => {
-            swiper.slides.forEach((el: HTMLElement) => {
-              el.style.transition = `transform ${duration}ms ease, opacity ${duration}ms ease`;
-              const ov = el.querySelector(".arc-card-ov") as HTMLElement | null;
-              if (ov) ov.style.transition = `opacity ${duration}ms ease`;
-            });
-          }}
-          initialSlide={Math.floor(count / 2)}
-          centeredSlides
-          slidesPerView="auto"
-          spaceBetween={10}
-          loop
-          {...({ loopedSlides: count * 2 } as any)}
-          speed={500}
-          watchSlidesProgress
-          slideToClickedSlide
-          autoplay={{
-            delay: autoplayDelay,
-            disableOnInteraction: false,
-            pauseOnMouseEnter: true,
-          }}
-          navigation={{
-            nextEl: ".arc-next",
-            prevEl: ".arc-prev",
-          }}
-        >
-          {childArray.map((child, i) => (
-            <SwiperSlide key={i}>
-              <div
-                style={{
-                  position: "relative",
-                  borderRadius: "12px",
-                  overflow: "hidden",
-                  minHeight: `${cardHeight}px`,
-                }}
-              >
-                {child}
-                {showOverlay && <div className="arc-card-ov" />}
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-
-        <button className="arc-nav arc-prev" aria-label="Previous">
-          &#8249;
-        </button>
-        <button className="arc-nav arc-next" aria-label="Next">
-          &#8250;
-        </button>
-      </div>
-    </div>
+    <style>{`
+      .arc-swiper { overflow: visible !important; padding: 10px 0 50px; }
+      .arc-swiper .swiper-slide { transform-origin: center top !important; width: ${cardWidth}px !important; }
+      .arc-card-ov {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(255,255,255,0.6); border-radius: 12px;
+        pointer-events: none; opacity: 0; transition: opacity 500ms ease;
+      }
+      .arc-next, .arc-prev {
+        width: 48px !important; height: 48px !important; border-radius: 50% !important;
+        border: 2px solid #1a1a2e !important; background: #fff !important; top: 40% !important;
+      }
+      .arc-next::after, .arc-prev::after { font-size: 16px !important; color: #1a1a2e !important; }
+      @media (max-width: 767px) {
+        .arc-swiper .swiper-slide { width: 60vw !important; }
+        .arc-next, .arc-prev { width: 36px !important; height: 36px !important; top: 35% !important; }
+        .arc-next::after, .arc-prev::after { font-size: 13px !important; }
+      }
+    `}</style>
   );
 }

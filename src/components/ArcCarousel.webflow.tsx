@@ -4,11 +4,13 @@ import { declareComponent } from "@webflow/react";
 
 export default declareComponent(ArcCarousel, {
   name: "Arc Carousel",
-  description: "Fan/arc card carousel with swipe support. Drop a Collection List inside the Cards slot.",
+  description:
+    "Fan/arc card carousel. Place near a Collection List section. Set Target Selector to match the collection list (e.g. #venues-section .w-dyn-items).",
   group: "Sliders",
   props: {
-    children: props.Slot({
-      name: "Cards",
+    targetSelector: props.Text({
+      name: "Target Selector",
+      defaultValue: "#venues-section .w-dyn-items",
     }),
     rotationDeg: props.Number({
       name: "Rotation Angle",
@@ -25,10 +27,6 @@ export default declareComponent(ArcCarousel, {
     cardWidth: props.Number({
       name: "Card Width (px)",
       defaultValue: 280,
-    }),
-    cardHeight: props.Number({
-      name: "Card Height (px)",
-      defaultValue: 380,
     }),
     showOverlay: props.Boolean({
       name: "Show Overlay",
