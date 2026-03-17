@@ -1,0 +1,239 @@
+"use client";
+
+import React, { useId, useState } from "react";
+
+interface WlevEverydayProps {
+  heading?: string;
+  subtitle?: string;
+  bgColor?: string;
+}
+
+const tabs = [
+  {
+    label: "Range",
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+    stat: "300\u2013500km",
+    statLabel: "range from a full charge",
+    body: "Around 90% of trips are under 90km, and the average trip is just 20km. Most drivers cover about 270km per week. Modern EVs comfortably exceed this \u2014 giving you more than enough for commuting, errands, kids\u2019 activities and trips to the bach.",
+  },
+  {
+    label: "Commute",
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
+    stat: "$1,500",
+    statLabel: "for a second-hand Nissan Leaf",
+    body: "The most affordable EVs handle everyday driving with ease. The original Nissan Leaf \u2014 the OG of NZ\u2019s EV scene \u2014 can be picked up from just $1,500 second-hand. It\u2019s one of the cheapest ways to electrify your commute.",
+  },
+  {
+    label: "Hills & Roads",
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 6l-3.5 4L8 8l-5 6h18z"/></svg>`,
+    stat: "85\u201390%",
+    statLabel: "motor efficiency",
+    body: "EVs deliver power instantly \u2014 excellent hill-climbing, smooth acceleration and strong performance on varied terrain. With regenerative braking that recovers energy on descents, they\u2019re perfectly suited for New Zealand\u2019s hilly landscapes. Petrol engines? Just 20\u201330% efficient.",
+  },
+  {
+    label: "Fun & Fast",
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+    stat: "2.3s",
+    statLabel: "0\u2013100km/h (Porsche Taycan)",
+    body: "Ask any EV owner \u2014 driving electric is just more fun. F1 cars average 2.6 seconds to 100km/h. The Porsche Taycan does it in 2.3s. The Tesla 3 Performance ($89,990) takes just 3.1 seconds. Instant torque, no matter the size of the car.",
+  },
+];
+
+export default function WlevEveryday(props: WlevEverydayProps) {
+  const {
+    heading = "Built for Everyday Life",
+    subtitle = "EVs go further than most Kiwis drive in a typical day \u2014 or week.",
+    bgColor = "#ffffff",
+  } = props;
+
+  const uid = useId().replace(/:/g, "");
+  const [activeTab, setActiveTab] = useState(0);
+  const tab = tabs[activeTab];
+
+  return (
+    <div className={`wlev-ed-root-${uid}`}>
+      <section className={`wlev-ed-section-${uid}`} style={{ background: bgColor }}>
+        <div className={`wlev-ed-inner-${uid}`}>
+          <div className={`wlev-ed-header-${uid}`}>
+            <h2 className={`wlev-ed-heading-${uid}`}>{heading}</h2>
+            <p className={`wlev-ed-subtitle-${uid}`}>{subtitle}</p>
+          </div>
+
+          <div className={`wlev-ed-tabs-${uid}`} role="tablist">
+            {tabs.map((t, i) => (
+              <button
+                key={i}
+                role="tab"
+                aria-selected={activeTab === i}
+                className={`wlev-ed-tab-${uid}${activeTab === i ? ` wlev-ed-tab-active-${uid}` : ""}`}
+                onClick={() => setActiveTab(i)}
+              >
+                <span className={`wlev-ed-tab-icon-${uid}`} dangerouslySetInnerHTML={{ __html: t.icon }} />
+                <span>{t.label}</span>
+              </button>
+            ))}
+          </div>
+
+          <div className={`wlev-ed-panel-${uid}`} role="tabpanel">
+            <div className={`wlev-ed-panel-stat-${uid}`}>
+              <span className={`wlev-ed-panel-stat-num-${uid}`}>{tab.stat}</span>
+              <span className={`wlev-ed-panel-stat-label-${uid}`}>{tab.statLabel}</span>
+            </div>
+            <p className={`wlev-ed-panel-body-${uid}`}>{tab.body}</p>
+          </div>
+        </div>
+      </section>
+
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700&display=swap');
+
+        .wlev-ed-root-${uid} { width: 100%; }
+
+        .wlev-ed-section-${uid} {
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          padding: 80px 24px;
+          box-sizing: border-box;
+        }
+
+        .wlev-ed-inner-${uid} {
+          max-width: 860px;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 36px;
+        }
+
+        .wlev-ed-header-${uid} {
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          max-width: 640px;
+        }
+
+        .wlev-ed-heading-${uid} {
+          font-family: 'Rubik', sans-serif;
+          font-size: clamp(1.8rem, 4vw, 2.6rem);
+          font-weight: 700;
+          color: #1a3c3c;
+          margin: 0;
+          line-height: 1.2;
+        }
+
+        .wlev-ed-subtitle-${uid} {
+          font-family: 'Rubik', sans-serif;
+          font-size: clamp(1rem, 1.8vw, 1.15rem);
+          font-weight: 400;
+          color: #5a7a78;
+          margin: 0;
+          line-height: 1.6;
+        }
+
+        .wlev-ed-tabs-${uid} {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        .wlev-ed-tab-${uid} {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 12px 22px;
+          font-family: 'Rubik', sans-serif;
+          font-size: clamp(0.9rem, 1.4vw, 1rem);
+          font-weight: 600;
+          color: #5a7a78;
+          background: #f0f4f3;
+          border: 2px solid transparent;
+          border-radius: 50px;
+          cursor: pointer;
+          transition: all 0.25s ease;
+        }
+
+        .wlev-ed-tab-${uid}:hover {
+          color: #1a3c3c;
+          background: #e8edec;
+        }
+
+        .wlev-ed-tab-active-${uid} {
+          color: #1a3c3c;
+          background: #ffffff;
+          border-color: #f5b731;
+          box-shadow: 0 4px 16px rgba(245, 183, 49, 0.2);
+        }
+
+        .wlev-ed-tab-icon-${uid} {
+          display: flex;
+          align-items: center;
+          width: 20px;
+          height: 20px;
+        }
+
+        .wlev-ed-tab-icon-${uid} svg {
+          width: 20px;
+          height: 20px;
+        }
+
+        .wlev-ed-panel-${uid} {
+          width: 100%;
+          background: #FFFCF0;
+          border-radius: 24px;
+          padding: 48px 44px;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          box-shadow: 0 4px 24px rgba(26, 60, 60, 0.06);
+          animation: wlev-ed-fadein-${uid} 0.3s ease;
+        }
+
+        @keyframes wlev-ed-fadein-${uid} {
+          from { opacity: 0; transform: translateY(8px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .wlev-ed-panel-stat-${uid} {
+          display: flex;
+          align-items: baseline;
+          gap: 12px;
+          flex-wrap: wrap;
+        }
+
+        .wlev-ed-panel-stat-num-${uid} {
+          font-family: 'Rubik', sans-serif;
+          font-size: clamp(2rem, 4vw, 2.8rem);
+          font-weight: 700;
+          color: #f5b731;
+          line-height: 1.1;
+        }
+
+        .wlev-ed-panel-stat-label-${uid} {
+          font-family: 'Rubik', sans-serif;
+          font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+          font-weight: 400;
+          color: #5a7a78;
+        }
+
+        .wlev-ed-panel-body-${uid} {
+          font-family: 'Rubik', sans-serif;
+          font-size: clamp(1rem, 1.6vw, 1.1rem);
+          font-weight: 400;
+          color: #1a3c3c;
+          line-height: 1.7;
+          margin: 0;
+        }
+
+        @media (max-width: 640px) {
+          .wlev-ed-section-${uid} { padding: 60px 16px; }
+          .wlev-ed-panel-${uid} { padding: 32px 24px; }
+          .wlev-ed-tabs-${uid} { gap: 6px; }
+          .wlev-ed-tab-${uid} { padding: 10px 16px; font-size: 0.88rem; }
+        }
+      `}</style>
+    </div>
+  );
+}
