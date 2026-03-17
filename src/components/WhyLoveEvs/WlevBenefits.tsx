@@ -2,6 +2,12 @@
 
 import React, { useId } from "react";
 
+function renderRichText(value: any, className?: string) {
+  if (!value) return null;
+  if (typeof value === "string") return <div className={className} dangerouslySetInnerHTML={{ __html: value }} />;
+  return <div className={className}>{value}</div>;
+}
+
 interface WlevBenefitsProps {
   heading?: string;
   subtitle?: string;
@@ -72,7 +78,7 @@ export default function WlevBenefits(props: WlevBenefitsProps) {
               <div key={i} className={`wlev-ben-card-${uid}`}>
                 <div className={`wlev-ben-icon-${uid}`} dangerouslySetInnerHTML={{ __html: icons[i] }} />
                 <h3 className={`wlev-ben-title-${uid}`}>{b.title}</h3>
-                <div className={`wlev-ben-desc-${uid}`} dangerouslySetInnerHTML={{ __html: b.desc || "" }} />
+                {renderRichText(b.desc, `wlev-ben-desc-${uid}`)}
               </div>
             ))}
           </div>

@@ -2,6 +2,12 @@
 
 import React, { useId } from "react";
 
+function renderRichText(value: any, className?: string) {
+  if (!value) return null;
+  if (typeof value === "string") return <div className={className} dangerouslySetInnerHTML={{ __html: value }} />;
+  return <div className={className}>{value}</div>;
+}
+
 interface WlevSavingsProps {
   heading?: string;
   body?: string;
@@ -48,7 +54,7 @@ export default function WlevSavings(props: WlevSavingsProps) {
       <section className={`wlev-sav-section-${uid}`} style={{ background: bgColor }}>
         <div className={`wlev-sav-inner-${uid}`}>
           <h2 className={`wlev-sav-heading-${uid}`}>{heading}</h2>
-          <div className={`wlev-sav-body-${uid}`} dangerouslySetInnerHTML={{ __html: body || "" }} />
+          {renderRichText(body, `wlev-sav-body-${uid}`)}
           <div className={`wlev-sav-stats-${uid}`}>
             {stats.map((stat, i) => (
               <div key={i} className={`wlev-sav-card-${uid}`}>
@@ -65,7 +71,7 @@ export default function WlevSavings(props: WlevSavingsProps) {
               </div>
               <div>
                 <strong className={`wlev-sav-detail-title-${uid}`}>{detail1Title}</strong>
-                <div className={`wlev-sav-detail-text-${uid}`} dangerouslySetInnerHTML={{ __html: detail1Text || "" }} />
+                {renderRichText(detail1Text, `wlev-sav-detail-text-${uid}`)}
               </div>
             </div>
             <div className={`wlev-sav-detail-${uid}`}>
@@ -74,7 +80,7 @@ export default function WlevSavings(props: WlevSavingsProps) {
               </div>
               <div>
                 <strong className={`wlev-sav-detail-title-${uid}`}>{detail2Title}</strong>
-                <div className={`wlev-sav-detail-text-${uid}`} dangerouslySetInnerHTML={{ __html: detail2Text || "" }} />
+                {renderRichText(detail2Text, `wlev-sav-detail-text-${uid}`)}
               </div>
             </div>
           </div>

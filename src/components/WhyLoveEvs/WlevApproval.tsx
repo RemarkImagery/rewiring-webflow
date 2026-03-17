@@ -2,6 +2,12 @@
 
 import React, { useId, useState, useEffect, useRef } from "react";
 
+function renderRichText(value: any, className?: string) {
+  if (!value) return null;
+  if (typeof value === "string") return <div className={className} dangerouslySetInnerHTML={{ __html: value }} />;
+  return <div className={className}>{value}</div>;
+}
+
 interface WlevApprovalProps {
   heading?: string;
   statNumber?: string;
@@ -24,6 +30,7 @@ export default function WlevApproval(props: WlevApprovalProps) {
   const uid = useId().replace(/:/g, "");
   const barRef = useRef<HTMLDivElement>(null);
   const [barWidth, setBarWidth] = useState(0);
+  const [displayCount, setDisplayCount] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
 
   useEffect(() => {
@@ -43,6 +50,7 @@ export default function WlevApproval(props: WlevApprovalProps) {
               const progress = Math.min(elapsed / duration, 1);
               const eased = 1 - Math.pow(1 - progress, 3);
               setBarWidth(eased * 96);
+              setDisplayCount(Math.round(eased * 96));
               if (progress < 1) requestAnimationFrame(animate);
             };
             requestAnimationFrame(animate);
@@ -82,7 +90,7 @@ export default function WlevApproval(props: WlevApprovalProps) {
           </svg>
 
           <div className={`wlev-ap-stat-${uid}`}>
-            <span className={`wlev-ap-stat-num-${uid}`}>{statNumber}</span>
+            <span className={`wlev-ap-stat-num-${uid}`}>{displayCount}%</span>
             <span className={`wlev-ap-stat-label-${uid}`}>{statLabel}</span>
           </div>
 
@@ -109,7 +117,7 @@ export default function WlevApproval(props: WlevApprovalProps) {
             <p>{quote}</p>
           </blockquote>
 
-          <div className={`wlev-ap-body-${uid}`} dangerouslySetInnerHTML={{ __html: body || "" }} />
+          {renderRichText(body, `wlev-ap-body-${uid}`)}
         </div>
       </section>
 

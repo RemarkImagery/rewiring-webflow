@@ -2,6 +2,12 @@
 
 import React, { useId, useState } from "react";
 
+function renderRichText(value: any, className?: string) {
+  if (!value) return null;
+  if (typeof value === "string") return <div className={className} dangerouslySetInnerHTML={{ __html: value }} />;
+  return <div className={className}>{value}</div>;
+}
+
 interface WlevCostCompareProps {
   heading?: string;
   subtitle?: string;
@@ -88,7 +94,7 @@ export default function WlevCostCompare(props: WlevCostCompareProps) {
         <div className={`wlev-cc-inner-${uid}`}>
           <div className={`wlev-cc-header-${uid}`}>
             <h2 className={`wlev-cc-heading-${uid}`}>{heading}</h2>
-            <div className={`wlev-cc-subtitle-${uid}`} dangerouslySetInnerHTML={{ __html: subtitle || "" }} />
+            {renderRichText(subtitle, `wlev-cc-subtitle-${uid}`)}
           </div>
 
           <div className={`wlev-cc-compare-${uid}`}>
@@ -129,7 +135,7 @@ export default function WlevCostCompare(props: WlevCostCompareProps) {
             </div>
           </div>
 
-          <div className={`wlev-cc-saving-badge-${uid}`} dangerouslySetInnerHTML={{ __html: savingBadge }} />
+          {renderRichText(savingBadge, `wlev-cc-saving-badge-${uid}`)}
 
           <div className={`wlev-cc-finance-${uid}`}>
             <h3 className={`wlev-cc-finance-heading-${uid}`}>Ways to Get Started</h3>
@@ -142,7 +148,7 @@ export default function WlevCostCompare(props: WlevCostCompareProps) {
                     <svg className={`wlev-cc-fin-chev-${uid}${isOpen ? ` wlev-cc-fin-chev-open-${uid}` : ""}`} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
                   </button>
                   <div className={`wlev-cc-fin-body-${uid}${isOpen ? ` wlev-cc-fin-body-open-${uid}` : ""}`}>
-                    <div className={`wlev-cc-fin-text-${uid}`} dangerouslySetInnerHTML={{ __html: opt.body || "" }} />
+                    {renderRichText(opt.body, `wlev-cc-fin-text-${uid}`)}
                   </div>
                 </div>
               );
@@ -160,14 +166,14 @@ export default function WlevCostCompare(props: WlevCostCompareProps) {
         .wlev-cc-heading-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; color: #1a3c3c; margin: 0; line-height: 1.2; }
         .wlev-cc-subtitle-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1rem, 1.8vw, 1.15rem); font-weight: 400; color: #5a7a78; margin: 0; line-height: 1.6; }
         .wlev-cc-subtitle-${uid} p { margin: 0; }
-        .wlev-cc-compare-${uid} { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; width: 100%; }
+        .wlev-cc-compare-${uid} { display: flex; flex-direction: column; gap: 28px; width: 100%; max-width: 600px; }
         .wlev-cc-col-${uid} { background: #ffffff; border-radius: 20px; padding: 32px 28px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 2px 12px rgba(26, 60, 60, 0.06); }
         .wlev-cc-col-title-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1.2rem, 2vw, 1.5rem); font-weight: 700; color: #1a3c3c; margin: 0; }
         .wlev-cc-col-title-ev-${uid} { color: #2d5c5a; }
         .wlev-cc-row-${uid} { display: grid; grid-template-columns: 100px 1fr auto; align-items: center; gap: 12px; }
         .wlev-cc-row-label-${uid} { font-family: 'Rubik', sans-serif; font-size: 0.9rem; font-weight: 400; color: #5a7a78; }
-        .wlev-cc-bar-track-${uid} { height: 12px; background: #f0f4f3; border-radius: 6px; overflow: hidden; }
-        .wlev-cc-bar-${uid} { height: 100%; border-radius: 6px; transition: width 0.6s ease; }
+        .wlev-cc-bar-track-${uid} { height: 22px; background: #f0f4f3; border-radius: 11px; overflow: hidden; }
+        .wlev-cc-bar-${uid} { height: 100%; border-radius: 11px; transition: width 0.6s ease; }
         .wlev-cc-bar-petrol-${uid} { background: #e8927c; }
         .wlev-cc-bar-ev-${uid} { background: #2d5c5a; }
         .wlev-cc-row-val-${uid} { font-family: 'Rubik', sans-serif; font-size: 0.9rem; font-weight: 600; color: #1a3c3c; min-width: 60px; text-align: right; }
@@ -190,7 +196,7 @@ export default function WlevCostCompare(props: WlevCostCompareProps) {
         .wlev-cc-fin-body-open-${uid} { max-height: 300px; }
         .wlev-cc-fin-text-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(0.95rem, 1.4vw, 1.05rem); font-weight: 400; color: #5a7a78; line-height: 1.7; padding: 0 24px 18px; }
         .wlev-cc-fin-text-${uid} p { margin: 0; }
-        @media (max-width: 768px) { .wlev-cc-compare-${uid} { grid-template-columns: 1fr; gap: 24px; } .wlev-cc-section-${uid} { padding: 60px 24px; } .wlev-cc-row-${uid} { grid-template-columns: 80px 1fr auto; } }
+        @media (max-width: 768px) { .wlev-cc-section-${uid} { padding: 60px 24px; } .wlev-cc-row-${uid} { grid-template-columns: 80px 1fr auto; } }
         @media (max-width: 480px) { .wlev-cc-section-${uid} { padding: 40px 16px; } .wlev-cc-col-${uid} { padding: 24px 20px; } .wlev-cc-saving-badge-${uid} { padding: 14px 20px; border-radius: 16px; } }
       `}</style>
     </div>

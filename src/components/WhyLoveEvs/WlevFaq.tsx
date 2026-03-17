@@ -2,6 +2,12 @@
 
 import React, { useId, useState } from "react";
 
+function renderRichText(value: any, className?: string) {
+  if (!value) return null;
+  if (typeof value === "string") return <div className={className} dangerouslySetInnerHTML={{ __html: value }} />;
+  return <div className={className}>{value}</div>;
+}
+
 interface WlevFaqProps {
   heading?: string;
   subtitle?: string;
@@ -78,7 +84,7 @@ export default function WlevFaq(props: WlevFaqProps) {
                   </button>
                   <div className={`wlev-faq-body-${uid}${isOpen ? ` wlev-faq-body-open-${uid}` : ""}`}>
                     <div className={`wlev-faq-body-inner-${uid}`}>
-                      <div className={`wlev-faq-answer-${uid}`} dangerouslySetInnerHTML={{ __html: item.a || "" }} />
+                      {renderRichText(item.a, `wlev-faq-answer-${uid}`)}
                     </div>
                   </div>
                 </div>

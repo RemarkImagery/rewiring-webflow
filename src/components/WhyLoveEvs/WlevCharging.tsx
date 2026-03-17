@@ -2,6 +2,12 @@
 
 import React, { useId, useState } from "react";
 
+function renderRichText(value: any, className?: string) {
+  if (!value) return null;
+  if (typeof value === "string") return <div className={className} dangerouslySetInnerHTML={{ __html: value }} />;
+  return <div className={className}>{value}</div>;
+}
+
 interface WlevChargingProps {
   heading?: string;
   subtitle?: string;
@@ -95,21 +101,21 @@ export default function WlevCharging(props: WlevChargingProps) {
             {activeTab === 0 && (
               <>
                 <h3 className={`wlev-ch-panel-title-${uid}`}>{tab1Title}</h3>
-                <div className={`wlev-ch-panel-body-${uid}`} dangerouslySetInnerHTML={{ __html: tab1Body || "" }} />
+                {renderRichText(tab1Body, `wlev-ch-panel-body-${uid}`)}
                 {renderHighlights([tab1H1, tab1H2, tab1H3, tab1H4])}
               </>
             )}
             {activeTab === 1 && (
               <>
                 <h3 className={`wlev-ch-panel-title-${uid}`}>{tab2Title}</h3>
-                <div className={`wlev-ch-panel-body-${uid}`} dangerouslySetInnerHTML={{ __html: tab2Body || "" }} />
+                {renderRichText(tab2Body, `wlev-ch-panel-body-${uid}`)}
                 {renderHighlights([tab2H1, tab2H2, tab2H3, tab2H4])}
               </>
             )}
             {activeTab === 2 && (
               <>
                 <h3 className={`wlev-ch-panel-title-${uid}`}>{tab3Title}</h3>
-                <div className={`wlev-ch-panel-body-${uid}`} dangerouslySetInnerHTML={{ __html: tab3Body || "" }} />
+                {renderRichText(tab3Body, `wlev-ch-panel-body-${uid}`)}
                 <div className={`wlev-ch-table-wrap-${uid}`}>
                   <table className={`wlev-ch-table-${uid}`}>
                     <thead><tr><th>Type</th><th>Location</th><th>Size</th><th>Range/hr</th><th>To 80%</th><th>Cost (80%)</th></tr></thead>

@@ -2,6 +2,12 @@
 
 import React, { useId, useEffect, useRef, useState } from "react";
 
+function renderRichText(value: any, className?: string) {
+  if (!value) return null;
+  if (typeof value === "string") return <div className={className} dangerouslySetInnerHTML={{ __html: value }} />;
+  return <div className={className}>{value}</div>;
+}
+
 interface WlevHeroProps {
   heading?: string;
   subtitle?: string;
@@ -80,7 +86,7 @@ export default function WlevHero(props: WlevHeroProps) {
             <h1 className={`wlev-hero-heading-${uid}`}>{heading}</h1>
           </div>
 
-          <div className={`wlev-hero-subtitle-${uid}`} dangerouslySetInnerHTML={{ __html: subtitle || "" }} />
+          {renderRichText(subtitle, `wlev-hero-subtitle-${uid}`)}
 
           <div ref={counterRef} className={`wlev-hero-compare-${uid}`}>
             <div className={`wlev-hero-compare-card-${uid} wlev-hero-compare-ev-${uid}`}>

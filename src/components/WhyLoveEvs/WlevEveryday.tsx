@@ -2,6 +2,12 @@
 
 import React, { useId, useState } from "react";
 
+function renderRichText(value: any, className?: string) {
+  if (!value) return null;
+  if (typeof value === "string") return <div className={className} dangerouslySetInnerHTML={{ __html: value }} />;
+  return <div className={className}>{value}</div>;
+}
+
 interface WlevEverydayProps {
   heading?: string;
   subtitle?: string;
@@ -95,7 +101,7 @@ export default function WlevEveryday(props: WlevEverydayProps) {
               <span className={`wlev-ed-panel-stat-num-${uid}`}>{tab.stat}</span>
               <span className={`wlev-ed-panel-stat-label-${uid}`}>{tab.statLabel}</span>
             </div>
-            <div className={`wlev-ed-panel-body-${uid}`} dangerouslySetInnerHTML={{ __html: tab.body || "" }} />
+            {renderRichText(tab.body, `wlev-ed-panel-body-${uid}`)}
           </div>
         </div>
       </section>

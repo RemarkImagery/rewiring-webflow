@@ -2,6 +2,12 @@
 
 import React, { useId } from "react";
 
+function renderRichText(value: any, className?: string) {
+  if (!value) return null;
+  if (typeof value === "string") return <div className={className} dangerouslySetInnerHTML={{ __html: value }} />;
+  return <div className={className}>{value}</div>;
+}
+
 interface WlevCampaignProps {
   heading?: string;
   subtitle?: string;
@@ -78,7 +84,7 @@ export default function WlevCampaign(props: WlevCampaignProps) {
 
           {/* Body with organic border */}
           <div className={`wlev-cm-body-wrap-${uid}`}>
-            <div className={`wlev-cm-body-${uid}`} dangerouslySetInnerHTML={{ __html: body || "" }} />
+            {renderRichText(body, `wlev-cm-body-${uid}`)}
           </div>
 
           {/* Closing line */}
@@ -95,7 +101,7 @@ export default function WlevCampaign(props: WlevCampaignProps) {
           {/* CTA card */}
           <div className={`wlev-cm-cta-card-${uid}`}>
             <h3 className={`wlev-cm-cta-heading-${uid}`}>{ctaHeading}</h3>
-            <div className={`wlev-cm-cta-body-${uid}`} dangerouslySetInnerHTML={{ __html: ctaBody || "" }} />
+            {renderRichText(ctaBody, `wlev-cm-cta-body-${uid}`)}
 
             <div className={`wlev-cm-cta-methods-${uid}`}>
               <div className={`wlev-cm-cta-method-${uid}`}>
