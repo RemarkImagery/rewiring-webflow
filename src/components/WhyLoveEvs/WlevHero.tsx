@@ -6,6 +6,11 @@ interface WlevHeroProps {
   heading?: string;
   subtitle?: string;
   ctaText?: string;
+  evPartsLabel?: string;
+  icePartsLabel?: string;
+  bullet1?: string;
+  bullet2?: string;
+  bullet3?: string;
   bgColor?: string;
   accentColor?: string;
 }
@@ -15,6 +20,11 @@ export default function WlevHero(props: WlevHeroProps) {
     heading = "Lower Bills and Way More Fun!",
     subtitle = "Good for your wallet, better for the environment, and very easy to do. Upgrading to an EV is also a lot of fun.",
     ctaText = "Find Out More",
+    evPartsLabel = "moving parts in an EV",
+    icePartsLabel = "in a petrol car",
+    bullet1 = "Built for everyday life",
+    bullet2 = "Cheaper to fill up and maintain",
+    bullet3 = "Easy to charge at home and on trips",
     bgColor = "#FFFCF0",
     accentColor = "#f5b731",
   } = props;
@@ -59,6 +69,8 @@ export default function WlevHero(props: WlevHeroProps) {
     return () => observer.disconnect();
   }, [hasAnimated]);
 
+  const bullets = [bullet1, bullet2, bullet3].filter(Boolean);
+
   return (
     <div className={`wlev-hero-root-${uid}`}>
       <section className={`wlev-hero-${uid}`} style={{ background: bgColor }}>
@@ -68,17 +80,17 @@ export default function WlevHero(props: WlevHeroProps) {
             <h1 className={`wlev-hero-heading-${uid}`}>{heading}</h1>
           </div>
 
-          <p className={`wlev-hero-subtitle-${uid}`}>{subtitle}</p>
+          <div className={`wlev-hero-subtitle-${uid}`} dangerouslySetInnerHTML={{ __html: subtitle || "" }} />
 
           <div ref={counterRef} className={`wlev-hero-compare-${uid}`}>
             <div className={`wlev-hero-compare-card-${uid} wlev-hero-compare-ev-${uid}`}>
               <span className={`wlev-hero-compare-num-${uid}`} style={{ color: accentColor }}>{evParts}</span>
-              <span className={`wlev-hero-compare-label-${uid}`}>moving parts in an EV</span>
+              <span className={`wlev-hero-compare-label-${uid}`}>{evPartsLabel}</span>
             </div>
             <span className={`wlev-hero-compare-vs-${uid}`}>vs</span>
             <div className={`wlev-hero-compare-card-${uid}`}>
               <span className={`wlev-hero-compare-num-${uid}`} style={{ color: "#2d5c5a" }}>{iceParts.toLocaleString()}</span>
-              <span className={`wlev-hero-compare-label-${uid}`}>in a petrol car</span>
+              <span className={`wlev-hero-compare-label-${uid}`}>{icePartsLabel}</span>
             </div>
           </div>
 
@@ -86,20 +98,16 @@ export default function WlevHero(props: WlevHeroProps) {
             {ctaText}
           </a>
 
-          <div className={`wlev-hero-bullets-${uid}`}>
-            <div className={`wlev-hero-bullet-${uid}`}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2d5c5a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-              <span>Built for everyday life</span>
+          {bullets.length > 0 && (
+            <div className={`wlev-hero-bullets-${uid}`}>
+              {bullets.map((b, i) => (
+                <div key={i} className={`wlev-hero-bullet-${uid}`}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2d5c5a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  <span>{b}</span>
+                </div>
+              ))}
             </div>
-            <div className={`wlev-hero-bullet-${uid}`}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2d5c5a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-              <span>Cheaper to fill up and maintain</span>
-            </div>
-            <div className={`wlev-hero-bullet-${uid}`}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2d5c5a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-              <span>Easy to charge at home and on trips</span>
-            </div>
-          </div>
+          )}
         </div>
       </section>
 
@@ -167,6 +175,8 @@ export default function WlevHero(props: WlevHeroProps) {
           margin: 0;
         }
 
+        .wlev-hero-subtitle-${uid} p { margin: 0; }
+
         .wlev-hero-compare-${uid} {
           display: flex;
           align-items: center;
@@ -185,9 +195,7 @@ export default function WlevHero(props: WlevHeroProps) {
           box-shadow: 0 4px 20px rgba(26, 60, 60, 0.08);
         }
 
-        .wlev-hero-compare-ev-${uid} {
-          border: 2px solid #f5b731;
-        }
+        .wlev-hero-compare-ev-${uid} { border: 2px solid #f5b731; }
 
         .wlev-hero-compare-num-${uid} {
           font-family: 'Rubik', sans-serif;
@@ -232,9 +240,7 @@ export default function WlevHero(props: WlevHeroProps) {
           filter: brightness(1.06);
         }
 
-        .wlev-hero-cta-${uid}:active {
-          transform: translateY(0) scale(0.98);
-        }
+        .wlev-hero-cta-${uid}:active { transform: translateY(0) scale(0.98); }
 
         .wlev-hero-bullets-${uid} {
           display: flex;
@@ -255,28 +261,14 @@ export default function WlevHero(props: WlevHeroProps) {
         }
 
         @media (max-width: 768px) {
-          .wlev-hero-${uid} {
-            min-height: 70svh;
-            padding: 40px 20px;
-          }
+          .wlev-hero-${uid} { min-height: 70svh; padding: 40px 20px; }
           .wlev-hero-blob-${uid} { inset: -14px -24px; }
         }
 
         @media (max-width: 540px) {
-          .wlev-hero-compare-${uid} {
-            flex-direction: column;
-            gap: 12px;
-          }
-          .wlev-hero-compare-card-${uid} {
-            padding: 18px 28px;
-            width: 100%;
-            max-width: 240px;
-          }
-          .wlev-hero-bullets-${uid} {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 10px;
-          }
+          .wlev-hero-compare-${uid} { flex-direction: column; gap: 12px; }
+          .wlev-hero-compare-card-${uid} { padding: 18px 28px; width: 100%; max-width: 240px; }
+          .wlev-hero-bullets-${uid} { flex-direction: column; align-items: flex-start; gap: 10px; }
         }
 
         @media (prefers-reduced-motion: reduce) {
