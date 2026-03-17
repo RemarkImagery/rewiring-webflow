@@ -293,20 +293,22 @@ export default function TccHero(props: TccHeroProps) {
 
         /* Person image pop-up */
         .tcc-person-wrap-${uid} {
-          position: relative;
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
           z-index: 4;
-          width: 100%;
           display: flex;
           justify-content: center;
-          margin-top: -180px;
+          align-items: flex-end;
           pointer-events: none;
-          overflow: visible;
         }
 
         .tcc-person-${uid} {
           width: clamp(280px, 40vw, 480px);
           height: auto;
           object-fit: contain;
+          display: block;
           filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.5));
           transform: translateY(100px) scale(0.9);
           opacity: 0;
@@ -350,9 +352,6 @@ export default function TccHero(props: TccHeroProps) {
           .tcc-car-wrap-${uid} {
             margin-top: -14px;
           }
-          .tcc-person-wrap-${uid} {
-            margin-top: -100px;
-          }
           .tcc-person-${uid} {
             width: clamp(200px, 50vw, 320px);
           }
@@ -375,9 +374,6 @@ export default function TccHero(props: TccHeroProps) {
           }
           .tcc-car-wrap-${uid} {
             margin-top: -10px;
-          }
-          .tcc-person-wrap-${uid} {
-            margin-top: -80px;
           }
           .tcc-person-${uid} {
             width: clamp(180px, 55vw, 260px);
