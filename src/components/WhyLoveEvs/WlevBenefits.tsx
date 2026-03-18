@@ -95,7 +95,7 @@ export default function WlevBenefits(props: WlevBenefitsProps) {
         .wlev-ben-heading-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; color: #1a3c3c; margin: 0; line-height: 1.2; }
         .wlev-ben-subtitle-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1rem, 1.8vw, 1.15rem); font-weight: 400; color: #5a7a78; margin: 0; line-height: 1.6; }
         .wlev-ben-grid-${uid} { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; width: 100%; }
-        .wlev-ben-card-${uid} { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; padding: 36px 28px; background: #ffffff; border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; box-shadow: 0 2px 12px rgba(26, 60, 60, 0.06); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .wlev-ben-card-${uid} { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; padding: 36px 28px; background: #ffffff; border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; box-shadow: 0 2px 12px rgba(26, 60, 60, 0.06); transition: transform 0.3s ease, box-shadow 0.3s ease; border: solid 3px #1a3c3c; }
         .wlev-ben-card-${uid}:hover { transform: translateY(-6px); box-shadow: 0 12px 32px rgba(26, 60, 60, 0.12); }
         .wlev-ben-icon-${uid} { width: 48px; height: 48px; flex-shrink: 0; }
         .wlev-ben-icon-${uid} svg { width: 48px; height: 48px; }

@@ -57,7 +57,7 @@ export default function WlevEveryday(props: WlevEverydayProps) {
     tab4Stat = "2.3s",
     tab4StatLabel = "0\u2013100km/h (Porsche Taycan)",
     tab4Body = "Ask any EV owner \u2014 driving electric is just more fun. F1 cars average 2.6 seconds to 100km/h. The Porsche Taycan does it in 2.3s. The Tesla 3 Performance ($89,990) takes just 3.1 seconds. Instant torque, no matter the size of the car.",
-    bgColor = "#ffffff",
+    bgColor = "#2d5c5a",
   } = props;
 
   const uid = useId().replace(/:/g, "");
@@ -114,15 +114,15 @@ export default function WlevEveryday(props: WlevEverydayProps) {
         .wlev-ed-section-${uid} { width: 100%; display: flex; justify-content: center; padding: 80px 24px; box-sizing: border-box; }
         .wlev-ed-inner-${uid} { max-width: 860px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 36px; }
         .wlev-ed-header-${uid} { text-align: center; display: flex; flex-direction: column; gap: 12px; max-width: 640px; }
-        .wlev-ed-heading-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; color: #1a3c3c; margin: 0; line-height: 1.2; }
-        .wlev-ed-subtitle-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1rem, 1.8vw, 1.15rem); font-weight: 400; color: #5a7a78; margin: 0; line-height: 1.6; }
+        .wlev-ed-heading-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; color: #ffffff; margin: 0; line-height: 1.2; }
+        .wlev-ed-subtitle-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1rem, 1.8vw, 1.15rem); font-weight: 400; color: #d1e0df; margin: 0; line-height: 1.6; }
         .wlev-ed-tabs-${uid} { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
-        .wlev-ed-tab-${uid} { display: flex; align-items: center; gap: 8px; padding: 12px 22px; font-family: 'Rubik', sans-serif; font-size: clamp(0.9rem, 1.4vw, 1rem); font-weight: 600; color: #5a7a78; background: #f0f4f3; border: 2px solid transparent; border-radius: 50px; cursor: pointer; transition: all 0.25s ease; }
-        .wlev-ed-tab-${uid}:hover { color: #1a3c3c; background: #e8edec; }
+        .wlev-ed-tab-${uid} { display: flex; align-items: center; gap: 8px; padding: 12px 22px; font-family: 'Rubik', sans-serif; font-size: clamp(0.9rem, 1.4vw, 1rem); font-weight: 600; color: #d1e0df; background: rgba(255,255,255,0.1); border: 2px solid transparent; border-radius: 50px; cursor: pointer; transition: all 0.25s ease; }
+        .wlev-ed-tab-${uid}:hover { color: #ffffff; background: rgba(255,255,255,0.15); }
         .wlev-ed-tab-active-${uid} { color: #1a3c3c; background: #ffffff; border-color: #f5b731; box-shadow: 0 4px 16px rgba(245, 183, 49, 0.2); }
         .wlev-ed-tab-icon-${uid} { display: flex; align-items: center; width: 20px; height: 20px; }
         .wlev-ed-tab-icon-${uid} svg { width: 20px; height: 20px; }
-        .wlev-ed-panel-${uid} { width: 100%; background: #FFFCF0; border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; padding: 48px 44px; display: flex; flex-direction: column; gap: 20px; box-shadow: 0 4px 24px rgba(26, 60, 60, 0.06); animation: wlev-ed-fadein-${uid} 0.3s ease; }
+        .wlev-ed-panel-${uid} { width: 100%; background: #FFFCF0; border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; padding: 48px 44px; display: flex; flex-direction: column; gap: 20px; box-shadow: 0 4px 24px rgba(26, 60, 60, 0.06); animation: wlev-ed-fadein-${uid} 0.3s ease; border: solid 3px #1a3c3c; }
         @keyframes wlev-ed-fadein-${uid} { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         .wlev-ed-panel-stat-${uid} { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
         .wlev-ed-panel-stat-num-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 700; color: #f5b731; line-height: 1.1; }

@@ -168,7 +168,7 @@ export default function WlevCostCompare(props: WlevCostCompareProps) {
         .wlev-cc-subtitle-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1rem, 1.8vw, 1.15rem); font-weight: 400; color: #5a7a78; margin: 0; line-height: 1.6; }
         .wlev-cc-subtitle-${uid} p { margin: 0; }
         .wlev-cc-compare-${uid} { display: flex; flex-direction: column; gap: 28px; width: 100%; max-width: 600px; }
-        .wlev-cc-col-${uid} { background: #ffffff; border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; padding: 32px 28px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 2px 12px rgba(26, 60, 60, 0.06); }
+        .wlev-cc-col-${uid} { background: #ffffff; border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; padding: 32px 28px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 2px 12px rgba(26, 60, 60, 0.06); border: solid 3px #1a3c3c; }
         .wlev-cc-col-title-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1.2rem, 2vw, 1.5rem); font-weight: 700; color: #1a3c3c; margin: 0; }
         .wlev-cc-col-title-ev-${uid} { color: #2d5c5a; }
         .wlev-cc-row-${uid} { display: grid; grid-template-columns: 100px 1fr auto; align-items: center; gap: 12px; }

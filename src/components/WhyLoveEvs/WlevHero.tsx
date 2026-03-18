@@ -199,9 +199,10 @@ export default function WlevHero(props: WlevHeroProps) {
           background: #ffffff;
           border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
           box-shadow: 0 4px 20px rgba(26, 60, 60, 0.08);
+          border: solid 3px #1a3c3c;
         }
 
-        .wlev-hero-compare-ev-${uid} { border: 2px solid #f5b731; }
+        .wlev-hero-compare-ev-${uid} { border: solid 3px #f5b731; }
 
         .wlev-hero-compare-num-${uid} {
           font-family: 'Rubik', sans-serif;

@@ -193,7 +193,7 @@ export default function WlevCampaign(props: WlevCampaignProps) {
           padding: 18px 20px;
           background: #ffffff;
           border-radius: 60px 16px 16px 60px;
-          border: 2px solid rgba(45, 92, 90, 0.08);
+          border: solid 3px #1a3c3c;
           transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
 
@@ -227,7 +227,8 @@ export default function WlevCampaign(props: WlevCampaignProps) {
         /* Body */
         .wlev-cm-body-wrap-${uid} {
           padding: 28px 32px;
-          border-left: 4px solid #f5b731;
+          border: solid 3px #1a3c3c;
+          border-left: 5px solid #f5b731;
           border-radius: 0 225px 15px 0 / 0 15px 225px 0;
           background: rgba(245, 183, 49, 0.06);
         }

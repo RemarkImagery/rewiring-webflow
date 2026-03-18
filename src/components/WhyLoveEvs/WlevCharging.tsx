@@ -62,7 +62,7 @@ export default function WlevCharging(props: WlevChargingProps) {
     tab2H4 = "Your EV encourages breaks that keep everyone alert",
     tab3Title = "From slow home top-ups to ultra-fast highway charging.",
     tab3Body = "Different chargers suit different situations. Home chargers are cheapest; public DC chargers are fastest.",
-    bgColor = "#ffffff",
+    bgColor = "#1a3c3c",
   } = props;
 
   const uid = useId().replace(/:/g, "");
@@ -139,15 +139,15 @@ export default function WlevCharging(props: WlevChargingProps) {
         .wlev-ch-section-${uid} { width: 100%; display: flex; justify-content: center; padding: 80px 24px; box-sizing: border-box; }
         .wlev-ch-inner-${uid} { max-width: 920px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 36px; }
         .wlev-ch-header-${uid} { text-align: center; display: flex; flex-direction: column; gap: 12px; max-width: 640px; }
-        .wlev-ch-heading-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; color: #1a3c3c; margin: 0; line-height: 1.2; }
-        .wlev-ch-subtitle-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1rem, 1.8vw, 1.15rem); font-weight: 400; color: #5a7a78; margin: 0; line-height: 1.6; }
+        .wlev-ch-heading-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; color: #ffffff; margin: 0; line-height: 1.2; }
+        .wlev-ch-subtitle-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1rem, 1.8vw, 1.15rem); font-weight: 400; color: #d1e0df; margin: 0; line-height: 1.6; }
         .wlev-ch-tabs-${uid} { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
-        .wlev-ch-tab-${uid} { display: flex; align-items: center; gap: 8px; padding: 12px 22px; font-family: 'Rubik', sans-serif; font-size: clamp(0.9rem, 1.4vw, 1rem); font-weight: 600; color: #5a7a78; background: #f0f4f3; border: 2px solid transparent; border-radius: 50px; cursor: pointer; transition: all 0.25s ease; }
-        .wlev-ch-tab-${uid}:hover { color: #1a3c3c; background: #e8edec; }
+        .wlev-ch-tab-${uid} { display: flex; align-items: center; gap: 8px; padding: 12px 22px; font-family: 'Rubik', sans-serif; font-size: clamp(0.9rem, 1.4vw, 1rem); font-weight: 600; color: #d1e0df; background: rgba(255,255,255,0.1); border: 2px solid transparent; border-radius: 50px; cursor: pointer; transition: all 0.25s ease; }
+        .wlev-ch-tab-${uid}:hover { color: #ffffff; background: rgba(255,255,255,0.15); }
         .wlev-ch-tab-active-${uid} { color: #1a3c3c; background: #ffffff; border-color: #f5b731; box-shadow: 0 4px 16px rgba(245, 183, 49, 0.2); }
         .wlev-ch-tab-icon-${uid} { display: flex; align-items: center; width: 20px; height: 20px; }
         .wlev-ch-tab-icon-${uid} svg { width: 20px; height: 20px; }
-        .wlev-ch-panel-${uid} { width: 100%; background: #FFFCF0; border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; padding: 44px 40px; display: flex; flex-direction: column; gap: 18px; box-shadow: 0 4px 24px rgba(26, 60, 60, 0.06); animation: wlev-ch-fade-${uid} 0.3s ease; }
+        .wlev-ch-panel-${uid} { width: 100%; background: #FFFCF0; border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; padding: 44px 40px; display: flex; flex-direction: column; gap: 18px; box-shadow: 0 4px 24px rgba(26, 60, 60, 0.06); animation: wlev-ch-fade-${uid} 0.3s ease; border: solid 3px #1a3c3c; }
         @keyframes wlev-ch-fade-${uid} { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         .wlev-ch-panel-title-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1.2rem, 2.5vw, 1.6rem); font-weight: 700; color: #1a3c3c; margin: 0; line-height: 1.3; }
         .wlev-ch-panel-body-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1rem, 1.6vw, 1.1rem); font-weight: 400; color: #5a7a78; line-height: 1.7; margin: 0; }

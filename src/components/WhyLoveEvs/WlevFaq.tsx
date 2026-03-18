@@ -42,7 +42,7 @@ export default function WlevFaq(props: WlevFaqProps) {
     a7 = "Most households can start charging with a standard wall outlet at no extra cost. A dedicated home charger adds faster charging and off-peak scheduling. Home charging is one of the cheapest ways to fuel any vehicle.",
     q8 = "Are EVs safe?",
     a8 = "Very. Petrol and diesel cars are around 20 times more likely to catch fire because they contain a tank of flammable liquid. EVs have no exhaust fumes, improving air quality in our cities and neighbourhoods.",
-    bgColor = "#ffffff",
+    bgColor = "#2d5c5a",
   } = props;
 
   const uid = useId().replace(/:/g, "");
@@ -100,10 +100,10 @@ export default function WlevFaq(props: WlevFaqProps) {
         .wlev-faq-root-${uid} { width: 100%; }
         .wlev-faq-section-${uid} { width: 100%; display: flex; justify-content: center; padding: 80px 24px; box-sizing: border-box; }
         .wlev-faq-inner-${uid} { max-width: 800px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 16px; }
-        .wlev-faq-heading-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; color: #1a3c3c; margin: 0; line-height: 1.2; text-align: center; }
-        .wlev-faq-subtitle-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1rem, 1.8vw, 1.15rem); font-weight: 400; color: #5a7a78; line-height: 1.6; margin: 0 0 20px; text-align: center; max-width: 600px; }
+        .wlev-faq-heading-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; color: #ffffff; margin: 0; line-height: 1.2; text-align: center; }
+        .wlev-faq-subtitle-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1rem, 1.8vw, 1.15rem); font-weight: 400; color: #d1e0df; line-height: 1.6; margin: 0 0 20px; text-align: center; max-width: 600px; }
         .wlev-faq-accordion-${uid} { width: 100%; display: flex; flex-direction: column; gap: 14px; }
-        .wlev-faq-item-${uid} { background: #FFFCF0; border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; overflow: hidden; box-shadow: 0 2px 8px rgba(26, 60, 60, 0.05); transition: box-shadow 0.3s ease; }
+        .wlev-faq-item-${uid} { background: #FFFCF0; border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; overflow: hidden; box-shadow: 0 2px 8px rgba(26, 60, 60, 0.05); transition: box-shadow 0.3s ease; border: solid 3px #1a3c3c; }
         .wlev-faq-item-open-${uid} { box-shadow: 0 4px 20px rgba(26, 60, 60, 0.1); }
         .wlev-faq-header-${uid} { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 22px 24px; background: none; border: none; cursor: pointer; text-align: left; gap: 16px; transition: background 0.2s ease; }
         .wlev-faq-header-${uid}:hover { background: rgba(26, 60, 60, 0.02); }
