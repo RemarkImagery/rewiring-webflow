@@ -77,7 +77,6 @@ export default function WlevBenefits(props: WlevBenefitsProps) {
           <div className={`wlev-ben-grid-${uid}`}>
             {cards.map((b, i) => (
               <div key={i} className={`wlev-ben-card-${uid}`}>
-                <div className={`wlev-ben-icon-${uid}`} dangerouslySetInnerHTML={{ __html: icons[i] }} />
                 <h3 className={`wlev-ben-title-${uid}`}>{b.title}</h3>
                 {renderRichText(b.desc, `wlev-ben-desc-${uid}`)}
               </div>
