@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useId, useState, useEffect, useCallback } from "react";
+import React, { useId, useState, useEffect, useRef } from "react";
 
 function resolveImage(val: any): string | undefined {
   if (!val) return undefined;
@@ -16,7 +16,6 @@ interface WlevCarouselProps {
   bgColor?: string;
 }
 
-// Fixed rotation angles for each slot to give that scattered photo feel
 const rotations = [-4, 3, -2, 5, -3, 4, -5, 2, -4, 3];
 const yOffsets = [8, -6, 10, -4, 7, -8, 5, -10, 6, -5];
 
@@ -29,71 +28,88 @@ export default function WlevCarousel(props: WlevCarouselProps) {
   } = props;
 
   const uid = useId().replace(/:/g, "");
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState(0);
+  const [isScrolling, setIsScrolling] = useState(false);
 
   const images = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10]
     .map(resolveImage)
     .filter(Boolean) as string[];
 
-  const count = images.length || 10;
-  const [offset, setOffset] = useState(0);
+  // Triple the images for seamless wrapping
+  const allImages = images.length > 0
+    ? [...images, ...images, ...images]
+    : [];
 
-  // Step-scroll: hold then snap to next position
+  const count = images.length || 10;
+  const placeholders = Array.from({ length: 20 }, (_, i) => i);
+
+  // Step scroll: hold, quick scroll one slide, hold, repeat
   useEffect(() => {
     if (images.length <= 1) return;
+
     const interval = setInterval(() => {
-      setOffset((prev) => (prev + 1) % images.length);
+      setIsScrolling(true);
+      setPosition((prev) => {
+        const next = prev + 1;
+        // Reset seamlessly when we've scrolled through one full set
+        if (next >= images.length) {
+          // After the transition completes, jump back without animation
+          setTimeout(() => {
+            setIsScrolling(false);
+            setPosition(0);
+          }, 400);
+          return next;
+        }
+        setTimeout(() => setIsScrolling(false), 400);
+        return next;
+      });
     }, holdTime);
+
     return () => clearInterval(interval);
   }, [images.length, holdTime]);
 
-  // Visible window: show ~5 images at a time, wrapping around
-  const visibleCount = 6;
-  const getVisibleImages = useCallback(() => {
-    if (images.length === 0) return [];
-    const result = [];
-    for (let i = 0; i < visibleCount; i++) {
-      const idx = (offset + i) % images.length;
-      result.push({ src: images[idx], idx });
-    }
-    return result;
-  }, [offset, images]);
-
-  const visible = getVisibleImages();
-
-  // Placeholder mode
-  const placeholders = Array.from({ length: visibleCount }, (_, i) => i);
+  // Calculate the slide width for translateX
+  // Each slide is ~22vw with -16px overlap margins, approximate with calc
+  const slideStep = `calc(clamp(220px, 22vw, 320px) - 16px)`;
 
   return (
     <div className={`wlev-car-root-${uid}`}>
       <section className={`wlev-car-section-${uid}`} style={{ background: bgColor }}>
-        <div className={`wlev-car-strip-${uid}`}>
-          {visible.length > 0
-            ? visible.map((item, i) => (
-                <div
-                  key={`${offset}-${i}`}
-                  className={`wlev-car-slide-${uid}`}
-                  style={{
-                    transform: `rotate(${rotations[item.idx % 10]}deg) translateY(${yOffsets[item.idx % 10]}px)`,
-                    zIndex: visibleCount - Math.abs(i - Math.floor(visibleCount / 2)),
-                    animationDelay: `${i * 0.06}s`,
-                  }}
-                >
-                  <img src={item.src} alt="" className={`wlev-car-img-${uid}`} draggable={false} />
-                </div>
-              ))
-            : placeholders.map((i) => (
-                <div
-                  key={i}
-                  className={`wlev-car-slide-${uid}`}
-                  style={{
-                    transform: `rotate(${rotations[i]}deg) translateY(${yOffsets[i]}px)`,
-                    zIndex: visibleCount - Math.abs(i - Math.floor(visibleCount / 2)),
-                  }}
-                >
-                  <div className={`wlev-car-placeholder-${uid}`} />
-                </div>
-              ))
-          }
+        <div className={`wlev-car-viewport-${uid}`}>
+          <div
+            ref={trackRef}
+            className={`wlev-car-track-${uid}`}
+            style={{
+              transform: `translateX(calc(${position} * (clamp(220px, 22vw, 320px) - 16px) * -1))`,
+              transition: isScrolling ? 'transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)' : 'none',
+            }}
+          >
+            {allImages.length > 0
+              ? allImages.map((src, i) => (
+                  <div
+                    key={i}
+                    className={`wlev-car-slide-${uid}`}
+                    style={{
+                      transform: `rotate(${rotations[i % 10]}deg) translateY(${yOffsets[i % 10]}px)`,
+                    }}
+                  >
+                    <img src={src} alt="" className={`wlev-car-img-${uid}`} draggable={false} />
+                  </div>
+                ))
+              : placeholders.map((i) => (
+                  <div
+                    key={i}
+                    className={`wlev-car-slide-${uid}`}
+                    style={{
+                      transform: `rotate(${rotations[i % 10]}deg) translateY(${yOffsets[i % 10]}px)`,
+                    }}
+                  >
+                    <div className={`wlev-car-placeholder-${uid}`} />
+                  </div>
+                ))
+            }
+          </div>
         </div>
       </section>
 
@@ -107,14 +123,17 @@ export default function WlevCarousel(props: WlevCarouselProps) {
           box-sizing: border-box;
         }
 
-        .wlev-car-strip-${uid} {
+        .wlev-car-viewport-${uid} {
+          width: 100%;
+          overflow: hidden;
+          padding: 20px 0;
+        }
+
+        .wlev-car-track-${uid} {
           display: flex;
-          justify-content: center;
           align-items: center;
           gap: 0;
-          margin: 0 -40px;
-          padding: 20px 0;
-          position: relative;
+          will-change: transform;
         }
 
         .wlev-car-slide-${uid} {
@@ -122,20 +141,7 @@ export default function WlevCarousel(props: WlevCarouselProps) {
           width: clamp(220px, 22vw, 320px);
           aspect-ratio: 1 / 1;
           margin: 0 -16px;
-          transition: none;
-          animation: wlev-car-snapin-${uid} 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
           filter: drop-shadow(4px 6px 12px rgba(0, 0, 0, 0.2));
-        }
-
-        @keyframes wlev-car-snapin-${uid} {
-          0% {
-            opacity: 0;
-            scale: 0.85;
-          }
-          100% {
-            opacity: 1;
-            scale: 1;
-          }
         }
 
         .wlev-car-img-${uid} {
@@ -174,7 +180,7 @@ export default function WlevCarousel(props: WlevCarouselProps) {
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .wlev-car-slide-${uid} { animation: none !important; opacity: 1 !important; }
+          .wlev-car-track-${uid} { transition: none !important; }
         }
       `}</style>
     </div>
