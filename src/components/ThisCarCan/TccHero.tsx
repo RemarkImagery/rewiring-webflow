@@ -49,39 +49,22 @@ export default function TccHero(props: TccHeroProps) {
   const [personVisible, setPersonVisible] = useState(false);
 
   const [phraseIdx, setPhraseIdx] = useState(0);
-  const [displayedText, setDisplayedText] = useState("");
-  const [isTyping, setIsTyping] = useState(true);
+  const [phraseState, setPhraseState] = useState<"in" | "out">("in");
 
   const [carIdx, setCarIdx] = useState(0);
   const [carVisible, setCarVisible] = useState(true);
   const [carExiting, setCarExiting] = useState(false);
 
-  // Typewriter effect
-  useEffect(() => {
-    if (!phrases.length) return;
-    const phrase = phrases[phraseIdx % phrases.length];
-    let charIdx = 0;
-    setDisplayedText("");
-    setIsTyping(true);
-
-    const typeInterval = setInterval(() => {
-      charIdx++;
-      setDisplayedText(phrase.slice(0, charIdx));
-      if (charIdx >= phrase.length) {
-        clearInterval(typeInterval);
-        setIsTyping(false);
-      }
-    }, 60);
-
-    return () => clearInterval(typeInterval);
-  }, [phraseIdx]);
-
-  // Text cycle every 3.5s
+  // Text roll cycle every 3s
   useEffect(() => {
     if (phrases.length <= 1) return;
     const cycle = setInterval(() => {
-      setPhraseIdx((i) => (i + 1) % phrases.length);
-    }, 3500);
+      setPhraseState("out");
+      setTimeout(() => {
+        setPhraseIdx((i) => (i + 1) % phrases.length);
+        setPhraseState("in");
+      }, 350);
+    }, 3000);
     return () => clearInterval(cycle);
   }, [phrases.length]);
 
@@ -134,10 +117,15 @@ export default function TccHero(props: TccHeroProps) {
           <img className={`tcc-logo-${uid}`} src={logoSrc} alt="This Car Can" draggable={false} />
         )}
 
-        <p className={`tcc-phrase-${uid}`} aria-live="polite">
-          {displayedText}
-          {isTyping && <span className={`tcc-cursor-${uid}`} />}
-        </p>
+        <div className={`tcc-phrase-wrap-${uid}`}>
+          <p
+            key={phraseIdx}
+            className={`tcc-phrase-${uid} tcc-phrase-${phraseState}-${uid}`}
+            aria-live="polite"
+          >
+            {phrases[phraseIdx % phrases.length]}
+          </p>
+        </div>
 
         {cars.length > 0 && (
           <div className={`tcc-car-wrap-${uid}`}>
@@ -216,9 +204,18 @@ export default function TccHero(props: TccHeroProps) {
           margin-bottom: -20px;
         }
 
-        .tcc-phrase-${uid} {
+        .tcc-phrase-wrap-${uid} {
           position: relative;
           z-index: 3;
+          min-height: 2.4em;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          width: 100%;
+        }
+
+        .tcc-phrase-${uid} {
           font-family: 'Diary Notes', 'Marker Felt', 'Comic Sans MS', cursive;
           font-size: clamp(3.1rem, 7.2vw, 5.5rem);
           color: #ffffff;
@@ -228,17 +225,29 @@ export default function TccHero(props: TccHeroProps) {
           line-height: 1.1;
           text-align: center;
           text-shadow: 2px 3px 8px rgba(0, 0, 0, 0.4);
-          min-height: 2.4em;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          will-change: transform, opacity;
         }
 
-        .tcc-cursor-${uid} {
-          display: inline-block;
-          width: 3px;
-          height: 0.85em;
-          background: #ffffff;
+        .tcc-phrase-in-${uid} {
+          animation: tcc-roll-in-${uid} 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .tcc-phrase-out-${uid} {
+          animation: tcc-roll-out-${uid} 0.3s cubic-bezier(0.7, 0, 1, 0.5) forwards;
+        }
+
+        @keyframes tcc-roll-in-${uid} {
+          0% { transform: translateY(100%) scale(0.95); opacity: 0; }
+          100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        @keyframes tcc-roll-out-${uid} {
+          0% { transform: translateY(0) scale(1); opacity: 1; }
+          100% { transform: translateY(-100%) scale(0.95); opacity: 0; }
+        }
+
+        .tcc-placeholder-cursor-${uid} {
+          display: none;
           margin-left: 4px;
           vertical-align: baseline;
           animation: tcc-blink-${uid} 0.6s step-end infinite;
@@ -339,9 +348,11 @@ export default function TccHero(props: TccHeroProps) {
             min-height: 85svh;
             padding: 120px 16px 16px;
           }
+          .tcc-phrase-wrap-${uid} {
+            min-height: 2.6em;
+          }
           .tcc-phrase-${uid} {
             font-size: clamp(2.2rem, 5.5vw, 3.5rem);
-            min-height: 2.6em;
           }
           .tcc-logo-${uid} {
             width: clamp(260px, 65vw, 420px);
@@ -362,9 +373,11 @@ export default function TccHero(props: TccHeroProps) {
             min-height: 80svh;
             padding: 100px 12px 12px;
           }
+          .tcc-phrase-wrap-${uid} {
+            min-height: 2.8em;
+          }
           .tcc-phrase-${uid} {
             font-size: clamp(1.8rem, 7vw, 2.4rem);
-            min-height: 2.8em;
           }
           .tcc-logo-${uid} {
             width: clamp(220px, 75vw, 320px);
