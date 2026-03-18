@@ -346,7 +346,7 @@ export default function TccHero(props: TccHeroProps) {
         @media (max-width: 768px) {
           .tcc-hero-${uid} {
             min-height: 85svh;
-            padding: 120px 16px 16px;
+            padding: 120px 16px 60px;
           }
           .tcc-phrase-wrap-${uid} {
             min-height: 2.6em;
@@ -363,15 +363,19 @@ export default function TccHero(props: TccHeroProps) {
           .tcc-car-wrap-${uid} {
             margin-top: -14px;
           }
+          .tcc-person-wrap-${uid} {
+            left: 10%;
+            transform: translateX(0);
+          }
           .tcc-person-${uid} {
-            width: clamp(200px, 50vw, 320px);
+            width: clamp(220px, 55vw, 360px);
           }
         }
 
         @media (max-width: 480px) {
           .tcc-hero-${uid} {
             min-height: 80svh;
-            padding: 100px 12px 12px;
+            padding: 100px 12px 80px;
           }
           .tcc-phrase-wrap-${uid} {
             min-height: 2.8em;
@@ -388,8 +392,11 @@ export default function TccHero(props: TccHeroProps) {
           .tcc-car-wrap-${uid} {
             margin-top: -10px;
           }
+          .tcc-person-wrap-${uid} {
+            left: 5%;
+          }
           .tcc-person-${uid} {
-            width: clamp(180px, 55vw, 260px);
+            width: clamp(200px, 60vw, 300px);
           }
         }
 
