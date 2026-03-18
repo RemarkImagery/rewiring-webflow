@@ -196,9 +196,9 @@ export default function WlevApproval(props: WlevApprovalProps) {
 
         .wlev-ap-stat-label-${uid} {
           font-family: 'Rubik', sans-serif;
-          font-size: clamp(1.1rem, 2vw, 1.3rem);
-          font-weight: 400;
-          color: #d1e0df;
+          font-size: clamp(1.3rem, 2.5vw, 1.6rem);
+          font-weight: 600;
+          color: #ffffff;
           line-height: 1.4;
         }
 
@@ -216,7 +216,7 @@ export default function WlevApproval(props: WlevApprovalProps) {
           border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
           overflow: hidden;
           position: relative;
-          border: 2px solid rgba(255, 255, 255, 0.1);
+          border: solid 3px rgba(255, 255, 255, 0.25);
         }
 
         .wlev-ap-bar-fill-${uid} {
@@ -245,26 +245,30 @@ export default function WlevApproval(props: WlevApprovalProps) {
           justify-content: space-between;
           margin-top: 8px;
           font-family: 'Rubik', sans-serif;
-          font-size: 0.8rem;
-          color: rgba(255, 255, 255, 0.4);
+          font-size: 0.9rem;
+          font-weight: 600;
+          color: rgba(255, 255, 255, 0.6);
         }
 
         /* Quote */
         .wlev-ap-quote-${uid} {
-          margin: 8px 0;
-          padding: 0;
-          border: none;
+          margin: 16px 0;
+          padding: 28px 36px;
+          background: rgba(245, 183, 49, 0.1);
+          border: dashed 3px #f5b731;
+          border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 8px;
+          gap: 10px;
+          max-width: 560px;
         }
 
         .wlev-ap-quote-${uid} p {
           font-family: 'Rubik', sans-serif;
-          font-size: clamp(1.3rem, 2.5vw, 1.7rem);
-          font-weight: 600;
-          color: #ffffff;
+          font-size: clamp(1.4rem, 3vw, 1.9rem);
+          font-weight: 700;
+          color: #f5b731;
           font-style: italic;
           margin: 0;
           line-height: 1.4;
@@ -272,9 +276,9 @@ export default function WlevApproval(props: WlevApprovalProps) {
 
         .wlev-ap-body-${uid} {
           font-family: 'Rubik', sans-serif;
-          font-size: clamp(1rem, 1.6vw, 1.1rem);
+          font-size: clamp(1.05rem, 1.8vw, 1.2rem);
           font-weight: 400;
-          color: #b8cccb;
+          color: #ffffff;
           line-height: 1.7;
           max-width: 620px;
         }
