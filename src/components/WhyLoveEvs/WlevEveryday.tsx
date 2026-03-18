@@ -74,7 +74,7 @@ export default function WlevEveryday(props: WlevEverydayProps) {
 
   return (
     <div className={`wlev-ed-root-${uid}`}>
-      <section className={`wlev-ed-section-${uid}`} style={{ background: bgColor }}>
+      <section className={`wlev-ed-section-${uid}`}>
         <div className={`wlev-ed-inner-${uid}`}>
           <div className={`wlev-ed-header-${uid}`}>
             <h2 className={`wlev-ed-heading-${uid}`}>{heading}</h2>
@@ -111,7 +111,7 @@ export default function WlevEveryday(props: WlevEverydayProps) {
         @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700&display=swap');
 
         .wlev-ed-root-${uid} { width: 100%; }
-        .wlev-ed-section-${uid} { width: 100%; display: flex; justify-content: center; padding: 80px 24px; box-sizing: border-box; }
+        .wlev-ed-section-${uid} { width: 100%; display: flex; justify-content: center; padding: 80px 24px; box-sizing: border-box; background: #2d5c5a !important; }
         .wlev-ed-inner-${uid} { max-width: 860px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 36px; }
         .wlev-ed-header-${uid} { text-align: center; display: flex; flex-direction: column; gap: 12px; max-width: 640px; }
         .wlev-ed-heading-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; color: #ffffff; margin: 0; line-height: 1.2; }

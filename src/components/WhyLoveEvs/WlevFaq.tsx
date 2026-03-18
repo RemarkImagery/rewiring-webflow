@@ -64,7 +64,7 @@ export default function WlevFaq(props: WlevFaqProps) {
 
   return (
     <div className={`wlev-faq-root-${uid}`}>
-      <section className={`wlev-faq-section-${uid}`} style={{ background: bgColor }}>
+      <section className={`wlev-faq-section-${uid}`}>
         <div className={`wlev-faq-inner-${uid}`}>
           <h2 className={`wlev-faq-heading-${uid}`}>{heading}</h2>
           <img src="https://uploads-ssl.webflow.com/65e8e4d8dd233b8f20bfea98/66af5103d3076ed98e01a60a_g30.svg" alt="" aria-hidden="true" className={`wlev-faq-squiggle-${uid}`} />
@@ -98,7 +98,7 @@ export default function WlevFaq(props: WlevFaqProps) {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700&display=swap');
         .wlev-faq-root-${uid} { width: 100%; }
-        .wlev-faq-section-${uid} { width: 100%; display: flex; justify-content: center; padding: 80px 24px; box-sizing: border-box; }
+        .wlev-faq-section-${uid} { width: 100%; display: flex; justify-content: center; padding: 80px 24px; box-sizing: border-box; background: #2d5c5a !important; }
         .wlev-faq-inner-${uid} { max-width: 800px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 16px; }
         .wlev-faq-heading-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; color: #ffffff; margin: 0; line-height: 1.2; text-align: center; }
         .wlev-faq-subtitle-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1rem, 1.8vw, 1.15rem); font-weight: 400; color: #d1e0df; line-height: 1.6; margin: 0 0 20px; text-align: center; max-width: 600px; }

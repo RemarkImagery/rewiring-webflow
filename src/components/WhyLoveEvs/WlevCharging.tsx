@@ -81,7 +81,7 @@ export default function WlevCharging(props: WlevChargingProps) {
 
   return (
     <div className={`wlev-ch-root-${uid}`}>
-      <section className={`wlev-ch-section-${uid}`} style={{ background: bgColor }}>
+      <section className={`wlev-ch-section-${uid}`}>
         <div className={`wlev-ch-inner-${uid}`}>
           <div className={`wlev-ch-header-${uid}`}>
             <h2 className={`wlev-ch-heading-${uid}`}>{heading}</h2>
@@ -136,7 +136,7 @@ export default function WlevCharging(props: WlevChargingProps) {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700&display=swap');
         .wlev-ch-root-${uid} { width: 100%; }
-        .wlev-ch-section-${uid} { width: 100%; display: flex; justify-content: center; padding: 80px 24px; box-sizing: border-box; }
+        .wlev-ch-section-${uid} { width: 100%; display: flex; justify-content: center; padding: 80px 24px; box-sizing: border-box; background: #1a3c3c !important; }
         .wlev-ch-inner-${uid} { max-width: 920px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 36px; }
         .wlev-ch-header-${uid} { text-align: center; display: flex; flex-direction: column; gap: 12px; max-width: 640px; }
         .wlev-ch-heading-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; color: #ffffff; margin: 0; line-height: 1.2; }
