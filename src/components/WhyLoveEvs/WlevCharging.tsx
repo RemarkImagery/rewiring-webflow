@@ -85,6 +85,7 @@ export default function WlevCharging(props: WlevChargingProps) {
         <div className={`wlev-ch-inner-${uid}`}>
           <div className={`wlev-ch-header-${uid}`}>
             <h2 className={`wlev-ch-heading-${uid}`}>{heading}</h2>
+            <img src="https://uploads-ssl.webflow.com/65e8e4d8dd233b8f20bfea98/66af5103d3076ed98e01a60a_g30.svg" alt="" aria-hidden="true" className={`wlev-ch-squiggle-${uid}`} />
             <p className={`wlev-ch-subtitle-${uid}`}>{subtitle}</p>
           </div>
 
@@ -146,7 +147,7 @@ export default function WlevCharging(props: WlevChargingProps) {
         .wlev-ch-tab-active-${uid} { color: #1a3c3c; background: #ffffff; border-color: #f5b731; box-shadow: 0 4px 16px rgba(245, 183, 49, 0.2); }
         .wlev-ch-tab-icon-${uid} { display: flex; align-items: center; width: 20px; height: 20px; }
         .wlev-ch-tab-icon-${uid} svg { width: 20px; height: 20px; }
-        .wlev-ch-panel-${uid} { width: 100%; background: #FFFCF0; border-radius: 24px; padding: 44px 40px; display: flex; flex-direction: column; gap: 18px; box-shadow: 0 4px 24px rgba(26, 60, 60, 0.06); animation: wlev-ch-fade-${uid} 0.3s ease; }
+        .wlev-ch-panel-${uid} { width: 100%; background: #FFFCF0; border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; padding: 44px 40px; display: flex; flex-direction: column; gap: 18px; box-shadow: 0 4px 24px rgba(26, 60, 60, 0.06); animation: wlev-ch-fade-${uid} 0.3s ease; }
         @keyframes wlev-ch-fade-${uid} { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         .wlev-ch-panel-title-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1.2rem, 2.5vw, 1.6rem); font-weight: 700; color: #1a3c3c; margin: 0; line-height: 1.3; }
         .wlev-ch-panel-body-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1rem, 1.6vw, 1.1rem); font-weight: 400; color: #5a7a78; line-height: 1.7; margin: 0; }
@@ -160,6 +161,7 @@ export default function WlevCharging(props: WlevChargingProps) {
         .wlev-ch-table-${uid} td { padding: 12px 14px; color: #5a7a78; border-bottom: 1px solid #e0e8e7; }
         .wlev-ch-table-${uid} tr:last-child td { border-bottom: none; font-weight: 600; color: #2d5c5a; }
         .wlev-ch-table-${uid} tr:hover td { background: rgba(245, 183, 49, 0.06); }
+        .wlev-ch-squiggle-${uid} { width: clamp(120px, 20vw, 200px); height: auto; margin-top: -8px; }
         @media (max-width: 640px) { .wlev-ch-section-${uid} { padding: 60px 16px; } .wlev-ch-panel-${uid} { padding: 28px 20px; } .wlev-ch-tabs-${uid} { gap: 6px; } .wlev-ch-tab-${uid} { padding: 10px 16px; } }
       `}</style>
     </div>

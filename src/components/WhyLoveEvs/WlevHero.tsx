@@ -197,7 +197,7 @@ export default function WlevHero(props: WlevHeroProps) {
           gap: 4px;
           padding: 24px 32px;
           background: #ffffff;
-          border-radius: 20px;
+          border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
           box-shadow: 0 4px 20px rgba(26, 60, 60, 0.08);
         }
 

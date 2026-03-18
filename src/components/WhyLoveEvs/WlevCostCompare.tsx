@@ -94,6 +94,7 @@ export default function WlevCostCompare(props: WlevCostCompareProps) {
         <div className={`wlev-cc-inner-${uid}`}>
           <div className={`wlev-cc-header-${uid}`}>
             <h2 className={`wlev-cc-heading-${uid}`}>{heading}</h2>
+            <img src="https://uploads-ssl.webflow.com/65e8e4d8dd233b8f20bfea98/66af5103d3076ed98e01a60a_g30.svg" alt="" aria-hidden="true" className={`wlev-cc-squiggle-${uid}`} />
             {renderRichText(subtitle, `wlev-cc-subtitle-${uid}`)}
           </div>
 
@@ -167,7 +168,7 @@ export default function WlevCostCompare(props: WlevCostCompareProps) {
         .wlev-cc-subtitle-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1rem, 1.8vw, 1.15rem); font-weight: 400; color: #5a7a78; margin: 0; line-height: 1.6; }
         .wlev-cc-subtitle-${uid} p { margin: 0; }
         .wlev-cc-compare-${uid} { display: flex; flex-direction: column; gap: 28px; width: 100%; max-width: 600px; }
-        .wlev-cc-col-${uid} { background: #ffffff; border-radius: 20px; padding: 32px 28px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 2px 12px rgba(26, 60, 60, 0.06); }
+        .wlev-cc-col-${uid} { background: #ffffff; border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; padding: 32px 28px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 2px 12px rgba(26, 60, 60, 0.06); }
         .wlev-cc-col-title-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1.2rem, 2vw, 1.5rem); font-weight: 700; color: #1a3c3c; margin: 0; }
         .wlev-cc-col-title-ev-${uid} { color: #2d5c5a; }
         .wlev-cc-row-${uid} { display: grid; grid-template-columns: 100px 1fr auto; align-items: center; gap: 12px; }
@@ -185,7 +186,7 @@ export default function WlevCostCompare(props: WlevCostCompareProps) {
         .wlev-cc-saving-badge-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1rem, 1.6vw, 1.15rem); color: #1a3c3c; background: #f5b731; padding: 16px 32px; border-radius: 50px; text-align: center; box-shadow: 0 4px 16px rgba(245, 183, 49, 0.3); }
         .wlev-cc-finance-${uid} { width: 100%; max-width: 700px; display: flex; flex-direction: column; gap: 12px; }
         .wlev-cc-finance-heading-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1.2rem, 2.5vw, 1.6rem); font-weight: 700; color: #1a3c3c; margin: 0 0 4px; text-align: center; }
-        .wlev-cc-fin-item-${uid} { border: 1px solid #e0e8e7; border-radius: 12px; overflow: hidden; border-left: 4px solid transparent; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
+        .wlev-cc-fin-item-${uid} { border: 1px solid #e0e8e7; border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; overflow: hidden; border-left: 4px solid transparent; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
         .wlev-cc-fin-open-${uid} { border-left-color: #f5b731; box-shadow: 0 4px 16px rgba(26, 60, 60, 0.06); }
         .wlev-cc-fin-header-${uid} { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; background: none; border: none; cursor: pointer; gap: 16px; transition: background 0.2s ease; }
         .wlev-cc-fin-header-${uid}:hover { background: rgba(26, 60, 60, 0.02); }
@@ -196,6 +197,7 @@ export default function WlevCostCompare(props: WlevCostCompareProps) {
         .wlev-cc-fin-body-open-${uid} { max-height: 300px; }
         .wlev-cc-fin-text-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(0.95rem, 1.4vw, 1.05rem); font-weight: 400; color: #5a7a78; line-height: 1.7; padding: 0 24px 18px; }
         .wlev-cc-fin-text-${uid} p { margin: 0; }
+        .wlev-cc-squiggle-${uid} { width: clamp(120px, 20vw, 200px); height: auto; margin-top: -8px; }
         @media (max-width: 768px) { .wlev-cc-section-${uid} { padding: 60px 24px; } .wlev-cc-row-${uid} { grid-template-columns: 80px 1fr auto; } }
         @media (max-width: 480px) { .wlev-cc-section-${uid} { padding: 40px 16px; } .wlev-cc-col-${uid} { padding: 24px 20px; } .wlev-cc-saving-badge-${uid} { padding: 14px 20px; border-radius: 16px; } }
       `}</style>

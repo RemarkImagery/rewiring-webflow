@@ -213,7 +213,7 @@ export default function WlevApproval(props: WlevApprovalProps) {
           width: 100%;
           height: 40px;
           background: rgba(255, 255, 255, 0.08);
-          border-radius: 20px;
+          border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
           overflow: hidden;
           position: relative;
           border: 2px solid rgba(255, 255, 255, 0.1);
@@ -222,7 +222,7 @@ export default function WlevApproval(props: WlevApprovalProps) {
         .wlev-ap-bar-fill-${uid} {
           height: 100%;
           background: linear-gradient(90deg, #2d5c5a 0%, #f5b731 100%);
-          border-radius: 18px;
+          border-radius: 225px 15px 255px 15px / 15px 255px 15px 225px;
           display: flex;
           align-items: center;
           justify-content: flex-end;

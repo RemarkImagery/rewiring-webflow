@@ -78,6 +78,7 @@ export default function WlevEveryday(props: WlevEverydayProps) {
         <div className={`wlev-ed-inner-${uid}`}>
           <div className={`wlev-ed-header-${uid}`}>
             <h2 className={`wlev-ed-heading-${uid}`}>{heading}</h2>
+            <img src="https://uploads-ssl.webflow.com/65e8e4d8dd233b8f20bfea98/66af5103d3076ed98e01a60a_g30.svg" alt="" aria-hidden="true" className={`wlev-ed-squiggle-${uid}`} />
             <p className={`wlev-ed-subtitle-${uid}`}>{subtitle}</p>
           </div>
 
@@ -121,7 +122,7 @@ export default function WlevEveryday(props: WlevEverydayProps) {
         .wlev-ed-tab-active-${uid} { color: #1a3c3c; background: #ffffff; border-color: #f5b731; box-shadow: 0 4px 16px rgba(245, 183, 49, 0.2); }
         .wlev-ed-tab-icon-${uid} { display: flex; align-items: center; width: 20px; height: 20px; }
         .wlev-ed-tab-icon-${uid} svg { width: 20px; height: 20px; }
-        .wlev-ed-panel-${uid} { width: 100%; background: #FFFCF0; border-radius: 24px; padding: 48px 44px; display: flex; flex-direction: column; gap: 20px; box-shadow: 0 4px 24px rgba(26, 60, 60, 0.06); animation: wlev-ed-fadein-${uid} 0.3s ease; }
+        .wlev-ed-panel-${uid} { width: 100%; background: #FFFCF0; border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; padding: 48px 44px; display: flex; flex-direction: column; gap: 20px; box-shadow: 0 4px 24px rgba(26, 60, 60, 0.06); animation: wlev-ed-fadein-${uid} 0.3s ease; }
         @keyframes wlev-ed-fadein-${uid} { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         .wlev-ed-panel-stat-${uid} { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
         .wlev-ed-panel-stat-num-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 700; color: #f5b731; line-height: 1.1; }
@@ -129,6 +130,8 @@ export default function WlevEveryday(props: WlevEverydayProps) {
         .wlev-ed-panel-body-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1rem, 1.6vw, 1.1rem); font-weight: 400; color: #1a3c3c; line-height: 1.7; margin: 0; }
         .wlev-ed-panel-body-${uid} p { margin: 0 0 8px; }
         .wlev-ed-panel-body-${uid} p:last-child { margin-bottom: 0; }
+
+        .wlev-ed-squiggle-${uid} { width: clamp(120px, 20vw, 200px); height: auto; margin-top: -8px; }
 
         @media (max-width: 640px) {
           .wlev-ed-section-${uid} { padding: 60px 16px; }

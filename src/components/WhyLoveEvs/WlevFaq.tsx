@@ -67,6 +67,7 @@ export default function WlevFaq(props: WlevFaqProps) {
       <section className={`wlev-faq-section-${uid}`} style={{ background: bgColor }}>
         <div className={`wlev-faq-inner-${uid}`}>
           <h2 className={`wlev-faq-heading-${uid}`}>{heading}</h2>
+          <img src="https://uploads-ssl.webflow.com/65e8e4d8dd233b8f20bfea98/66af5103d3076ed98e01a60a_g30.svg" alt="" aria-hidden="true" className={`wlev-faq-squiggle-${uid}`} />
           <p className={`wlev-faq-subtitle-${uid}`}>{subtitle}</p>
 
           <div className={`wlev-faq-accordion-${uid}`}>
@@ -102,7 +103,7 @@ export default function WlevFaq(props: WlevFaqProps) {
         .wlev-faq-heading-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; color: #1a3c3c; margin: 0; line-height: 1.2; text-align: center; }
         .wlev-faq-subtitle-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1rem, 1.8vw, 1.15rem); font-weight: 400; color: #5a7a78; line-height: 1.6; margin: 0 0 20px; text-align: center; max-width: 600px; }
         .wlev-faq-accordion-${uid} { width: 100%; display: flex; flex-direction: column; gap: 14px; }
-        .wlev-faq-item-${uid} { background: #FFFCF0; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(26, 60, 60, 0.05); transition: box-shadow 0.3s ease; }
+        .wlev-faq-item-${uid} { background: #FFFCF0; border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; overflow: hidden; box-shadow: 0 2px 8px rgba(26, 60, 60, 0.05); transition: box-shadow 0.3s ease; }
         .wlev-faq-item-open-${uid} { box-shadow: 0 4px 20px rgba(26, 60, 60, 0.1); }
         .wlev-faq-header-${uid} { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 22px 24px; background: none; border: none; cursor: pointer; text-align: left; gap: 16px; transition: background 0.2s ease; }
         .wlev-faq-header-${uid}:hover { background: rgba(26, 60, 60, 0.02); }
@@ -114,6 +115,7 @@ export default function WlevFaq(props: WlevFaqProps) {
         .wlev-faq-answer-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(0.95rem, 1.5vw, 1.05rem); font-weight: 400; color: #5a7a78; line-height: 1.7; }
         .wlev-faq-answer-${uid} p { margin: 0 0 8px; }
         .wlev-faq-answer-${uid} p:last-child { margin-bottom: 0; }
+        .wlev-faq-squiggle-${uid} { width: clamp(120px, 20vw, 200px); height: auto; margin-top: -8px; }
         @media (max-width: 768px) { .wlev-faq-section-${uid} { padding: 60px 24px; } .wlev-faq-header-${uid} { padding: 18px 20px; } .wlev-faq-body-inner-${uid} { padding: 0 20px 18px; } }
         @media (max-width: 480px) { .wlev-faq-section-${uid} { padding: 40px 16px; } .wlev-faq-header-${uid} { padding: 16px 16px; } .wlev-faq-body-inner-${uid} { padding: 0 16px 16px; } .wlev-faq-icon-${uid} { width: 28px; height: 28px; } }
       `}</style>

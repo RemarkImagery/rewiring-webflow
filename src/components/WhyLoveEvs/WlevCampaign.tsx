@@ -62,10 +62,7 @@ export default function WlevCampaign(props: WlevCampaignProps) {
           {/* Header with scribble */}
           <div className={`wlev-cm-header-${uid}`}>
             <h2 className={`wlev-cm-heading-${uid}`}>{heading}</h2>
-            <svg className={`wlev-cm-scribble-${uid}`} width="160" height="14" viewBox="0 0 160 14" fill="none" aria-hidden="true">
-              <path d="M4 10C25 4 50 12 80 7C110 2 135 10 156 5" stroke="#f5b731" strokeWidth="3" strokeLinecap="round" fill="none"/>
-              <path d="M10 12C35 7 55 13 85 9C115 5 140 11 150 8" stroke="#f5b731" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.4"/>
-            </svg>
+            <img src="https://uploads-ssl.webflow.com/65e8e4d8dd233b8f20bfea98/66af5103d3076ed98e01a60a_g30.svg" alt="" aria-hidden="true" className={`wlev-cm-squiggle-${uid}`} />
             <p className={`wlev-cm-subtitle-${uid}`}>{subtitle}</p>
           </div>
 
@@ -169,7 +166,7 @@ export default function WlevCampaign(props: WlevCampaignProps) {
           line-height: 1.15;
         }
 
-        .wlev-cm-scribble-${uid} { margin-top: -4px; }
+        .wlev-cm-squiggle-${uid} { width: clamp(120px, 20vw, 200px); height: auto; margin-top: -8px; }
 
         .wlev-cm-subtitle-${uid} {
           font-family: 'Rubik', sans-serif;
@@ -231,7 +228,7 @@ export default function WlevCampaign(props: WlevCampaignProps) {
         .wlev-cm-body-wrap-${uid} {
           padding: 28px 32px;
           border-left: 4px solid #f5b731;
-          border-radius: 0 16px 16px 0;
+          border-radius: 0 225px 15px 0 / 0 15px 225px 0;
           background: rgba(245, 183, 49, 0.06);
         }
 
@@ -259,7 +256,7 @@ export default function WlevCampaign(props: WlevCampaignProps) {
         .wlev-cm-cta-card-${uid} {
           width: 100%;
           background: #1a3c3c;
-          border-radius: 24px;
+          border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
           padding: 44px 40px;
           display: flex;
           flex-direction: column;

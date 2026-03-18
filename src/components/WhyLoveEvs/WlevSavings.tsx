@@ -54,6 +54,7 @@ export default function WlevSavings(props: WlevSavingsProps) {
       <section className={`wlev-sav-section-${uid}`} style={{ background: bgColor }}>
         <div className={`wlev-sav-inner-${uid}`}>
           <h2 className={`wlev-sav-heading-${uid}`}>{heading}</h2>
+          <img src="https://uploads-ssl.webflow.com/65e8e4d8dd233b8f20bfea98/66af5103d3076ed98e01a60a_g30.svg" alt="" aria-hidden="true" className={`wlev-sav-squiggle-${uid}`} />
           {renderRichText(body, `wlev-sav-body-${uid}`)}
           <div className={`wlev-sav-stats-${uid}`}>
             {stats.map((stat, i) => (
@@ -97,16 +98,17 @@ export default function WlevSavings(props: WlevSavingsProps) {
         .wlev-sav-body-${uid} p { margin: 0 0 8px; }
         .wlev-sav-body-${uid} p:last-child { margin-bottom: 0; }
         .wlev-sav-stats-${uid} { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; width: 100%; margin-top: 12px; }
-        .wlev-sav-card-${uid} { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 36px 24px; border: 3px dashed #f5b731; border-radius: 20px; background: #FFFCF0; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .wlev-sav-card-${uid} { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 36px 24px; border: dashed 5px #f5b731; border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; background: #FFFCF0; transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .wlev-sav-card-${uid}:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(26, 60, 60, 0.1); }
         .wlev-sav-number-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 700; color: #f5b731; line-height: 1.1; }
         .wlev-sav-label-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(0.9rem, 1.5vw, 1.05rem); font-weight: 400; color: #5a7a78; line-height: 1.5; }
         .wlev-sav-details-${uid} { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; width: 100%; max-width: 800px; margin-top: 8px; }
-        .wlev-sav-detail-${uid} { display: flex; gap: 16px; text-align: left; padding: 28px 24px; background: #f8fafa; border-radius: 16px; }
+        .wlev-sav-detail-${uid} { display: flex; gap: 16px; text-align: left; padding: 28px 24px; background: #f8fafa; border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; }
         .wlev-sav-detail-icon-${uid} { flex-shrink: 0; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: #FFFCF0; border-radius: 12px; }
         .wlev-sav-detail-title-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1rem, 1.5vw, 1.1rem); font-weight: 600; color: #1a3c3c; display: block; margin-bottom: 6px; }
         .wlev-sav-detail-text-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(0.9rem, 1.4vw, 1rem); font-weight: 400; color: #5a7a78; line-height: 1.6; }
         .wlev-sav-detail-text-${uid} p { margin: 0; }
+        .wlev-sav-squiggle-${uid} { width: clamp(120px, 20vw, 200px); height: auto; margin-top: -8px; }
         @media (max-width: 768px) { .wlev-sav-stats-${uid} { grid-template-columns: 1fr; gap: 20px; max-width: 400px; } .wlev-sav-details-${uid} { grid-template-columns: 1fr; } .wlev-sav-section-${uid} { padding: 60px 24px; } }
         @media (max-width: 480px) { .wlev-sav-section-${uid} { padding: 40px 16px; } .wlev-sav-card-${uid} { padding: 28px 20px; } }
       `}</style>

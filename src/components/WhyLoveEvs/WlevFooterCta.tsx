@@ -24,6 +24,7 @@ export default function WlevFooterCta(props: WlevFooterCtaProps) {
       <section className={`wlev-fcta-section-${uid}`} style={{ background: bgColor }}>
         <div className={`wlev-fcta-inner-${uid}`}>
           <h2 className={`wlev-fcta-heading-${uid}`}>{heading}</h2>
+          <img src="https://uploads-ssl.webflow.com/65e8e4d8dd233b8f20bfea98/66af5103d3076ed98e01a60a_g30.svg" alt="" aria-hidden="true" className={`wlev-fcta-squiggle-${uid}`} />
 
           <div className={`wlev-fcta-buttons-${uid}`}>
             <a href="#" className={`wlev-fcta-btn-primary-${uid}`}>{primaryText}</a>
@@ -163,6 +164,8 @@ export default function WlevFooterCta(props: WlevFooterCtaProps) {
           background: rgba(26, 60, 60, 0.2);
           transform: scale(1.1);
         }
+
+        .wlev-fcta-squiggle-${uid} { width: clamp(120px, 20vw, 200px); height: auto; margin-top: -8px; }
 
         @media (max-width: 540px) {
           .wlev-fcta-section-${uid} { padding: 60px 20px; }
