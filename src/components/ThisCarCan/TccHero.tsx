@@ -201,7 +201,7 @@ export default function TccHero(props: TccHeroProps) {
           max-height: 364px;
           height: auto;
           object-fit: contain;
-          margin-bottom: -20px;
+          margin-bottom: 12px;
         }
 
         .tcc-phrase-wrap-${uid} {
