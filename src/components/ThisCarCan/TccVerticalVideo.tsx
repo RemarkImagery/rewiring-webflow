@@ -1,20 +1,23 @@
 "use client";
 
-import React, { useId, useState } from "react";
+import React, { useId } from "react";
+
+function renderRichText(value: any, className?: string) {
+  if (!value) return null;
+  if (typeof value === "string") return <div className={className} dangerouslySetInnerHTML={{ __html: value }} />;
+  return <div className={className}>{value}</div>;
+}
 
 interface TccVerticalVideoProps {
+  youtubeUrl?: string;
   heading?: string;
-  subtitle?: string;
-  youtubeUrl1?: string;
-  youtubeUrl2?: string;
-  youtubeUrl3?: string;
+  body?: string;
   bgColor?: string;
   accentColor?: string;
 }
 
 function extractYouTubeId(url: string): string | null {
   if (!url) return null;
-  // Handle youtu.be/ID, youtube.com/watch?v=ID, youtube.com/shorts/ID, youtube.com/embed/ID
   const patterns = [
     /youtu\.be\/([a-zA-Z0-9_-]{11})/,
     /youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
@@ -30,62 +33,52 @@ function extractYouTubeId(url: string): string | null {
 
 export default function TccVerticalVideo(props: TccVerticalVideoProps) {
   const {
-    heading = "EV Stories",
-    subtitle = "Real people sharing what their car can do.",
-    youtubeUrl1 = "",
-    youtubeUrl2 = "",
-    youtubeUrl3 = "",
+    youtubeUrl = "",
+    heading = "This Is What My Car Can Do",
+    body = "There are so many good stories to tell about electric vehicles and so many features worth promoting. EV owners love what their cars can do \u2014 and they can do a lot these days.",
     bgColor = "#1a3c3c",
     accentColor = "#f5b731",
   } = props;
 
   const uid = useId().replace(/:/g, "");
-
-  const videos = [youtubeUrl1, youtubeUrl2, youtubeUrl3]
-    .map((url) => ({ url, id: extractYouTubeId(url) }))
-    .filter((v) => v.id);
-
-  const placeholders = videos.length === 0 ? [0, 1, 2] : [];
+  const videoId = extractYouTubeId(youtubeUrl);
 
   return (
     <div className={`tcc-vv-root-${uid}`}>
       <section className={`tcc-vv-section-${uid}`} style={{ background: bgColor }}>
         <div className={`tcc-vv-inner-${uid}`}>
-          <div className={`tcc-vv-header-${uid}`}>
-            <h2 className={`tcc-vv-heading-${uid}`}>{heading}</h2>
-            <img
-              src="https://uploads-ssl.webflow.com/65e8e4d8dd233b8f20bfea98/66af5103d3076ed98e01a60a_g30.svg"
-              alt="" aria-hidden="true" className={`tcc-vv-squiggle-${uid}`}
-            />
-            <p className={`tcc-vv-subtitle-${uid}`}>{subtitle}</p>
-          </div>
-
-          <div className={`tcc-vv-grid-${uid}`}>
-            {videos.map((v, i) => (
-              <div key={i} className={`tcc-vv-card-${uid}`}>
-                <div className={`tcc-vv-frame-${uid}`}>
+          {/* Left: Video */}
+          <div className={`tcc-vv-video-col-${uid}`}>
+            <div className={`tcc-vv-card-${uid}`}>
+              <div className={`tcc-vv-frame-${uid}`}>
+                {videoId ? (
                   <iframe
-                    src={`https://www.youtube.com/embed/${v.id}?rel=0`}
-                    title={`Video ${i + 1}`}
+                    src={`https://www.youtube.com/embed/${videoId}?rel=0`}
+                    title="EV Story Video"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                     className={`tcc-vv-iframe-${uid}`}
                   />
-                </div>
-              </div>
-            ))}
-            {placeholders.map((i) => (
-              <div key={i} className={`tcc-vv-card-${uid}`}>
-                <div className={`tcc-vv-frame-${uid}`}>
+                ) : (
                   <div className={`tcc-vv-placeholder-${uid}`}>
                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                       <polygon points="5 3 19 12 5 21 5 3" />
                     </svg>
                     <span>Add YouTube URL</span>
                   </div>
-                </div>
+                )}
               </div>
-            ))}
+            </div>
+          </div>
+
+          {/* Right: Text */}
+          <div className={`tcc-vv-text-col-${uid}`}>
+            <h2 className={`tcc-vv-heading-${uid}`}>{heading}</h2>
+            <img
+              src="https://uploads-ssl.webflow.com/65e8e4d8dd233b8f20bfea98/66af5103d3076ed98e01a60a_g30.svg"
+              alt="" aria-hidden="true" className={`tcc-vv-squiggle-${uid}`}
+            />
+            {renderRichText(body, `tcc-vv-body-${uid}`)}
           </div>
         </div>
       </section>
@@ -104,70 +97,27 @@ export default function TccVerticalVideo(props: TccVerticalVideoProps) {
         }
 
         .tcc-vv-inner-${uid} {
-          max-width: 1100px;
+          max-width: 1060px;
           width: 100%;
-          display: flex;
-          flex-direction: column;
+          display: grid;
+          grid-template-columns: auto 1fr;
+          gap: 56px;
           align-items: center;
-          gap: 48px;
         }
 
-        .tcc-vv-header-${uid} {
-          text-align: center;
+        /* Video column */
+        .tcc-vv-video-col-${uid} {
           display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 8px;
-        }
-
-        .tcc-vv-heading-${uid} {
-          font-family: 'Rubik', sans-serif;
-          font-size: clamp(1.8rem, 4vw, 2.6rem);
-          font-weight: 700;
-          color: ${accentColor};
-          margin: 0;
-          line-height: 1.2;
-        }
-
-        .tcc-vv-squiggle-${uid} {
-          width: clamp(120px, 20vw, 200px);
-          height: auto;
-          margin-top: -8px;
-          filter: brightness(0) invert(1);
-          opacity: 0.4;
-        }
-
-        .tcc-vv-subtitle-${uid} {
-          font-family: 'Rubik', sans-serif;
-          font-size: clamp(1rem, 1.8vw, 1.2rem);
-          font-weight: 400;
-          color: #d1e0df;
-          margin: 0;
-          line-height: 1.6;
-          max-width: 500px;
-        }
-
-        .tcc-vv-grid-${uid} {
-          display: flex;
-          gap: 28px;
-          justify-content: center;
-          flex-wrap: wrap;
-          width: 100%;
+          justify-content: flex-start;
         }
 
         .tcc-vv-card-${uid} {
-          flex: 0 0 auto;
-          width: clamp(240px, 28vw, 320px);
+          width: clamp(260px, 28vw, 340px);
           border: solid 3px ${accentColor};
           border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
           overflow: hidden;
           background: #000000;
-          filter: drop-shadow(4px 6px 16px rgba(0, 0, 0, 0.4));
-          transition: transform 0.3s ease;
-        }
-
-        .tcc-vv-card-${uid}:hover {
-          transform: translateY(-4px);
+          filter: drop-shadow(4px 6px 20px rgba(0, 0, 0, 0.4));
         }
 
         .tcc-vv-frame-${uid} {
@@ -200,26 +150,64 @@ export default function TccVerticalVideo(props: TccVerticalVideoProps) {
           color: rgba(255, 255, 255, 0.25);
         }
 
-        @media (max-width: 900px) {
-          .tcc-vv-grid-${uid} { gap: 20px; }
-          .tcc-vv-card-${uid} { width: clamp(200px, 40vw, 280px); }
+        /* Text column */
+        .tcc-vv-text-col-${uid} {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
         }
 
-        @media (max-width: 600px) {
-          .tcc-vv-section-${uid} { padding: 60px 16px; }
-          .tcc-vv-grid-${uid} {
-            flex-direction: row;
-            overflow-x: auto;
-            flex-wrap: nowrap;
-            justify-content: flex-start;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch;
-            padding-bottom: 8px;
+        .tcc-vv-heading-${uid} {
+          font-family: 'Rubik', sans-serif;
+          font-size: clamp(1.8rem, 4vw, 2.6rem);
+          font-weight: 700;
+          color: ${accentColor};
+          margin: 0;
+          line-height: 1.2;
+        }
+
+        .tcc-vv-squiggle-${uid} {
+          width: clamp(120px, 18vw, 180px);
+          height: auto;
+          margin-top: -6px;
+          filter: brightness(0) invert(1);
+          opacity: 0.4;
+        }
+
+        .tcc-vv-body-${uid} {
+          font-family: 'Rubik', sans-serif;
+          font-size: clamp(1rem, 1.8vw, 1.15rem);
+          font-weight: 400;
+          color: #d1e0df;
+          line-height: 1.7;
+          margin-top: 8px;
+        }
+
+        .tcc-vv-body-${uid} p { margin: 0 0 12px; }
+        .tcc-vv-body-${uid} p:last-child { margin-bottom: 0; }
+
+        @media (max-width: 768px) {
+          .tcc-vv-inner-${uid} {
+            grid-template-columns: 1fr;
+            gap: 36px;
+          }
+          .tcc-vv-video-col-${uid} {
+            justify-content: center;
+          }
+          .tcc-vv-text-col-${uid} {
+            text-align: center;
+            align-items: center;
           }
           .tcc-vv-card-${uid} {
+            width: clamp(240px, 50vw, 320px);
+          }
+          .tcc-vv-section-${uid} { padding: 60px 20px; }
+        }
+
+        @media (max-width: 480px) {
+          .tcc-vv-section-${uid} { padding: 40px 16px; }
+          .tcc-vv-card-${uid} {
             width: clamp(220px, 65vw, 280px);
-            scroll-snap-align: center;
-            flex-shrink: 0;
           }
         }
       `}</style>

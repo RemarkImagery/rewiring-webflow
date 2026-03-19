@@ -4,14 +4,12 @@ import TccVerticalVideo from "./TccVerticalVideo";
 
 export default declareComponent(TccVerticalVideo, {
   name: "TCC Vertical Video",
-  description: "Vertical 9:16 YouTube video cards with squiggle borders for TCC page",
+  description: "Single vertical YouTube video left-aligned with heading and body text on the right",
   group: "This Car Can",
   props: {
-    heading: props.Text({ name: "Heading", defaultValue: "EV Stories", group: "Content" }),
-    subtitle: props.Text({ name: "Subtitle", defaultValue: "Real people sharing what their car can do.", group: "Content" }),
-    youtubeUrl1: props.Text({ name: "YouTube URL 1", defaultValue: "", group: "Videos", tooltip: "Full YouTube URL (youtube.com/watch?v=, youtu.be/, or /shorts/)" }),
-    youtubeUrl2: props.Text({ name: "YouTube URL 2", defaultValue: "", group: "Videos" }),
-    youtubeUrl3: props.Text({ name: "YouTube URL 3", defaultValue: "", group: "Videos" }),
+    youtubeUrl: props.Text({ name: "YouTube URL", defaultValue: "", group: "Video", tooltip: "Full YouTube URL (youtube.com/watch?v=, youtu.be/, or /shorts/)" }),
+    heading: props.Text({ name: "Heading", defaultValue: "This Is What My Car Can Do", group: "Content" }),
+    body: props.RichText({ name: "Body", defaultValue: "There are so many good stories to tell about electric vehicles and so many features worth promoting. EV owners love what their cars can do \u2014 and they can do a lot these days.", group: "Content" }),
     bgColor: props.Text({ name: "Background Color", defaultValue: "#1a3c3c", group: "Style" }),
     accentColor: props.Text({ name: "Accent Color", defaultValue: "#f5b731", group: "Style" }),
   },
