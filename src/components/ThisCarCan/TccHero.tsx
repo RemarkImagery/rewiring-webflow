@@ -177,7 +177,7 @@ export default function TccHero(props: TccHeroProps) {
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          padding: 32px 20px 20px;
+          padding: 100px 20px 20px;
           box-sizing: border-box;
           gap: 0;
         }
@@ -197,8 +197,8 @@ export default function TccHero(props: TccHeroProps) {
         .tcc-logo-${uid} {
           position: relative;
           z-index: 3;
-          width: clamp(360px, 55vw, 680px);
-          max-height: 364px;
+          width: clamp(252px, 38.5vw, 476px);
+          max-height: 255px;
           height: auto;
           object-fit: contain;
           margin-bottom: 12px;
@@ -355,7 +355,7 @@ export default function TccHero(props: TccHeroProps) {
             font-size: clamp(2.2rem, 5.5vw, 3.5rem);
           }
           .tcc-logo-${uid} {
-            width: clamp(260px, 65vw, 420px);
+            width: clamp(182px, 45.5vw, 294px);
           }
           .tcc-car-${uid} {
             width: min(92%, 520px);
@@ -384,7 +384,7 @@ export default function TccHero(props: TccHeroProps) {
             font-size: clamp(1.8rem, 7vw, 2.4rem);
           }
           .tcc-logo-${uid} {
-            width: clamp(220px, 75vw, 320px);
+            width: clamp(154px, 52.5vw, 224px);
           }
           .tcc-car-${uid} {
             width: 96%;

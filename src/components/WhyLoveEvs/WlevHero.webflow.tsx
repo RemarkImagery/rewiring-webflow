@@ -49,7 +49,7 @@ export default declareComponent(WlevHero, {
     }),
     bgColor: props.Text({
       name: "Background Color",
-      defaultValue: "#FFFCF0",
+      defaultValue: "#1a3c3c",
       group: "Style",
     }),
     accentColor: props.Text({

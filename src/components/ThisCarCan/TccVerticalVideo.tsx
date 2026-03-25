@@ -12,6 +12,15 @@ interface TccVerticalVideoProps {
   youtubeUrl?: string;
   heading?: string;
   body?: string;
+  btn1Label?: string;
+  btn1Url?: string;
+  btn1NewTab?: boolean;
+  btn2Label?: string;
+  btn2Url?: string;
+  btn2NewTab?: boolean;
+  btn3Label?: string;
+  btn3Url?: string;
+  btn3NewTab?: boolean;
   bgColor?: string;
   accentColor?: string;
 }
@@ -36,9 +45,18 @@ export default function TccVerticalVideo(props: TccVerticalVideoProps) {
     youtubeUrl = "",
     heading = "This Is What My Car Can Do",
     body = "There are so many good stories to tell about electric vehicles and so many features worth promoting. EV owners love what their cars can do \u2014 and they can do a lot these days.",
+    btn1Label, btn1Url, btn1NewTab,
+    btn2Label, btn2Url, btn2NewTab,
+    btn3Label, btn3Url, btn3NewTab,
     bgColor = "#1a3c3c",
     accentColor = "#f5b731",
   } = props;
+
+  const buttons = [
+    { label: btn1Label, url: btn1Url, newTab: btn1NewTab },
+    { label: btn2Label, url: btn2Url, newTab: btn2NewTab },
+    { label: btn3Label, url: btn3Url, newTab: btn3NewTab },
+  ].filter((b) => b.label && b.url);
 
   const uid = useId().replace(/:/g, "");
   const videoId = extractYouTubeId(youtubeUrl);
@@ -79,6 +97,21 @@ export default function TccVerticalVideo(props: TccVerticalVideoProps) {
               alt="" aria-hidden="true" className={`tcc-vv-squiggle-${uid}`}
             />
             {renderRichText(body, `tcc-vv-body-${uid}`)}
+            {buttons.length > 0 && (
+              <div className={`tcc-vv-buttons-${uid}`}>
+                {buttons.map((b, i) => (
+                  <a
+                    key={i}
+                    href={b.url}
+                    target={b.newTab ? "_blank" : "_self"}
+                    rel={b.newTab ? "noopener noreferrer" : undefined}
+                    className={`tcc-vv-btn-${uid}${i === 0 ? ` tcc-vv-btn-primary-${uid}` : ""}`}
+                  >
+                    {b.label}
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -186,6 +219,48 @@ export default function TccVerticalVideo(props: TccVerticalVideoProps) {
         .tcc-vv-body-${uid} p { margin: 0 0 12px; }
         .tcc-vv-body-${uid} p:last-child { margin-bottom: 0; }
 
+        /* Buttons */
+        .tcc-vv-buttons-${uid} {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 12px;
+          margin-top: 20px;
+        }
+
+        .tcc-vv-btn-${uid} {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 12px 28px;
+          font-family: 'Rubik', sans-serif;
+          font-size: 0.95rem;
+          font-weight: 600;
+          text-decoration: none;
+          border-radius: 6px;
+          transition: all 0.25s ease;
+          cursor: pointer;
+          border: 2px solid ${accentColor};
+          color: ${accentColor};
+          background: transparent;
+        }
+
+        .tcc-vv-btn-${uid}:hover {
+          background: rgba(245, 183, 49, 0.12);
+          transform: translateY(-1px);
+        }
+
+        .tcc-vv-btn-primary-${uid} {
+          background: ${accentColor};
+          color: #1a3c3c;
+          border-color: ${accentColor};
+        }
+
+        .tcc-vv-btn-primary-${uid}:hover {
+          background: #e5a820;
+          border-color: #e5a820;
+          transform: translateY(-1px);
+        }
+
         @media (max-width: 768px) {
           .tcc-vv-inner-${uid} {
             grid-template-columns: 1fr;
@@ -197,6 +272,9 @@ export default function TccVerticalVideo(props: TccVerticalVideoProps) {
           .tcc-vv-text-col-${uid} {
             text-align: center;
             align-items: center;
+          }
+          .tcc-vv-buttons-${uid} {
+            justify-content: center;
           }
           .tcc-vv-card-${uid} {
             width: clamp(240px, 50vw, 320px);

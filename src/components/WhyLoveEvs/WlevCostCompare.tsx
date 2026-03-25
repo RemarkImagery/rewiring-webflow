@@ -94,7 +94,6 @@ export default function WlevCostCompare(props: WlevCostCompareProps) {
         <div className={`wlev-cc-inner-${uid}`}>
           <div className={`wlev-cc-header-${uid}`}>
             <h2 className={`wlev-cc-heading-${uid}`}>{heading}</h2>
-            <img src="https://uploads-ssl.webflow.com/65e8e4d8dd233b8f20bfea98/66af5103d3076ed98e01a60a_g30.svg" alt="" aria-hidden="true" className={`wlev-cc-squiggle-${uid}`} />
             {renderRichText(subtitle, `wlev-cc-subtitle-${uid}`)}
           </div>
 
@@ -197,7 +196,6 @@ export default function WlevCostCompare(props: WlevCostCompareProps) {
         .wlev-cc-fin-body-open-${uid} { max-height: 300px; }
         .wlev-cc-fin-text-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(0.95rem, 1.4vw, 1.05rem); font-weight: 400; color: #5a7a78; line-height: 1.7; padding: 0 24px 18px; }
         .wlev-cc-fin-text-${uid} p { margin: 0; }
-        .wlev-cc-squiggle-${uid} { width: clamp(120px, 20vw, 200px); height: auto; margin-top: -8px; }
         @media (max-width: 768px) { .wlev-cc-section-${uid} { padding: 60px 24px; } .wlev-cc-row-${uid} { grid-template-columns: 80px 1fr auto; } }
         @media (max-width: 480px) { .wlev-cc-section-${uid} { padding: 40px 16px; } .wlev-cc-col-${uid} { padding: 24px 20px; } .wlev-cc-saving-badge-${uid} { padding: 14px 20px; border-radius: 16px; } }
       `}</style>

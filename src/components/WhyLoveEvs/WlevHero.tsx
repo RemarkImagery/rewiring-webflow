@@ -31,7 +31,7 @@ export default function WlevHero(props: WlevHeroProps) {
     bullet1 = "Built for everyday life",
     bullet2 = "Cheaper to fill up and maintain",
     bullet3 = "Easy to charge at home and on trips",
-    bgColor = "#FFFCF0",
+    bgColor = "#1a3c3c",
     accentColor = "#f5b731",
   } = props;
 
@@ -95,7 +95,7 @@ export default function WlevHero(props: WlevHeroProps) {
             </div>
             <span className={`wlev-hero-compare-vs-${uid}`}>vs</span>
             <div className={`wlev-hero-compare-card-${uid}`}>
-              <span className={`wlev-hero-compare-num-${uid}`} style={{ color: "#2d5c5a" }}>{iceParts.toLocaleString()}</span>
+              <span className={`wlev-hero-compare-num-${uid}`} style={{ color: "#ffffff" }}>{iceParts.toLocaleString()}</span>
               <span className={`wlev-hero-compare-label-${uid}`}>{icePartsLabel}</span>
             </div>
           </div>
@@ -108,7 +108,7 @@ export default function WlevHero(props: WlevHeroProps) {
             <div className={`wlev-hero-bullets-${uid}`}>
               {bullets.map((b, i) => (
                 <div key={i} className={`wlev-hero-bullet-${uid}`}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2d5c5a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f5b731" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                   <span>{b}</span>
                 </div>
               ))}
@@ -128,7 +128,7 @@ export default function WlevHero(props: WlevHeroProps) {
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 60px 24px;
+          padding: 100px 24px 60px;
           box-sizing: border-box;
           position: relative;
           overflow: hidden;
@@ -165,7 +165,7 @@ export default function WlevHero(props: WlevHeroProps) {
           font-family: 'Rubik', sans-serif;
           font-size: clamp(2rem, 5vw, 3.2rem);
           font-weight: 700;
-          color: #1a3c3c;
+          color: #ffffff;
           margin: 0;
           line-height: 1.15;
           letter-spacing: -0.01em;
@@ -175,7 +175,7 @@ export default function WlevHero(props: WlevHeroProps) {
           font-family: 'Rubik', sans-serif;
           font-size: clamp(1rem, 2vw, 1.25rem);
           font-weight: 400;
-          color: #5a7a78;
+          color: #d1e0df;
           line-height: 1.65;
           max-width: 620px;
           margin: 0;
@@ -196,10 +196,10 @@ export default function WlevHero(props: WlevHeroProps) {
           align-items: center;
           gap: 4px;
           padding: 24px 32px;
-          background: #ffffff;
+          background: rgba(255, 255, 255, 0.08);
           border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
-          box-shadow: 0 4px 20px rgba(26, 60, 60, 0.08);
-          border: solid 3px #1a3c3c;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+          border: solid 3px rgba(255, 255, 255, 0.15);
         }
 
         .wlev-hero-compare-ev-${uid} { border: solid 3px #f5b731; }
@@ -215,14 +215,14 @@ export default function WlevHero(props: WlevHeroProps) {
           font-family: 'Rubik', sans-serif;
           font-size: clamp(0.85rem, 1.4vw, 1rem);
           font-weight: 400;
-          color: #5a7a78;
+          color: #d1e0df;
         }
 
         .wlev-hero-compare-vs-${uid} {
           font-family: 'Rubik', sans-serif;
           font-size: 1.1rem;
           font-weight: 600;
-          color: #5a7a78;
+          color: rgba(255, 255, 255, 0.4);
           text-transform: uppercase;
           letter-spacing: 0.1em;
         }
@@ -264,7 +264,7 @@ export default function WlevHero(props: WlevHeroProps) {
           font-family: 'Rubik', sans-serif;
           font-size: clamp(0.9rem, 1.4vw, 1rem);
           font-weight: 400;
-          color: #1a3c3c;
+          color: #d1e0df;
         }
 
         @media (max-width: 768px) {

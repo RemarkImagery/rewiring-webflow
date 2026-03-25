@@ -85,7 +85,6 @@ export default function WlevCharging(props: WlevChargingProps) {
         <div className={`wlev-ch-inner-${uid}`}>
           <div className={`wlev-ch-header-${uid}`}>
             <h2 className={`wlev-ch-heading-${uid}`}>{heading}</h2>
-            <img src="https://uploads-ssl.webflow.com/65e8e4d8dd233b8f20bfea98/66af5103d3076ed98e01a60a_g30.svg" alt="" aria-hidden="true" className={`wlev-ch-squiggle-${uid}`} />
             <p className={`wlev-ch-subtitle-${uid}`}>{subtitle}</p>
           </div>
 
@@ -161,7 +160,6 @@ export default function WlevCharging(props: WlevChargingProps) {
         .wlev-ch-table-${uid} td { padding: 12px 14px; color: #5a7a78; border-bottom: 1px solid #e0e8e7; }
         .wlev-ch-table-${uid} tr:last-child td { border-bottom: none; font-weight: 600; color: #2d5c5a; }
         .wlev-ch-table-${uid} tr:hover td { background: rgba(245, 183, 49, 0.06); }
-        .wlev-ch-squiggle-${uid} { width: clamp(120px, 20vw, 200px); height: auto; margin-top: -8px; }
         @media (max-width: 640px) { .wlev-ch-section-${uid} { padding: 60px 16px; } .wlev-ch-panel-${uid} { padding: 28px 20px; } .wlev-ch-tabs-${uid} { gap: 6px; } .wlev-ch-tab-${uid} { padding: 10px 16px; } }
       `}</style>
     </div>
