@@ -36,7 +36,7 @@ export default function TccShareSection(props: TccShareSectionProps) {
     logoImage,
     apiUrl = "https://this-car-can-api.noisy-scene-d996.workers.dev",
     storyButtonText = "Submit Your Story",
-    imageButtonText = "Download & Share",
+    imageButtonText = "Download Image",
     videoButtonText = "Upload & Share",
   } = props;
 
@@ -333,7 +333,8 @@ function StoryForm({ uid, apiUrl, buttonText = "Submit Your Story" }: { uid: str
           <circle cx="24" cy="24" r="20" />
           <path d="M14 24l7 7 13-13" />
         </svg>
-        <h3 style={{ fontFamily: "'Rubik', sans-serif", fontSize: "1.5rem", fontWeight: 700, color: "#2d5c5a", margin: 0 }}>Shared!</h3>
+        <h3 style={{ fontFamily: "'Rubik', sans-serif", fontSize: "1.5rem", fontWeight: 700, color: "#2d5c5a", margin: 0 }}>Story Submitted!</h3>
+        <p style={{ fontFamily: "'Rubik', sans-serif", fontSize: "0.95rem", color: "#5a7a78", margin: 0, maxWidth: 400, lineHeight: 1.6 }}>Thanks for sharing. We'll review your story and add it to our community gallery shortly.</p>
       </div>
     );
   }
@@ -378,7 +379,7 @@ function StoryForm({ uid, apiUrl, buttonText = "Submit Your Story" }: { uid: str
             </label>
 
             <p className={`tcc-story-disclaimer-${uid}`}>
-              By submitting, you agree that your story may be displayed publicly on the This Car Can gallery and used by Rewiring Aotearoa for campaign purposes.
+              By submitting, you agree that Rewiring Aotearoa may use your story on social media, on our website, and in advocacy campaigns to show that New Zealanders are benefitting from EVs. We'll review submissions before they appear on the site.
             </p>
 
             <button type="submit" className={`tcc-story-submit-${uid}`} disabled={submitting}>
@@ -460,7 +461,7 @@ function StoryForm({ uid, apiUrl, buttonText = "Submit Your Story" }: { uid: str
    IMAGE CREATOR
    ═══════════════════════════════════════════ */
 
-function ImageCreator({ uid, logoSrc, apiUrl, buttonText = "Download & Share" }: { uid: string; logoSrc?: string; apiUrl: string; buttonText?: string }) {
+function ImageCreator({ uid, logoSrc, apiUrl, buttonText = "Download Image" }: { uid: string; logoSrc?: string; apiUrl: string; buttonText?: string }) {
   const [step, setStep] = useState(1);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [statement, setStatement] = useState("");
@@ -632,7 +633,7 @@ function ImageCreator({ uid, logoSrc, apiUrl, buttonText = "Download & Share" }:
     <>
       <section className={`tcc-imgc-${uid}`}>
         <h2 className={`tcc-imgc-heading-${uid}`}>Create Your Image</h2>
-        <p className={`tcc-imgc-subtitle-${uid}`}>Make a shareable image in 3 easy steps — upload your photo, write what your car can do, and download.</p>
+        <p className={`tcc-imgc-subtitle-${uid}`}>Create a shareable image in 3 easy steps — then download it to share on your own socials.</p>
 
         <div className={`tcc-imgc-steps-${uid}`}>
           {[1, 2, 3].map((s) => (
@@ -647,7 +648,7 @@ function ImageCreator({ uid, logoSrc, apiUrl, buttonText = "Download & Share" }:
         <div className={`tcc-imgc-labels-${uid}`}>
           <span className={step >= 1 ? `tcc-imgc-label-active-${uid}` : ""}>Upload Photo</span>
           <span className={step >= 2 ? `tcc-imgc-label-active-${uid}` : ""}>Write Statement</span>
-          <span className={step >= 3 ? `tcc-imgc-label-active-${uid}` : ""}>Download</span>
+          <span className={step >= 3 ? `tcc-imgc-label-active-${uid}` : ""}>Preview & Download</span>
         </div>
 
         {step === 1 && (
@@ -710,7 +711,7 @@ function ImageCreator({ uid, logoSrc, apiUrl, buttonText = "Download & Share" }:
               </label>
 
               <p className={`tcc-imgc-disclaimer-${uid}`}>
-                By submitting, you agree that your image may be displayed publicly on the This Car Can gallery and used by Rewiring Aotearoa for campaign purposes.
+                By submitting, you agree that Rewiring Aotearoa may use your image on social media, on our website, and in advocacy campaigns to show that New Zealanders are benefitting from EVs. We'll review submissions before they appear on the site.
               </p>
             </div>
 
@@ -734,7 +735,7 @@ function ImageCreator({ uid, logoSrc, apiUrl, buttonText = "Download & Share" }:
             <div className={`tcc-imgc-actions-${uid}`}>
               <button className={`tcc-imgc-btn-${uid} tcc-imgc-btn-back-${uid}`} onClick={() => setStep(2)} disabled={isDownloading}>Edit</button>
               <button className={`tcc-imgc-btn-${uid} tcc-imgc-btn-next-${uid}`} onClick={handleDownload} disabled={isDownloading}>
-                {isDownloading ? "Submitting..." : buttonText}
+                {isDownloading ? "Creating image..." : buttonText}
               </button>
             </div>
           </div>
@@ -746,7 +747,8 @@ function ImageCreator({ uid, logoSrc, apiUrl, buttonText = "Download & Share" }:
               <circle cx="24" cy="24" r="20" />
               <path d="M14 24l7 7 13-13" />
             </svg>
-            <h3 style={{ fontFamily: "'Rubik', sans-serif", fontSize: "1.5rem", fontWeight: 700, color: "#2d5c5a", margin: 0 }}>Shared!</h3>
+            <h3 style={{ fontFamily: "'Rubik', sans-serif", fontSize: "1.5rem", fontWeight: 700, color: "#2d5c5a", margin: 0 }}>Image Downloaded!</h3>
+            <p style={{ fontFamily: "'Rubik', sans-serif", fontSize: "0.95rem", color: "#5a7a78", margin: 0, maxWidth: 400, lineHeight: 1.6, textAlign: "center" }}>Your image is ready to share on your socials. We've also saved a copy — it may appear in our community gallery after review.</p>
             <button className={`tcc-imgc-btn-${uid} tcc-imgc-btn-next-${uid}`} onClick={reset}>Create Another</button>
           </div>
         )}
@@ -1110,7 +1112,7 @@ function VideoUploader({ uid, apiUrl, buttonText = "Upload & Share" }: { uid: st
                 <span>Keep me updated with Rewiring Aotearoa news and campaigns</span>
               </label>
               <p className={`tcc-vid-disclaimer-${uid}`}>
-                By submitting, you agree that your video may be displayed publicly on the This Car Can gallery and used by Rewiring Aotearoa for campaign purposes.
+                By submitting, you agree that Rewiring Aotearoa may use your video on social media, on our website, and in advocacy campaigns to show that New Zealanders are benefitting from EVs. We'll review submissions before they appear on the site.
               </p>
             </div>
             {uploading && (
@@ -1135,7 +1137,8 @@ function VideoUploader({ uid, apiUrl, buttonText = "Upload & Share" }: { uid: st
               <circle cx="24" cy="24" r="20" />
               <path d="M14 24l7 7 13-13" />
             </svg>
-            <h3 className={`tcc-vid-done-title-${uid}`}>Shared!</h3>
+            <h3 className={`tcc-vid-done-title-${uid}`}>Video Submitted!</h3>
+            <p style={{ fontFamily: "'Rubik', sans-serif", fontSize: "0.95rem", color: "#5a7a78", margin: 0, maxWidth: 400, lineHeight: 1.6, textAlign: "center" }}>Thanks for sharing. We'll review your video and add it to our community gallery shortly.</p>
             <button className={`tcc-vid-btn-${uid} tcc-vid-btn-next-${uid}`} onClick={reset}>Submit Another</button>
           </div>
         )}

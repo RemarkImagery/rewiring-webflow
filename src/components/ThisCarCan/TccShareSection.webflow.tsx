@@ -59,7 +59,7 @@ export default declareComponent(TccShareSection, {
     }),
     imageButtonText: props.Text({
       name: "Image Button Text",
-      defaultValue: "Download & Share",
+      defaultValue: "Download Image",
       group: "Buttons",
     }),
     videoButtonText: props.Text({
