@@ -45,7 +45,7 @@ export default function NzMadeBanner(props: NzMadeBannerProps) {
         .nzmb-wrap-${uid} {
           position: relative;
           width: 100%;
-          min-height: 600px;
+          min-height: 85vh;
           overflow: hidden;
           background: ${bgColor};
           display: flex;
@@ -79,7 +79,7 @@ export default function NzMadeBanner(props: NzMadeBannerProps) {
           position: absolute;
           bottom: 0; left: 50%;
           transform: translateX(-50%);
-          height: 55%;
+          height: 50%;
           z-index: 4;
           pointer-events: none;
         }
