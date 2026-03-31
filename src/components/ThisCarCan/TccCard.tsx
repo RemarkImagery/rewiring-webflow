@@ -7,7 +7,7 @@ interface TccCardProps {
   name?: string;
   car?: string;
   statement?: string;
-  story?: string;
+  story?: any;
   image?: any;
   videoUrl?: string;
   logoImage?: any;
@@ -93,10 +93,7 @@ export default function TccCard(props: TccCardProps) {
               {logoSrc && <img src={logoSrc} alt="This Car Can" className={`tc-logo-${uid}`} />}
               <p className={`tc-stmt-${uid}`}>{statement}</p>
             </div>
-            {typeof story === "string"
-              ? <div className={`tc-story-text-${uid}`} dangerouslySetInnerHTML={{ __html: story }} />
-              : <div className={`tc-story-text-${uid}`}>{story}</div>
-            }
+            <div className={`tc-story-text-${uid}`}>{story}</div>
             <div className={`tc-readmore-${uid}`}>Read more</div>
           </>
         )}
@@ -162,10 +159,7 @@ export default function TccCard(props: TccCardProps) {
                   {logoSrc && <img src={logoSrc} alt="This Car Can" className={`tc-m-logo-${uid}`} />}
                   <p className={`tc-m-stmt-${uid}`}>{statement}</p>
                 </div>
-                {typeof story === "string"
-                  ? <div className={`tc-m-story-${uid}`} dangerouslySetInnerHTML={{ __html: story }} />
-                  : <div className={`tc-m-story-${uid}`}>{story}</div>
-                }
+                <div className={`tc-m-story-${uid}`}>{story}</div>
               </div>
             )}
 
