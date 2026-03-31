@@ -52,14 +52,6 @@ export default function TccCard(props: TccCardProps) {
   }, [open]);
 
   const cardType = type.toLowerCase().trim();
-  const STORY_LIMIT = 120;
-  // Strip HTML tags for plain text truncation
-  const storyStr = typeof story === "string" ? story : "";
-  const storyPlain = storyStr.replace(/<[^>]*>/g, "");
-  const storyTruncated = storyPlain.length > STORY_LIMIT
-    ? storyPlain.slice(0, STORY_LIMIT).replace(/\s+\S*$/, "") + "..."
-    : storyPlain;
-  const storyNeedsTruncation = storyPlain.length > STORY_LIMIT;
 
   return (
     <div className={`tc-root-${uid}`}>
@@ -101,12 +93,8 @@ export default function TccCard(props: TccCardProps) {
               {logoSrc && <img src={logoSrc} alt="This Car Can" className={`tc-logo-${uid}`} />}
               <p className={`tc-stmt-${uid}`}>{statement}</p>
             </div>
-            <p className={`tc-story-text-${uid}`}>
-              {storyTruncated}
-              {storyNeedsTruncation && (
-                <span className={`tc-readmore-${uid}`}> Read more</span>
-              )}
-            </p>
+            <div className={`tc-story-text-${uid}`}>{story}</div>
+            <div className={`tc-readmore-${uid}`}>Read more</div>
           </>
         )}
 
@@ -193,7 +181,7 @@ export default function TccCard(props: TccCardProps) {
           position: relative; border-radius: 16px; overflow: hidden;
           background: #234e4c; display: flex; flex-direction: column;
           transition: transform 0.3s, box-shadow 0.3s; cursor: pointer;
-          height: 100%;
+          aspect-ratio: 1 / 1;
         }
         .tc-card-${uid}:hover {
           transform: translateY(-4px);
@@ -236,16 +224,17 @@ export default function TccCard(props: TccCardProps) {
           font-family: 'Rubik', sans-serif; font-size: 0.9rem;
           color: #d1e0df; line-height: 1.6; margin: 0;
           padding: 0 20px 16px; flex: 1;
-          display: -webkit-box;
-          -webkit-line-clamp: 4;
-          -webkit-box-orient: vertical;
           overflow: hidden;
         }
         .tc-readmore-${uid} {
-          color: #f5b731; font-weight: 600; cursor: pointer;
-          transition: opacity 0.2s;
+          position: absolute; bottom: 0; left: 0; right: 0;
+          padding: 40px 20px 16px;
+          background: linear-gradient(transparent, #234e4c 60%);
+          text-align: center;
+          font-family: 'Rubik', sans-serif; font-size: 0.85rem;
+          font-weight: 600; color: #f5b731; cursor: pointer;
+          z-index: 2;
         }
-        .tc-readmore-${uid}:hover { opacity: 0.8; }
 
         .tc-meta-${uid} {
           padding: 12px 16px;
