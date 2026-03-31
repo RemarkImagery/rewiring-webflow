@@ -88,13 +88,11 @@ export default function NzMadeBanner(props: NzMadeBannerProps) {
           mix-blend-mode: screen;
         }
         .nzmb-content-${uid} {
-          position: relative; z-index: 10;
+          position: absolute; bottom: 0; left: 0; right: 0;
+          z-index: 10;
           text-align: center;
-          padding: 200px 20px 80px;
-          max-width: 640px;
+          padding: 120px 20px 48px;
           background: linear-gradient(transparent, rgba(10,20,20,0.95) 70%);
-          width: 100%;
-          margin-top: auto;
         }
         .nzmb-heading-${uid} {
           font-size: clamp(2rem, 5vw, 3.5rem);
@@ -141,7 +139,7 @@ export default function NzMadeBanner(props: NzMadeBannerProps) {
         </div>
       )}
 
-      <div className={`nzmb-content-${uid}`} style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
+      <div className={`nzmb-content-${uid}`}>
         <h2 className={`nzmb-heading-${uid}`}>
           {heading}<br />
           <span className={`nzmb-accent-${uid}`}>{headingAccent}</span>
