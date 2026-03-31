@@ -13,6 +13,12 @@ interface TccCardProps {
   logoImage?: any;
 }
 
+function renderRichText(value: any, className?: string) {
+  if (!value) return null;
+  if (typeof value === "string") return <div className={className} dangerouslySetInnerHTML={{ __html: value }} />;
+  return <div className={className}>{value}</div>;
+}
+
 function resolveImage(val: any): string | undefined {
   if (!val) return undefined;
   if (typeof val === "string") return val;
@@ -93,7 +99,7 @@ export default function TccCard(props: TccCardProps) {
               {logoSrc && <img src={logoSrc} alt="This Car Can" className={`tc-logo-${uid}`} />}
               <p className={`tc-stmt-${uid}`}>{statement}</p>
             </div>
-            <div className={`tc-story-text-${uid}`}>{story}</div>
+            {renderRichText(story, `tc-story-text-${uid}`)}
             <div className={`tc-readmore-${uid}`}>Read more</div>
           </>
         )}
@@ -159,7 +165,7 @@ export default function TccCard(props: TccCardProps) {
                   {logoSrc && <img src={logoSrc} alt="This Car Can" className={`tc-m-logo-${uid}`} />}
                   <p className={`tc-m-stmt-${uid}`}>{statement}</p>
                 </div>
-                <div className={`tc-m-story-${uid}`}>{story}</div>
+                {renderRichText(story, `tc-m-story-${uid}`)}
               </div>
             )}
 
