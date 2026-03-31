@@ -53,10 +53,12 @@ export default function TccCard(props: TccCardProps) {
 
   const cardType = type.toLowerCase().trim();
   const STORY_LIMIT = 120;
-  const storyTruncated = story.length > STORY_LIMIT
-    ? story.slice(0, STORY_LIMIT).replace(/\s+\S*$/, "") + "..."
-    : story;
-  const storyNeedsTruncation = story.length > STORY_LIMIT;
+  // Strip HTML tags for plain text truncation
+  const storyPlain = story.replace(/<[^>]*>/g, "");
+  const storyTruncated = storyPlain.length > STORY_LIMIT
+    ? storyPlain.slice(0, STORY_LIMIT).replace(/\s+\S*$/, "") + "..."
+    : storyPlain;
+  const storyNeedsTruncation = storyPlain.length > STORY_LIMIT;
 
   return (
     <div className={`tc-root-${uid}`}>
@@ -233,6 +235,10 @@ export default function TccCard(props: TccCardProps) {
           font-family: 'Rubik', sans-serif; font-size: 0.9rem;
           color: #d1e0df; line-height: 1.6; margin: 0;
           padding: 0 20px 16px; flex: 1;
+          display: -webkit-box;
+          -webkit-line-clamp: 4;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
         }
         .tc-readmore-${uid} {
           color: #f5b731; font-weight: 600; cursor: pointer;
