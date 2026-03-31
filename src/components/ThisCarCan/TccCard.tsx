@@ -54,7 +54,8 @@ export default function TccCard(props: TccCardProps) {
   const cardType = type.toLowerCase().trim();
   const STORY_LIMIT = 120;
   // Strip HTML tags for plain text truncation
-  const storyPlain = story.replace(/<[^>]*>/g, "");
+  const storyStr = typeof story === "string" ? story : "";
+  const storyPlain = storyStr.replace(/<[^>]*>/g, "");
   const storyTruncated = storyPlain.length > STORY_LIMIT
     ? storyPlain.slice(0, STORY_LIMIT).replace(/\s+\S*$/, "") + "..."
     : storyPlain;
