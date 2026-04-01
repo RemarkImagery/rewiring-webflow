@@ -165,7 +165,14 @@ export default function TccCard(props: TccCardProps) {
                   {logoSrc && <img src={logoSrc} alt="This Car Can" className={`tc-m-logo-${uid}`} />}
                   <p className={`tc-m-stmt-${uid}`}>{statement}</p>
                 </div>
-                {renderRichText(story, `tc-m-story-${uid}`)}
+                <div className={`tc-m-story-${uid}`}>
+                  {typeof story === "string" && story.length > 0
+                    ? <div dangerouslySetInnerHTML={{ __html: story }} />
+                    : story
+                      ? <div>{story}</div>
+                      : <p style={{ opacity: 0.5 }}>No story text provided.</p>
+                  }
+                </div>
               </div>
             )}
 
