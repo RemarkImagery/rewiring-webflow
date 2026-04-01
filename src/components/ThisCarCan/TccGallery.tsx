@@ -276,6 +276,7 @@ export default function TccGallery(props: TccGalleryProps) {
           font-family: 'Rubik', sans-serif; font-size: 0.9rem; color: #d1e0df;
           line-height: 1.6; margin: 0; padding: 0 20px 16px; flex: 1;
         }
+        .tcc-gal-story-text-${uid} * { color: #d1e0df !important; }
         .tcc-gal-meta-${uid} {
           padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.08);
           display: flex; justify-content: space-between; align-items: center;
@@ -334,7 +335,7 @@ export default function TccGallery(props: TccGalleryProps) {
           font-family: 'Rubik', sans-serif; font-size: 1.05rem; color: #d1e0df;
           line-height: 1.8; margin: 0; padding: 20px 28px 24px;
         }
-        .tcc-modal-story-text-${uid} * { color: inherit; }
+        .tcc-modal-story-text-${uid} * { color: #d1e0df !important; }
 
         .tcc-modal-bar-${uid} {
           padding: 20px 24px; display: flex; flex-direction: column;

@@ -237,6 +237,7 @@ export default function TccCard(props: TccCardProps) {
           padding: 0 20px 16px; flex: 1;
           overflow: hidden;
         }
+        .tc-story-text-${uid} * { color: #d1e0df !important; }
         .tc-readmore-${uid} {
           position: absolute; bottom: 0; left: 0; right: 0;
           padding: 40px 20px 16px;
@@ -314,7 +315,7 @@ export default function TccCard(props: TccCardProps) {
           color: #d1e0df; line-height: 1.8; margin: 0;
           padding: 20px 28px 24px;
         }
-        .tc-m-story-${uid} * { color: inherit; }
+        .tc-m-story-${uid} * { color: #d1e0df !important; }
 
         .tc-m-bar-${uid} {
           padding: 20px 24px; display: flex; flex-direction: column;
