@@ -19,6 +19,13 @@ function renderRichText(value: any, className?: string) {
   return <div className={className}>{value}</div>;
 }
 
+function cloneRichText(value: any, className?: string) {
+  if (!value) return null;
+  if (typeof value === "string") return <div className={className} dangerouslySetInnerHTML={{ __html: value }} />;
+  if (React.isValidElement(value)) return <div className={className}>{React.cloneElement(value as React.ReactElement)}</div>;
+  return <div className={className}>{value}</div>;
+}
+
 function resolveImage(val: any): string | undefined {
   if (!val) return undefined;
   if (typeof val === "string") return val;
@@ -167,7 +174,7 @@ export default function TccCard(props: TccCardProps) {
                 </div>
                 <div className={`tc-m-story-${uid}`}>
                   {story
-                    ? renderRichText(story)
+                    ? cloneRichText(story)
                     : <p style={{ opacity: 0.5 }}>No story text provided.</p>
                   }
                 </div>
