@@ -166,11 +166,9 @@ export default function TccCard(props: TccCardProps) {
                   <p className={`tc-m-stmt-${uid}`}>{statement}</p>
                 </div>
                 <div className={`tc-m-story-${uid}`}>
-                  {typeof story === "string" && story.length > 0
-                    ? <div dangerouslySetInnerHTML={{ __html: story }} />
-                    : story
-                      ? <div>{story}</div>
-                      : <p style={{ opacity: 0.5 }}>No story text provided.</p>
+                  {story
+                    ? renderRichText(story)
+                    : <p style={{ opacity: 0.5 }}>No story text provided.</p>
                   }
                 </div>
               </div>
@@ -316,6 +314,7 @@ export default function TccCard(props: TccCardProps) {
           color: #d1e0df; line-height: 1.8; margin: 0;
           padding: 20px 28px 24px;
         }
+        .tc-m-story-${uid} * { color: inherit; }
 
         .tc-m-bar-${uid} {
           padding: 20px 24px; display: flex; flex-direction: column;
