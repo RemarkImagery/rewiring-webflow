@@ -327,7 +327,7 @@ export default function TccVehicleCostChart(props: TccVehicleCostChartProps) {
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={DATA}
-                  margin={{ top: 40, right: 24, left: 0, bottom: 140 }}
+                  margin={{ top: 40, right: 24, left: 0, bottom: 110 }}
                   barCategoryGap="22%"
                 >
                   <CartesianGrid stroke={gridColor} strokeDasharray="6 6" vertical={false} />
@@ -337,7 +337,7 @@ export default function TccVehicleCostChart(props: TccVehicleCostChartProps) {
                     axisLine={{ stroke: "#000", strokeWidth: 1.5 }}
                     interval={0}
                     tick={<MultiLineTick />}
-                    height={140}
+                    height={110}
                   />
                   <YAxis
                     tickFormatter={yFmt}
@@ -445,7 +445,7 @@ export default function TccVehicleCostChart(props: TccVehicleCostChartProps) {
 
         .tcc-vcc-chart-${uid} {
           min-width: 720px;
-          height: 660px;
+          height: 560px;
         }
 
         .tcc-vcc-wrap-${uid} .recharts-cartesian-axis-tick-value {
@@ -461,11 +461,11 @@ export default function TccVehicleCostChart(props: TccVehicleCostChartProps) {
           .tcc-vcc-legend-${uid} { font-size: 12px; gap: 8px 16px; }
           .tcc-vcc-swatch-${uid} { width: 12px; height: 12px; }
           .tcc-vcc-card-${uid} { padding: 12px 10px 16px; }
-          .tcc-vcc-chart-${uid} { height: 560px; min-width: 720px; }
+          .tcc-vcc-chart-${uid} { height: 480px; min-width: 720px; }
         }
         @media (max-width: 480px) {
           .tcc-vcc-h1-${uid} { font-size: 20px; }
-          .tcc-vcc-chart-${uid} { height: 520px; min-width: 720px; }
+          .tcc-vcc-chart-${uid} { height: 440px; min-width: 720px; }
         }
       `}</style>
     </section>
