@@ -45,15 +45,16 @@ interface Row {
   rucs: number;
   fuelCrisis: number;
   total: string;
+  image: string;
 }
 
 const DATA: Row[] = [
-  { name: "Honda Jazz\n(petrol)",          maintenance: 1460, petrol: 2791, diesel: 0,    electricity: 0,   rucs: 0,    fuelCrisis: 706,  total: "$4,957 (+$706)" },
-  { name: "BYD Atto 1\n(electric)",        maintenance: 1033, petrol: 0,    diesel: 0,    electricity: 645, rucs: 1088, fuelCrisis: 0,    total: "$2,766 (+$0)" },
-  { name: "Toyota RAV4\n(hybrid)",         maintenance: 1317, petrol: 2263, diesel: 0,    electricity: 0,   rucs: 0,    fuelCrisis: 572,  total: "$4,152 (+$572)" },
-  { name: "Tesla Model Y\n(electric)",     maintenance: 1033, petrol: 0,    diesel: 0,    electricity: 597, rucs: 1088, fuelCrisis: 0,    total: "$2,718 (+$0)" },
-  { name: "Ford Ranger\n(diesel)",         maintenance: 2076, petrol: 0,    diesel: 2908, electricity: 0,   rucs: 1088, fuelCrisis: 3220, total: "$9,292 (+$3,220)" },
-  { name: "Geely Riddara RD6\n(electric)", maintenance: 1033, petrol: 0,    diesel: 0,    electricity: 861, rucs: 1088, fuelCrisis: 0,    total: "$2,983 (+$0)" },
+  { name: "Honda Jazz\n(petrol)",          maintenance: 1460, petrol: 2791, diesel: 0,    electricity: 0,   rucs: 0,    fuelCrisis: 706,  total: "$4,957 (+$706)",   image: "/images/cars/honda-jazz.png" },
+  { name: "BYD Atto 1\n(electric)",        maintenance: 1033, petrol: 0,    diesel: 0,    electricity: 645, rucs: 1088, fuelCrisis: 0,    total: "$2,766 (+$0)",     image: "/images/cars/byd-atto-1.png" },
+  { name: "Toyota RAV4\n(hybrid)",         maintenance: 1317, petrol: 2263, diesel: 0,    electricity: 0,   rucs: 0,    fuelCrisis: 572,  total: "$4,152 (+$572)",   image: "/images/cars/toyota-rav4.png" },
+  { name: "Tesla Model Y\n(electric)",     maintenance: 1033, petrol: 0,    diesel: 0,    electricity: 597, rucs: 1088, fuelCrisis: 0,    total: "$2,718 (+$0)",     image: "" },
+  { name: "Ford Ranger\n(diesel)",         maintenance: 2076, petrol: 0,    diesel: 2908, electricity: 0,   rucs: 1088, fuelCrisis: 3220, total: "$9,292 (+$3,220)", image: "/images/cars/ford-ranger.png" },
+  { name: "Geely Riddara RD6\n(electric)", maintenance: 1033, petrol: 0,    diesel: 0,    electricity: 861, rucs: 1088, fuelCrisis: 0,    total: "$2,983 (+$0)",     image: "/images/cars/geely-riddara-rd6.png" },
 ];
 
 const STACK_ORDER: CostKey[] = [
@@ -142,9 +143,14 @@ export default function TccVehicleCostChart(props: TccVehicleCostChartProps) {
 
   const yFmt = (v: number) => "$" + v.toLocaleString();
 
+  const CAR_IMG_W = 120;
+  const CAR_IMG_H = 80;
+
   const MultiLineTick = (tickProps: any) => {
-    const { x, y, payload } = tickProps;
+    const { x, y, payload, index } = tickProps;
     const lines = String(payload.value).split("\n");
+    const row = DATA[index];
+    const imgSrc = row?.image;
     return (
       <g transform={`translate(${x},${y + 12})`}>
         {lines.map((ln, i) => (
@@ -161,6 +167,16 @@ export default function TccVehicleCostChart(props: TccVehicleCostChartProps) {
             {ln}
           </text>
         ))}
+        {imgSrc && (
+          <image
+            href={imgSrc}
+            x={-CAR_IMG_W / 2}
+            y={lines.length * 16 + 6}
+            width={CAR_IMG_W}
+            height={CAR_IMG_H}
+            preserveAspectRatio="xMidYMid meet"
+          />
+        )}
       </g>
     );
   };
@@ -309,7 +325,7 @@ export default function TccVehicleCostChart(props: TccVehicleCostChartProps) {
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={DATA}
-                  margin={{ top: 40, right: 24, left: 0, bottom: 60 }}
+                  margin={{ top: 40, right: 24, left: 0, bottom: 140 }}
                   barCategoryGap="22%"
                 >
                   <CartesianGrid stroke={gridColor} strokeDasharray="6 6" vertical={false} />
@@ -319,7 +335,7 @@ export default function TccVehicleCostChart(props: TccVehicleCostChartProps) {
                     axisLine={{ stroke: "#000", strokeWidth: 1.5 }}
                     interval={0}
                     tick={<MultiLineTick />}
-                    height={60}
+                    height={140}
                   />
                   <YAxis
                     tickFormatter={yFmt}
@@ -426,8 +442,8 @@ export default function TccVehicleCostChart(props: TccVehicleCostChartProps) {
         }
 
         .tcc-vcc-chart-${uid} {
-          min-width: 560px;
-          height: 560px;
+          min-width: 720px;
+          height: 660px;
         }
 
         .tcc-vcc-wrap-${uid} .recharts-cartesian-axis-tick-value {
@@ -443,11 +459,11 @@ export default function TccVehicleCostChart(props: TccVehicleCostChartProps) {
           .tcc-vcc-legend-${uid} { font-size: 12px; gap: 8px 16px; }
           .tcc-vcc-swatch-${uid} { width: 12px; height: 12px; }
           .tcc-vcc-card-${uid} { padding: 12px 10px 16px; }
-          .tcc-vcc-chart-${uid} { height: 460px; min-width: 640px; }
+          .tcc-vcc-chart-${uid} { height: 560px; min-width: 720px; }
         }
         @media (max-width: 480px) {
           .tcc-vcc-h1-${uid} { font-size: 20px; }
-          .tcc-vcc-chart-${uid} { height: 420px; min-width: 640px; }
+          .tcc-vcc-chart-${uid} { height: 520px; min-width: 720px; }
         }
       `}</style>
     </section>
