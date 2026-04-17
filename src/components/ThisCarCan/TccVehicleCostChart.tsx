@@ -48,13 +48,15 @@ interface Row {
   image: string;
 }
 
+const CDN = "https://rewiring-fuel-worker.oj-f3d.workers.dev/cars";
+
 const DATA: Row[] = [
-  { name: "Honda Jazz\n(petrol)",          maintenance: 1460, petrol: 2791, diesel: 0,    electricity: 0,   rucs: 0,    fuelCrisis: 706,  total: "$4,957 (+$706)",   image: "/images/cars/honda-jazz.png" },
-  { name: "BYD Atto 1\n(electric)",        maintenance: 1033, petrol: 0,    diesel: 0,    electricity: 645, rucs: 1088, fuelCrisis: 0,    total: "$2,766 (+$0)",     image: "/images/cars/byd-atto-1.png" },
-  { name: "Toyota RAV4\n(hybrid)",         maintenance: 1317, petrol: 2263, diesel: 0,    electricity: 0,   rucs: 0,    fuelCrisis: 572,  total: "$4,152 (+$572)",   image: "/images/cars/toyota-rav4.png" },
-  { name: "Tesla Model Y\n(electric)",     maintenance: 1033, petrol: 0,    diesel: 0,    electricity: 597, rucs: 1088, fuelCrisis: 0,    total: "$2,718 (+$0)",     image: "" },
-  { name: "Ford Ranger\n(diesel)",         maintenance: 2076, petrol: 0,    diesel: 2908, electricity: 0,   rucs: 1088, fuelCrisis: 3220, total: "$9,292 (+$3,220)", image: "/images/cars/ford-ranger.png" },
-  { name: "Geely Riddara RD6\n(electric)", maintenance: 1033, petrol: 0,    diesel: 0,    electricity: 861, rucs: 1088, fuelCrisis: 0,    total: "$2,983 (+$0)",     image: "/images/cars/geely-riddara-rd6.png" },
+  { name: "Honda Jazz\n(petrol)",          maintenance: 1460, petrol: 2791, diesel: 0,    electricity: 0,   rucs: 0,    fuelCrisis: 706,  total: "$4,957 (+$706)",   image: `${CDN}/honda-jazz.png` },
+  { name: "BYD Atto 1\n(electric)",        maintenance: 1033, petrol: 0,    diesel: 0,    electricity: 645, rucs: 1088, fuelCrisis: 0,    total: "$2,766 (+$0)",     image: `${CDN}/byd-atto-1.png` },
+  { name: "Toyota RAV4\n(hybrid)",         maintenance: 1317, petrol: 2263, diesel: 0,    electricity: 0,   rucs: 0,    fuelCrisis: 572,  total: "$4,152 (+$572)",   image: `${CDN}/toyota-rav4.png` },
+  { name: "Tesla Model Y\n(electric)",     maintenance: 1033, petrol: 0,    diesel: 0,    electricity: 597, rucs: 1088, fuelCrisis: 0,    total: "$2,718 (+$0)",     image: `${CDN}/tesla-model-y.png` },
+  { name: "Ford Ranger\n(diesel)",         maintenance: 2076, petrol: 0,    diesel: 2908, electricity: 0,   rucs: 1088, fuelCrisis: 3220, total: "$9,292 (+$3,220)", image: `${CDN}/ford-ranger.png` },
+  { name: "Geely Riddara RD6\n(electric)", maintenance: 1033, petrol: 0,    diesel: 0,    electricity: 861, rucs: 1088, fuelCrisis: 0,    total: "$2,983 (+$0)",     image: `${CDN}/geely-riddara-rd6.png` },
 ];
 
 const STACK_ORDER: CostKey[] = [
