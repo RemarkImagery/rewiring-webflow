@@ -23,6 +23,9 @@ interface WlevBenefitsProps {
   card5Desc?: string;
   card6Title?: string;
   card6Desc?: string;
+  btnLabel?: string;
+  btnUrl?: string;
+  btnNewTab?: boolean;
   bgColor?: string;
 }
 
@@ -51,6 +54,9 @@ export default function WlevBenefits(props: WlevBenefitsProps) {
     card5Desc = "Vehicle-to-Load lets you power kettles, fridges, power tools \u2014 great for camping and trade work. V2G can even back up your home for days.",
     card6Title = "Batteries Built to Last",
     card6Desc = "15\u201320 year lifespan, 80% capacity after a decade. Warranties of 8 years / 160,000km. And 95% of battery materials can be recovered and reused.",
+    btnLabel,
+    btnUrl,
+    btnNewTab,
     bgColor = "#FFFCF0",
   } = props;
 
@@ -82,6 +88,16 @@ export default function WlevBenefits(props: WlevBenefitsProps) {
               </div>
             ))}
           </div>
+          {btnLabel && btnUrl && (
+            <a
+              href={btnUrl}
+              target={btnNewTab ? "_blank" : "_self"}
+              rel={btnNewTab ? "noopener noreferrer" : undefined}
+              className={`wlev-ben-btn-${uid}`}
+            >
+              {btnLabel}
+            </a>
+          )}
         </div>
       </section>
 
@@ -102,6 +118,14 @@ export default function WlevBenefits(props: WlevBenefitsProps) {
         .wlev-ben-desc-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(0.9rem, 1.5vw, 1rem); font-weight: 400; color: #5a7a78; margin: 0; line-height: 1.6; }
         .wlev-ben-desc-${uid} p { margin: 0; }
         .wlev-ben-squiggle-${uid} { width: clamp(120px, 20vw, 200px); height: auto; margin-top: -8px; }
+        .wlev-ben-btn-${uid} {
+          display: inline-block; font-family: 'Rubik', sans-serif; font-size: clamp(1rem, 1.5vw, 1.15rem);
+          font-weight: 600; color: #1a3c3c; background: #f5b731; padding: 16px 44px; border-radius: 50px;
+          text-decoration: none; cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+          box-shadow: 0 4px 16px rgba(245, 183, 49, 0.3);
+        }
+        .wlev-ben-btn-${uid}:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 8px 24px rgba(245, 183, 49, 0.4); filter: brightness(1.06); }
+        .wlev-ben-btn-${uid}:active { transform: translateY(0) scale(0.98); }
         @media (max-width: 900px) { .wlev-ben-grid-${uid} { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 600px) { .wlev-ben-grid-${uid} { grid-template-columns: 1fr; gap: 20px; } .wlev-ben-section-${uid} { padding: 60px 24px; } .wlev-ben-card-${uid} { padding: 28px 24px; } }
         @media (max-width: 480px) { .wlev-ben-section-${uid} { padding: 40px 16px; } }

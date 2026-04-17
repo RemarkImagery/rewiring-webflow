@@ -9,6 +9,7 @@ function renderRichText(value: any, className?: string) {
 }
 
 interface WlevHeroProps {
+  eyebrow?: string;
   heading?: string;
   subtitle?: string;
   ctaText?: string;
@@ -23,6 +24,7 @@ interface WlevHeroProps {
 
 export default function WlevHero(props: WlevHeroProps) {
   const {
+    eyebrow = "Why We Love EVs",
     heading = "Lower Bills and Way More Fun!",
     subtitle = "Good for your wallet, better for the environment, and very easy to do. Upgrading to an EV is also a lot of fun.",
     ctaText = "Find Out More",
@@ -81,6 +83,7 @@ export default function WlevHero(props: WlevHeroProps) {
     <div className={`wlev-hero-root-${uid}`}>
       <section className={`wlev-hero-${uid}`} style={{ background: bgColor }}>
         <div className={`wlev-hero-inner-${uid}`}>
+          <span className={`wlev-hero-eyebrow-${uid}`}>{eyebrow}</span>
           <div className={`wlev-hero-heading-wrap-${uid}`}>
             <div className={`wlev-hero-blob-${uid}`} aria-hidden="true" style={{ background: accentColor }} />
             <h1 className={`wlev-hero-heading-${uid}`}>{heading}</h1>
@@ -100,10 +103,6 @@ export default function WlevHero(props: WlevHeroProps) {
             </div>
           </div>
 
-          <a href="#" className={`wlev-hero-cta-${uid}`} style={{ background: accentColor }}>
-            {ctaText}
-          </a>
-
           {bullets.length > 0 && (
             <div className={`wlev-hero-bullets-${uid}`}>
               {bullets.map((b, i) => (
@@ -121,6 +120,13 @@ export default function WlevHero(props: WlevHeroProps) {
         @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700&display=swap');
 
         .wlev-hero-root-${uid} { width: 100%; }
+
+        .wlev-hero-eyebrow-${uid} {
+          font-family: 'Diary Notes', sans-serif;
+          font-size: clamp(3.2rem, 7vw, 4.4rem);
+          color: #f5b731;
+          margin-bottom: -8px;
+        }
 
         .wlev-hero-${uid} {
           width: 100%;

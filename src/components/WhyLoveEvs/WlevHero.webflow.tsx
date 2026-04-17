@@ -7,6 +7,11 @@ export default declareComponent(WlevHero, {
   description: "Hero section for Why We Love EVs — animated parts counter and CTA",
   group: "Why Love EVs",
   props: {
+    eyebrow: props.Text({
+      name: "Eyebrow",
+      defaultValue: "Why We Love EVs",
+      group: "Content",
+    }),
     heading: props.Text({
       name: "Heading",
       defaultValue: "Lower Bills and Way More Fun!",

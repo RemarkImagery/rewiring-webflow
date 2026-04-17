@@ -152,14 +152,6 @@ export default function TccHero(props: TccHeroProps) {
       </header>
 
       <style>{`
-        @font-face {
-          font-family: 'Diary Notes';
-          src: local('Diary Notes'), local('DiaryNotes'), local('Diary Notes Regular'),
-               url('https://this-car-can-api.noisy-scene-d996.workers.dev/api/media/fonts/Diary-Notes.otf') format('opentype');
-          font-weight: normal;
-          font-style: normal;
-          font-display: swap;
-        }
 
         @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700&display=swap');
 
@@ -216,7 +208,7 @@ export default function TccHero(props: TccHeroProps) {
         }
 
         .tcc-phrase-${uid} {
-          font-family: 'Diary Notes', 'Marker Felt', 'Comic Sans MS', cursive;
+          font-family: 'Diary Notes', sans-serif;
           font-size: clamp(3.1rem, 7.2vw, 5.5rem);
           color: #ffffff;
           text-transform: uppercase;

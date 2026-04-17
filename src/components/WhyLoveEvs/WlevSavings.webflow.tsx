@@ -19,7 +19,10 @@ export default declareComponent(WlevSavings, {
     detail1Text: props.RichText({ name: "Detail 1 Text", defaultValue: "Charging at home at off-peak rates costs about $1.50/L equivalent. Rooftop solar pushes this even lower.", group: "Detail 1" }),
     detail2Title: props.Text({ name: "Detail 2 Title", defaultValue: "Cheaper to maintain", group: "Detail 2" }),
     detail2Text: props.RichText({ name: "Detail 2 Text", defaultValue: "No oil changes, no exhaust system, no clutch or spark plugs. Hundreds of dollars saved every year.", group: "Detail 2" }),
-    bgColor: props.Text({ name: "Background Color", defaultValue: "#ffffff", group: "Style" }),
+    btnLabel: props.Text({ name: "Button Label", defaultValue: "", group: "Button" }),
+    btnUrl: props.Text({ name: "Button URL", defaultValue: "", group: "Button", tooltip: "Page path, #section-id, or full URL" }),
+    btnNewTab: props.Boolean({ name: "Open in new tab", defaultValue: false, group: "Button" }),
+    bgColor: props.Text({ name: "Background Color", defaultValue: "#1a3c3c", group: "Style" }),
   },
   options: { ssr: true },
 });

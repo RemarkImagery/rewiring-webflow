@@ -70,52 +70,56 @@ export default function TccCard(props: TccCardProps) {
     <div className={`tc-root-${uid}`}>
       {/* ── Card ── */}
       <div className={`tc-card-${uid}`} onClick={() => setOpen(true)}>
-        {cardType === "image" && (
+        {!open && (
           <>
-            <div className={`tc-media-${uid}`}>
-              {imgSrc && <img src={imgSrc} alt={statement} className={`tc-img-${uid}`} />}
+            {cardType === "image" && (
+              <>
+                <div className={`tc-media-${uid}`}>
+                  {imgSrc && <img src={imgSrc} alt={statement} className={`tc-img-${uid}`} />}
+                </div>
+                <div className={`tc-bar-${uid}`}>
+                  {logoSrc && <img src={logoSrc} alt="This Car Can" className={`tc-logo-${uid}`} />}
+                  <p className={`tc-stmt-${uid}`}>{statement}</p>
+                </div>
+              </>
+            )}
+
+            {cardType === "video" && (
+              <>
+                <div className={`tc-media-${uid}`}>
+                  {imgSrc && <img src={imgSrc} alt={statement} className={`tc-img-${uid}`} />}
+                  <div className={`tc-play-${uid}`}>
+                    <svg viewBox="0 0 48 48" fill="none">
+                      <circle cx="24" cy="24" r="22" fill="rgba(0,0,0,0.5)" />
+                      <polygon points="19,14 36,24 19,34" fill="#ffffff" />
+                    </svg>
+                  </div>
+                </div>
+                <div className={`tc-bar-${uid}`}>
+                  {logoSrc && <img src={logoSrc} alt="This Car Can" className={`tc-logo-${uid}`} />}
+                  <p className={`tc-stmt-${uid}`}>{statement}</p>
+                </div>
+              </>
+            )}
+
+            {cardType === "story" && (
+              <>
+                <div className={`tc-story-top-${uid}`}>
+                  {logoSrc && <img src={logoSrc} alt="This Car Can" className={`tc-logo-${uid}`} />}
+                  <p className={`tc-stmt-${uid}`}>{statement}</p>
+                </div>
+                <div className={`tc-story-text-${uid}`}>{typeof story === "string" ? <div dangerouslySetInnerHTML={{ __html: story }} /> : story}</div>
+                <div className={`tc-readmore-${uid}`}>Read more</div>
+              </>
+            )}
+
+            <div className={`tc-meta-${uid}`}>
+              <span className={`tc-name-${uid}`}>{name}</span>
+              <span className={`tc-car-${uid}`}>{car}</span>
             </div>
-            <div className={`tc-bar-${uid}`}>
-              {logoSrc && <img src={logoSrc} alt="This Car Can" className={`tc-logo-${uid}`} />}
-              <p className={`tc-stmt-${uid}`}>{statement}</p>
-            </div>
+            <span className={`tc-badge-${uid}`}>{cardType}</span>
           </>
         )}
-
-        {cardType === "video" && (
-          <>
-            <div className={`tc-media-${uid}`}>
-              {imgSrc && <img src={imgSrc} alt={statement} className={`tc-img-${uid}`} />}
-              <div className={`tc-play-${uid}`}>
-                <svg viewBox="0 0 48 48" fill="none">
-                  <circle cx="24" cy="24" r="22" fill="rgba(0,0,0,0.5)" />
-                  <polygon points="19,14 36,24 19,34" fill="#ffffff" />
-                </svg>
-              </div>
-            </div>
-            <div className={`tc-bar-${uid}`}>
-              {logoSrc && <img src={logoSrc} alt="This Car Can" className={`tc-logo-${uid}`} />}
-              <p className={`tc-stmt-${uid}`}>{statement}</p>
-            </div>
-          </>
-        )}
-
-        {cardType === "story" && (
-          <>
-            <div className={`tc-story-top-${uid}`}>
-              {logoSrc && <img src={logoSrc} alt="This Car Can" className={`tc-logo-${uid}`} />}
-              <p className={`tc-stmt-${uid}`}>{statement}</p>
-            </div>
-            {renderRichText(story, `tc-story-text-${uid}`)}
-            <div className={`tc-readmore-${uid}`}>Read more</div>
-          </>
-        )}
-
-        <div className={`tc-meta-${uid}`}>
-          <span className={`tc-name-${uid}`}>{name}</span>
-          <span className={`tc-car-${uid}`}>{car}</span>
-        </div>
-        <span className={`tc-badge-${uid}`}>{cardType}</span>
       </div>
 
       {/* ── Modal ── */}
@@ -174,7 +178,7 @@ export default function TccCard(props: TccCardProps) {
                 </div>
                 <div className={`tc-m-story-${uid}`}>
                   {story
-                    ? cloneRichText(story)
+                    ? (typeof story === "string" ? <div dangerouslySetInnerHTML={{ __html: story }} /> : story)
                     : <p style={{ opacity: 0.5 }}>No story text provided.</p>
                   }
                 </div>

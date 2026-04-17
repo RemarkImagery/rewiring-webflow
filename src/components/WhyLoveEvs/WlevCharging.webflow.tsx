@@ -11,6 +11,7 @@ export default declareComponent(WlevCharging, {
     subtitle: props.Text({ name: "Subtitle", defaultValue: "Another reason we love EVs: charging fits seamlessly into everyday life.", group: "Content" }),
     tab1Title: props.Text({ name: "Home Title", defaultValue: "Plug in like a phone. Wake up to a full battery.", group: "Tab 1: Home" }),
     tab1Body: props.RichText({ name: "Home Body", defaultValue: "Most EV owners charge at home \u2014 no detours to the petrol station, no queues. Just plug in when you get home and your car charges while you sleep.", group: "Tab 1: Home" }),
+    tab1Image: props.Image({ name: "Home Image", group: "Tab 1: Home" }),
     tab1H1: props.Text({ name: "Home Point 1", defaultValue: "Standard wall outlet works for short daily driving", group: "Tab 1: Home" }),
     tab1H2: props.Text({ name: "Home Point 2", defaultValue: "Dedicated home charger is faster and runs during off-peak hours", group: "Tab 1: Home" }),
     tab1H3: props.Text({ name: "Home Point 3", defaultValue: "Overnight charging easily covers the average driver\u2019s daily needs", group: "Tab 1: Home" }),

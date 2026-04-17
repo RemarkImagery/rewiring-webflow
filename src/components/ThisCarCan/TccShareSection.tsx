@@ -133,14 +133,6 @@ export default function TccShareSection(props: TccShareSectionProps) {
       </section>
 
       <style>{`
-        @font-face {
-          font-family: 'Diary Notes';
-          src: local('Diary Notes'), local('DiaryNotes'), local('Diary Notes Regular'),
-               url('https://this-car-can-api.noisy-scene-d996.workers.dev/api/media/fonts/Diary-Notes.otf') format('opentype');
-          font-weight: normal;
-          font-display: swap;
-          font-style: normal;
-        }
         @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700&display=swap');
 
         .tcc-share-root-${uid} { width: 100%; }
@@ -359,8 +351,8 @@ function StoryForm({ uid, apiUrl, buttonText = "Submit Your Story" }: { uid: str
             </div>
 
             <div className={`tcc-story-field-${uid}`}>
-              <label className={`tcc-story-label-${uid}`}>Story Title</label>
-              <input className={`tcc-story-input-${uid}`} type="text" placeholder="e.g. How my EV saved me $3,000 a year" value={title} onChange={(e) => setTitle(e.target.value)} />
+              <label className={`tcc-story-label-${uid}`}>This car can ...</label>
+              <input className={`tcc-story-input-${uid}`} type="text" placeholder="e.g. save me $3,000 a year" value={title} onChange={(e) => setTitle(e.target.value)} />
             </div>
 
             <div className={`tcc-story-field-${uid}`}>
@@ -513,7 +505,7 @@ function ImageCreator({ uid, logoSrc, apiUrl, buttonText = "Download Image" }: {
 
       const measureCanvas = document.createElement("canvas");
       const mCtx = measureCanvas.getContext("2d")!;
-      mCtx.font = `${FONT_SIZE}px "Diary Notes", "Marker Felt", cursive`;
+      mCtx.font = `${FONT_SIZE}px "Diary Notes", sans-serif`;
 
       const words = statement.toUpperCase().split(" ");
       const lines: string[] = [];
@@ -560,7 +552,7 @@ function ImageCreator({ uid, logoSrc, apiUrl, buttonText = "Download Image" }: {
       }
 
       ctx.fillStyle = "#ffffff";
-      ctx.font = `${FONT_SIZE}px "Diary Notes", "Marker Felt", cursive`;
+      ctx.font = `${FONT_SIZE}px "Diary Notes", sans-serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "top";
       const textY = PHOTO_H + PAD + logoH + 8;
@@ -807,7 +799,7 @@ function ImageCreator({ uid, logoSrc, apiUrl, buttonText = "Download Image" }: {
         }
         .tcc-imgc-upload-icon-${uid} { width: 80px; height: 80px; color: #2d5c5a; }
         .tcc-imgc-upload-text-${uid} {
-          font-family: 'Diary Notes', 'Marker Felt', cursive; font-size: 1.5rem;
+          font-family: 'Diary Notes', sans-serif; font-size: 1.5rem;
           color: #f5b731; text-align: center; text-transform: uppercase;
           line-height: 1.3; margin: 0;
         }
@@ -829,7 +821,7 @@ function ImageCreator({ uid, logoSrc, apiUrl, buttonText = "Download Image" }: {
         }
         .tcc-imgc-logo-${uid} { width: 180px; height: auto; }
         .tcc-imgc-statement-${uid} {
-          font-family: 'Diary Notes', 'Marker Felt', cursive; font-size: 1.3rem;
+          font-family: 'Diary Notes', sans-serif; font-size: 1.3rem;
           color: #fff; text-transform: uppercase; text-align: center;
           margin: 0; line-height: 1.2; min-height: 1.6em;
         }
@@ -838,7 +830,7 @@ function ImageCreator({ uid, logoSrc, apiUrl, buttonText = "Download Image" }: {
           width: 100%; display: flex; flex-direction: column; gap: 6px; position: relative;
         }
         .tcc-imgc-slabel-${uid} {
-          font-family: 'Diary Notes', 'Marker Felt', cursive; font-size: 1.2rem;
+          font-family: 'Diary Notes', sans-serif; font-size: 1.2rem;
           color: #f5b731; font-weight: 400;
         }
         .tcc-imgc-sinput-${uid} {
@@ -1159,15 +1151,15 @@ function VideoUploader({ uid, apiUrl, buttonText = "Upload & Share" }: { uid: st
           line-height: 1.6; max-width: 520px;
         }
         .tcc-vid-steps-${uid} {
-          display: flex; align-items: center; position: relative; width: 280px; margin-bottom: 8px;
+          display: flex; align-items: center; justify-content: space-between;
+          position: relative; width: 280px; margin-bottom: 8px;
         }
         .tcc-vid-dot-${uid} {
           width: 36px; height: 36px; border-radius: 50%; background: #d1e0df;
           display: flex; align-items: center; justify-content: center;
           font-family: 'Rubik', sans-serif; font-size: 0.85rem; font-weight: 700; color: #fff;
-          position: relative; z-index: 2; transition: background 0.3s;
+          position: relative; z-index: 2; transition: background 0.3s; flex-shrink: 0;
         }
-        .tcc-vid-dot-${uid}:nth-child(2) { margin: 0 auto; }
         .tcc-vid-dot-active-${uid} { background: #2d5c5a; }
         .tcc-vid-line-${uid} {
           position: absolute; top: 50%; left: 18px; right: 18px; height: 3px;
@@ -1194,7 +1186,7 @@ function VideoUploader({ uid, apiUrl, buttonText = "Upload & Share" }: { uid: st
         .tcc-vid-drop-${uid}:hover .tcc-vid-drop-box-${uid} { border-color: #f5b731; }
         .tcc-vid-drop-icon-${uid} { width: 72px; height: 72px; color: #2d5c5a; }
         .tcc-vid-drop-text-${uid} {
-          font-family: 'Diary Notes', 'Marker Felt', cursive; font-size: 1.4rem;
+          font-family: 'Diary Notes', sans-serif; font-size: 1.4rem;
           color: #f5b731; text-align: center; text-transform: uppercase; line-height: 1.3; margin: 0;
         }
 

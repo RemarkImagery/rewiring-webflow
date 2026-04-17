@@ -21,6 +21,9 @@ interface WlevSavingsProps {
   detail1Text?: string;
   detail2Title?: string;
   detail2Text?: string;
+  btnLabel?: string;
+  btnUrl?: string;
+  btnNewTab?: boolean;
   bgColor?: string;
 }
 
@@ -38,7 +41,10 @@ export default function WlevSavings(props: WlevSavingsProps) {
     detail1Text = "Charging at home at off-peak rates costs about $1.50/L equivalent. Rooftop solar pushes this even lower.",
     detail2Title = "Cheaper to maintain",
     detail2Text = "No oil changes, no exhaust system, no clutch or spark plugs. Hundreds of dollars saved every year.",
-    bgColor = "#ffffff",
+    btnLabel,
+    btnUrl,
+    btnNewTab,
+    bgColor = "#1a3c3c",
   } = props;
 
   const uid = useId().replace(/:/g, "");
@@ -68,7 +74,7 @@ export default function WlevSavings(props: WlevSavingsProps) {
           <div className={`wlev-sav-details-${uid}`}>
             <div className={`wlev-sav-detail-${uid}`}>
               <div className={`wlev-sav-detail-icon-${uid}`}>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2d5c5a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f5b731" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
               </div>
               <div>
                 <strong className={`wlev-sav-detail-title-${uid}`}>{detail1Title}</strong>
@@ -77,7 +83,7 @@ export default function WlevSavings(props: WlevSavingsProps) {
             </div>
             <div className={`wlev-sav-detail-${uid}`}>
               <div className={`wlev-sav-detail-icon-${uid}`}>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2d5c5a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f5b731" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
               </div>
               <div>
                 <strong className={`wlev-sav-detail-title-${uid}`}>{detail2Title}</strong>
@@ -85,6 +91,16 @@ export default function WlevSavings(props: WlevSavingsProps) {
               </div>
             </div>
           </div>
+          {btnLabel && btnUrl && (
+            <a
+              href={btnUrl}
+              target={btnNewTab ? "_blank" : "_self"}
+              rel={btnNewTab ? "noopener noreferrer" : undefined}
+              className={`wlev-sav-btn-${uid}`}
+            >
+              {btnLabel}
+            </a>
+          )}
         </div>
       </section>
 
@@ -93,22 +109,30 @@ export default function WlevSavings(props: WlevSavingsProps) {
         .wlev-sav-root-${uid} { width: 100%; }
         .wlev-sav-section-${uid} { width: 100%; display: flex; justify-content: center; padding: 80px 24px; box-sizing: border-box; }
         .wlev-sav-inner-${uid} { max-width: 1000px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 32px; text-align: center; }
-        .wlev-sav-heading-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; color: #1a3c3c; margin: 0; line-height: 1.2; }
-        .wlev-sav-body-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1rem, 1.8vw, 1.15rem); font-weight: 400; color: #5a7a78; line-height: 1.7; max-width: 680px; margin: 0; }
+        .wlev-sav-heading-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; color: #ffffff; margin: 0; line-height: 1.2; }
+        .wlev-sav-body-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1rem, 1.8vw, 1.15rem); font-weight: 400; color: #d1e0df; line-height: 1.7; max-width: 680px; margin: 0; }
         .wlev-sav-body-${uid} p { margin: 0 0 8px; }
         .wlev-sav-body-${uid} p:last-child { margin-bottom: 0; }
         .wlev-sav-stats-${uid} { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; width: 100%; margin-top: 12px; }
-        .wlev-sav-card-${uid} { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 36px 24px; border: dashed 5px #f5b731; border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; background: #FFFCF0; transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .wlev-sav-card-${uid}:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(26, 60, 60, 0.1); }
+        .wlev-sav-card-${uid} { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 36px 24px; border: dashed 5px #f5b731; border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; background: rgba(255, 255, 255, 0.08); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .wlev-sav-card-${uid}:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); }
         .wlev-sav-number-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 700; color: #f5b731; line-height: 1.1; }
-        .wlev-sav-label-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(0.9rem, 1.5vw, 1.05rem); font-weight: 400; color: #5a7a78; line-height: 1.5; }
+        .wlev-sav-label-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(0.9rem, 1.5vw, 1.05rem); font-weight: 400; color: #d1e0df; line-height: 1.5; }
         .wlev-sav-details-${uid} { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; width: 100%; max-width: 800px; margin-top: 8px; }
-        .wlev-sav-detail-${uid} { display: flex; gap: 16px; text-align: left; padding: 28px 24px; background: #f8fafa; border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; border: solid 3px #1a3c3c; }
-        .wlev-sav-detail-icon-${uid} { flex-shrink: 0; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: #FFFCF0; border-radius: 12px; }
-        .wlev-sav-detail-title-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1rem, 1.5vw, 1.1rem); font-weight: 600; color: #1a3c3c; display: block; margin-bottom: 6px; }
-        .wlev-sav-detail-text-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(0.9rem, 1.4vw, 1rem); font-weight: 400; color: #5a7a78; line-height: 1.6; }
+        .wlev-sav-detail-${uid} { display: flex; gap: 16px; text-align: left; padding: 28px 24px; background: rgba(255, 255, 255, 0.06); border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; border: solid 3px rgba(255, 255, 255, 0.15); }
+        .wlev-sav-detail-icon-${uid} { flex-shrink: 0; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.1); border-radius: 12px; }
+        .wlev-sav-detail-title-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1rem, 1.5vw, 1.1rem); font-weight: 600; color: #ffffff; display: block; margin-bottom: 6px; }
+        .wlev-sav-detail-text-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(0.9rem, 1.4vw, 1rem); font-weight: 400; color: #d1e0df; line-height: 1.6; }
         .wlev-sav-detail-text-${uid} p { margin: 0; }
-        .wlev-sav-squiggle-${uid} { width: clamp(120px, 20vw, 200px); height: auto; margin-top: -8px; }
+        .wlev-sav-squiggle-${uid} { width: clamp(120px, 20vw, 200px); height: auto; margin-top: -8px; filter: brightness(0) invert(1); opacity: 0.4; }
+        .wlev-sav-btn-${uid} {
+          display: inline-block; font-family: 'Rubik', sans-serif; font-size: clamp(1rem, 1.5vw, 1.15rem);
+          font-weight: 600; color: #1a3c3c; background: #f5b731; padding: 16px 44px; border-radius: 50px;
+          text-decoration: none; cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+          box-shadow: 0 4px 16px rgba(245, 183, 49, 0.3); margin-top: 8px;
+        }
+        .wlev-sav-btn-${uid}:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 8px 24px rgba(245, 183, 49, 0.4); filter: brightness(1.06); }
+        .wlev-sav-btn-${uid}:active { transform: translateY(0) scale(0.98); }
         @media (max-width: 768px) { .wlev-sav-stats-${uid} { grid-template-columns: 1fr; gap: 20px; max-width: 400px; } .wlev-sav-details-${uid} { grid-template-columns: 1fr; } .wlev-sav-section-${uid} { padding: 60px 24px; } }
         @media (max-width: 480px) { .wlev-sav-section-${uid} { padding: 40px 16px; } .wlev-sav-card-${uid} { padding: 28px 20px; } }
       `}</style>

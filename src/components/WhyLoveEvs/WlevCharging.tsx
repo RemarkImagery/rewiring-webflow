@@ -8,11 +8,19 @@ function renderRichText(value: any, className?: string) {
   return <div className={className}>{value}</div>;
 }
 
+function resolveImage(val: any): string | undefined {
+  if (!val) return undefined;
+  if (typeof val === "string") return val;
+  if (typeof val === "object" && val.src) return val.src;
+  return undefined;
+}
+
 interface WlevChargingProps {
   heading?: string;
   subtitle?: string;
   tab1Title?: string;
   tab1Body?: string;
+  tab1Image?: any;
   tab1H1?: string;
   tab1H2?: string;
   tab1H3?: string;
@@ -37,6 +45,7 @@ const tabIcons = [
 const tabLabels = ["At Home", "On the Road", "Charger Types"];
 
 const chargerTable = [
+  { type: "Three Pin Plug", location: "Home / Business", size: "2.3kW", range: "~10km/hr", time: "~22 hrs", cost: "$7\u2013$16" },
   { type: "AC Single Phase", location: "Home / Business", size: "7.4kW", range: "33km/hr", time: "7.1 hrs", cost: "$7\u2013$16" },
   { type: "AC Three Phase", location: "Home / Business", size: "22kW", range: "100km/hr", time: "2.4 hrs", cost: "$7\u2013$16" },
   { type: "DC Charger", location: "Public", size: "25kW", range: "115km/hr", time: "2.1 hrs", cost: "$34\u2013$45" },
@@ -50,6 +59,7 @@ export default function WlevCharging(props: WlevChargingProps) {
     subtitle = "Another reason we love EVs: charging fits seamlessly into everyday life.",
     tab1Title = "Plug in like a phone. Wake up to a full battery.",
     tab1Body = "Most EV owners charge at home \u2014 no detours to the petrol station, no queues. Just plug in when you get home and your car charges while you sleep.",
+    tab1Image,
     tab1H1 = "Standard wall outlet works for short daily driving",
     tab1H2 = "Dedicated home charger is faster and runs during off-peak hours",
     tab1H3 = "Overnight charging easily covers the average driver\u2019s daily needs",
@@ -102,6 +112,20 @@ export default function WlevCharging(props: WlevChargingProps) {
               <>
                 <h3 className={`wlev-ch-panel-title-${uid}`}>{tab1Title}</h3>
                 {renderRichText(tab1Body, `wlev-ch-panel-body-${uid}`)}
+                <div className={`wlev-ch-socket-illus-${uid}`}>
+                  {(resolveImage(tab1Image) || "/images/nz-plug-socket.png") && (
+                    <img src={resolveImage(tab1Image) || "/images/nz-plug-socket.png"} alt="Standard 3-pin home power socket" className={`wlev-ch-socket-img-${uid}`} />
+                  )}
+                  <div className={`wlev-ch-socket-info-${uid}`}>
+                    <span className={`wlev-ch-socket-label-${uid}`}>Your regular home socket — that's it.</span>
+                    <div className={`wlev-ch-socket-specs-${uid}`}>
+                      <div className={`wlev-ch-socket-spec-${uid}`}><span className={`wlev-ch-spec-value-${uid}`}>2.3kW</span><span className={`wlev-ch-spec-label-${uid}`}>Power</span></div>
+                      <div className={`wlev-ch-socket-spec-${uid}`}><span className={`wlev-ch-spec-value-${uid}`}>~10km/hr</span><span className={`wlev-ch-spec-label-${uid}`}>Range added</span></div>
+                      <div className={`wlev-ch-socket-spec-${uid}`}><span className={`wlev-ch-spec-value-${uid}`}>~22 hrs</span><span className={`wlev-ch-spec-label-${uid}`}>To 80%</span></div>
+                      <div className={`wlev-ch-socket-spec-${uid}`}><span className={`wlev-ch-spec-value-${uid}`}>$7–$16</span><span className={`wlev-ch-spec-label-${uid}`}>Cost (80%)</span></div>
+                    </div>
+                  </div>
+                </div>
                 {renderHighlights([tab1H1, tab1H2, tab1H3, tab1H4])}
               </>
             )}
@@ -154,6 +178,15 @@ export default function WlevCharging(props: WlevChargingProps) {
         .wlev-ch-highlights-${uid} { list-style: none; padding: 0; margin: 8px 0 0; display: flex; flex-direction: column; gap: 12px; }
         .wlev-ch-highlight-${uid} { display: flex; align-items: flex-start; gap: 10px; font-family: 'Rubik', sans-serif; font-size: clamp(0.95rem, 1.4vw, 1.05rem); color: #1a3c3c; line-height: 1.5; }
         .wlev-ch-highlight-${uid} svg { flex-shrink: 0; margin-top: 2px; }
+        .wlev-ch-socket-illus-${uid} { display: flex; align-items: center; gap: 28px; padding: 0; background: rgba(26, 60, 60, 0.04); border-radius: 16px; border: 1px dashed #2d5c5a40; overflow: hidden; }
+        .wlev-ch-socket-img-${uid} { width: 140px; height: auto; object-fit: contain; flex-shrink: 0; align-self: stretch; }
+        .wlev-ch-socket-info-${uid} { display: flex; flex-direction: column; gap: 16px; flex: 1; padding: 24px 28px 24px 0; }
+        .wlev-ch-socket-label-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1.05rem, 1.8vw, 1.2rem); font-weight: 600; color: #1a3c3c; line-height: 1.3; }
+        .wlev-ch-socket-specs-${uid} { display: flex; gap: 28px; flex-wrap: wrap; }
+        .wlev-ch-socket-spec-${uid} { display: flex; flex-direction: column; gap: 3px; }
+        .wlev-ch-spec-value-${uid} { font-family: 'Rubik', sans-serif; font-size: clamp(1rem, 1.5vw, 1.15rem); font-weight: 700; color: #1a3c3c; }
+        .wlev-ch-spec-label-${uid} { font-family: 'Rubik', sans-serif; font-size: 0.7rem; font-weight: 500; color: #5a7a78; text-transform: uppercase; letter-spacing: 0.06em; }
+        @media (max-width: 640px) { .wlev-ch-socket-illus-${uid} { flex-direction: column; text-align: center; } .wlev-ch-socket-img-${uid} { width: 100%; height: 120px; align-self: auto; } .wlev-ch-socket-info-${uid} { padding: 20px; } .wlev-ch-socket-specs-${uid} { justify-content: center; gap: 20px; } }
         .wlev-ch-table-wrap-${uid} { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 8px; }
         .wlev-ch-table-${uid} { width: 100%; border-collapse: collapse; font-family: 'Rubik', sans-serif; font-size: 0.9rem; min-width: 560px; }
         .wlev-ch-table-${uid} th { text-align: left; padding: 12px 14px; font-weight: 600; color: #1a3c3c; border-bottom: 2px solid #2d5c5a; white-space: nowrap; }

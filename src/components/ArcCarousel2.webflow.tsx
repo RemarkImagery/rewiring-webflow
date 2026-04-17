@@ -1,4 +1,4 @@
-import ArcCarousel from "./ArcCarousel";
+import ArcCarousel2 from "./ArcCarousel2";
 import { props, PropType, PropValues } from "@webflow/data-types";
 import { declareComponent } from "@webflow/react";
 
@@ -25,11 +25,11 @@ function transformLinks(webflowProps: WebflowProps) {
   return transformed;
 }
 
-function ArcCarouselWrapper(webflowProps: WebflowProps) {
-  return <ArcCarousel {...transformLinks(webflowProps)} />;
+function ArcCarousel2Wrapper(webflowProps: WebflowProps) {
+  return <ArcCarousel2 {...transformLinks(webflowProps)} />;
 }
 
-function cardProps(n: number, title?: string, desc?: string, btnText?: string, btnLink?: string) {
+function cardProps(n: number, title?: string, desc?: string, btnText?: string) {
   return {
     [`card${n}Image`]: props.Image({
       name: `Card ${n} Image`,
@@ -57,10 +57,10 @@ function cardProps(n: number, title?: string, desc?: string, btnText?: string, b
   };
 }
 
-export default declareComponent(ArcCarouselWrapper, {
-  name: "Arc Carousel",
+export default declareComponent(ArcCarousel2Wrapper, {
+  name: "Arc Carousel 2 (Slick)",
   description:
-    "Fan/arc card carousel with up to 10 cards. Configure each card's image, title, description, and button in the settings panel.",
+    "Fan/arc card carousel (Slick-based) with up to 10 cards. Test version using react-slick center mode.",
   group: "Sliders",
   options: {
     ssr: false,
@@ -94,50 +94,42 @@ export default declareComponent(ArcCarouselWrapper, {
     ...cardProps(1,
       "2025 Policy Manifesto",
       "An evidence-based plan to transform New Zealand into the world's most electric economy, saving households $29 million daily.",
-      "Read More",
-      "https://www.rewiring.nz/manifesto"
+      "Read More"
     ),
     ...cardProps(2,
       "Delivered Cost of Energy",
       "Investment decisions must account for the delivered cost of energy that consumers actually pay, not just simple generation costs.",
-      "Read More",
-      "https://www.rewiring.nz/delivered-cost-of-energy"
+      "Read More"
     ),
     ...cardProps(3,
       "Electric Farms",
       "Electrifying farms presents a real opportunity to reduce costs, diversify income and play a significant role in NZ's renewable energy system.",
-      "Read More",
-      "https://www.rewiring.nz/electric-farms"
+      "Read More"
     ),
     ...cardProps(4,
       "Electric Homes",
       "NZ has reached the electrification tipping point — households can save up to $4,500 per year by switching to electric appliances and solar.",
-      "Read More",
-      "https://www.rewiring.nz/electric-homes-report"
+      "Read More"
     ),
     ...cardProps(5,
       "Investing in Tomorrow",
       "Household electrification can massively reduce emissions while saving money, with potential combined savings of $29 million per day by 2040.",
-      "Read More",
-      "https://www.rewiring.nz/tomorrow"
+      "Read More"
     ),
     ...cardProps(6,
       "Ratepayers Assistance Scheme",
       "Making electrification affordable through cheap and easy loans that allow homes to upgrade to electric machines, solar and batteries.",
-      "Read More",
-      "https://www.rewiring.nz/ras"
+      "Read More"
     ),
     ...cardProps(7,
       "Symmetrical Export Tariffs",
       "Paying customers the same rate for electricity exported to the grid during peak times as they are charged for consumption.",
-      "Read More",
-      "https://www.rewiring.nz/symmetrical-export-tariffs"
+      "Read More"
     ),
     ...cardProps(8,
       "The Machine Count",
       "NZ's first comprehensive inventory of 10 million fossil fuel machines — 84% have cost-effective electric alternatives available today.",
-      "Read More",
-      "https://www.rewiring.nz/machine-count"
+      "Read More"
     ),
     ...cardProps(9),
     ...cardProps(10),
