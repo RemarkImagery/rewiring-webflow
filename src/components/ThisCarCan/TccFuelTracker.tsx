@@ -47,10 +47,6 @@ export default function TccFuelTracker(props: TccFuelTrackerProps) {
             className={`tcc-fuel-img-${uid}`}
             loading="lazy"
           />
-          <span className={`tcc-fuel-badge-${uid}`}>
-            <span className={`tcc-fuel-dot-${uid}`} aria-hidden="true" />
-            Updated daily
-          </span>
         </div>
 
 
@@ -90,11 +86,6 @@ export default function TccFuelTracker(props: TccFuelTrackerProps) {
         }
 
         .tcc-fuel-media-${uid} {
-          position: relative;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 12px;
           background: transparent;
         }
 
@@ -103,35 +94,6 @@ export default function TccFuelTracker(props: TccFuelTrackerProps) {
           width: 100%;
           height: auto;
           background: transparent;
-        }
-
-        .tcc-fuel-badge-${uid} {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          background: rgba(26, 60, 60, 0.92);
-          color: #fff;
-          font-family: 'Rubik', sans-serif;
-          font-size: 0.78rem;
-          font-weight: 500;
-          letter-spacing: 0.02em;
-          padding: 7px 12px 7px 10px;
-          border-radius: 999px;
-        }
-
-        .tcc-fuel-dot-${uid} {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background: ${accentColor};
-          box-shadow: 0 0 0 0 ${accentColor};
-          animation: tcc-fuel-pulse-${uid} 2s ease-out infinite;
-        }
-
-        @keyframes tcc-fuel-pulse-${uid} {
-          0%   { box-shadow: 0 0 0 0 ${accentColor}88; }
-          70%  { box-shadow: 0 0 0 8px ${accentColor}00; }
-          100% { box-shadow: 0 0 0 0 ${accentColor}00; }
         }
 
         .tcc-fuel-content-${uid} {
