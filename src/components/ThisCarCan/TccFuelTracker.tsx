@@ -53,6 +53,7 @@ export default function TccFuelTracker(props: TccFuelTrackerProps) {
           </span>
         </div>
 
+
         <div className={`tcc-fuel-content-${uid}`}>
           <h2 className={`tcc-fuel-heading-${uid}`}>{heading}</h2>
           <p className={`tcc-fuel-text-${uid}`}>{description}</p>
@@ -90,23 +91,21 @@ export default function TccFuelTracker(props: TccFuelTrackerProps) {
 
         .tcc-fuel-media-${uid} {
           position: relative;
-          border-radius: 18px;
-          overflow: hidden;
-          background: #ffffff;
-          box-shadow: 0 18px 48px -18px rgba(26, 60, 60, 0.35),
-                      0 2px 8px rgba(26, 60, 60, 0.08);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 12px;
+          background: transparent;
         }
 
         .tcc-fuel-img-${uid} {
           display: block;
           width: 100%;
           height: auto;
+          background: transparent;
         }
 
         .tcc-fuel-badge-${uid} {
-          position: absolute;
-          top: 14px;
-          left: 14px;
           display: inline-flex;
           align-items: center;
           gap: 8px;
@@ -118,7 +117,6 @@ export default function TccFuelTracker(props: TccFuelTrackerProps) {
           letter-spacing: 0.02em;
           padding: 7px 12px 7px 10px;
           border-radius: 999px;
-          backdrop-filter: blur(4px);
         }
 
         .tcc-fuel-dot-${uid} {
