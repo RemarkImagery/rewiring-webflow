@@ -4,7 +4,7 @@ import TccVerticalVideo from "./TccVerticalVideo";
 
 export default declareComponent(TccVerticalVideo, {
   name: "TCC Vertical Video",
-  description: "Single vertical YouTube video left-aligned with heading and body text on the right, with up to 3 CTA buttons",
+  description: "Single vertical YouTube video left-aligned with heading and body text on the right, with up to 4 CTA buttons",
   group: "This Car Can",
   props: {
     youtubeUrl: props.Text({ name: "YouTube URL", defaultValue: "", group: "Video", tooltip: "Full YouTube URL (youtube.com/watch?v=, youtu.be/, or /shorts/)" }),
@@ -19,6 +19,9 @@ export default declareComponent(TccVerticalVideo, {
     btn3Label: props.Text({ name: "Button 3 Label", defaultValue: "", group: "Button 3" }),
     btn3Url: props.Text({ name: "Button 3 URL", defaultValue: "", group: "Button 3", tooltip: "Page path, #section-id, or full URL" }),
     btn3NewTab: props.Boolean({ name: "Open in new tab", defaultValue: false, group: "Button 3" }),
+    btn4Label: props.Text({ name: "Button 4 Label", defaultValue: "", group: "Button 4" }),
+    btn4Url: props.Text({ name: "Button 4 URL", defaultValue: "", group: "Button 4", tooltip: "Page path, #section-id, or full URL" }),
+    btn4NewTab: props.Boolean({ name: "Open in new tab", defaultValue: false, group: "Button 4" }),
     bgColor: props.Text({ name: "Background Color", defaultValue: "#1a3c3c", group: "Style" }),
     accentColor: props.Text({ name: "Accent Color", defaultValue: "#f5b731", group: "Style" }),
   },

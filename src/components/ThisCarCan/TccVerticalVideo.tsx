@@ -21,6 +21,9 @@ interface TccVerticalVideoProps {
   btn3Label?: string;
   btn3Url?: string;
   btn3NewTab?: boolean;
+  btn4Label?: string;
+  btn4Url?: string;
+  btn4NewTab?: boolean;
   bgColor?: string;
   accentColor?: string;
 }
@@ -48,6 +51,7 @@ export default function TccVerticalVideo(props: TccVerticalVideoProps) {
     btn1Label, btn1Url, btn1NewTab,
     btn2Label, btn2Url, btn2NewTab,
     btn3Label, btn3Url, btn3NewTab,
+    btn4Label, btn4Url, btn4NewTab,
     bgColor = "#1a3c3c",
     accentColor = "#f5b731",
   } = props;
@@ -56,6 +60,7 @@ export default function TccVerticalVideo(props: TccVerticalVideoProps) {
     { label: btn1Label, url: btn1Url, newTab: btn1NewTab },
     { label: btn2Label, url: btn2Url, newTab: btn2NewTab },
     { label: btn3Label, url: btn3Url, newTab: btn3NewTab },
+    { label: btn4Label, url: btn4Url, newTab: btn4NewTab },
   ].filter((b) => b.label && b.url);
 
   const uid = useId().replace(/:/g, "");
