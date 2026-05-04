@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useId, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 interface LinkValue {
   href: string;
@@ -85,7 +86,10 @@ export default function RwNavMega(props: RwNavMegaProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileDrill, setMobileDrill] = useState<number | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const closeTimer = useRef<number | null>(null);
+
+  useEffect(() => { setMounted(true); }, []);
 
   const get = (k: string) => (props as Record<string, unknown>)[k];
 
@@ -145,7 +149,48 @@ export default function RwNavMega(props: RwNavMegaProps) {
     return () => { document.body.style.overflow = prev; };
   }, [mobileOpen]);
 
+  // Defensive: always release body lock on unmount, no matter what state we're in.
+  useEffect(() => {
+    return () => {
+      if (typeof document !== "undefined") {
+        document.body.style.overflow = "";
+      }
+    };
+  }, []);
+
+  // bfcache safety: when iOS Safari restores this page from back-forward cache
+  // the mobile menu would otherwise be "stuck" open with body overflow hidden,
+  // which feels exactly like a frozen page. Reset state on pageshow/popstate.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const reset = () => {
+      setMobileOpen(false);
+      setMobileDrill(null);
+      setSearchOpen(false);
+      setOpen(null);
+      if (typeof document !== "undefined") {
+        document.body.style.overflow = "";
+      }
+    };
+    const onPageShow = (e: PageTransitionEvent) => { if (e.persisted) reset(); };
+    window.addEventListener("pageshow", onPageShow);
+    window.addEventListener("popstate", reset);
+    return () => {
+      window.removeEventListener("pageshow", onPageShow);
+      window.removeEventListener("popstate", reset);
+    };
+  }, []);
+
   const closeMobile = () => { setMobileOpen(false); setMobileDrill(null); };
+
+  // Defer state change to the next tick so the browser can fully process the
+  // click's default action (navigation) before React unmounts the link element.
+  // Without this, iOS Safari occasionally cancels navigation when the menu
+  // unmounts mid-click.
+  const handleLinkClick = () => {
+    if (typeof window !== "undefined") window.setTimeout(closeMobile, 0);
+    else closeMobile();
+  };
 
   const ExternalIcon = () => (
     <svg className={`rwnm-ext-${uid}`} width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
@@ -275,7 +320,7 @@ export default function RwNavMega(props: RwNavMegaProps) {
         )}
       </header>
 
-      {mobileOpen && (
+      {mounted && mobileOpen && createPortal(
         <div className={`rwnm-mobile-${uid}`} role="dialog" aria-modal="true">
           <div className={`rwnm-m-topbar-${uid}`}>
             {mobileDrill === null ? (
@@ -284,7 +329,7 @@ export default function RwNavMega(props: RwNavMegaProps) {
                   href={logoHref?.href || "/"}
                   target={logoHref?.target}
                   className={`rwnm-m-logo-${uid}`}
-                  onClick={closeMobile}
+                  onClick={handleLinkClick}
                 >
                   <img src={logoSrc} alt={logoAltResolved} />
                 </a>
@@ -353,7 +398,12 @@ export default function RwNavMega(props: RwNavMegaProps) {
                   );
                 })}
                 {donateLabel && (
-                  <a href={donateHref?.href || "#"} target={donateHref?.target} className={`rwnm-m-donate-${uid}`}>
+                  <a
+                    href={donateHref?.href || "#"}
+                    target={donateHref?.target}
+                    className={`rwnm-m-donate-${uid}`}
+                    onClick={handleLinkClick}
+                  >
                     {donateLabel}
                   </a>
                 )}
@@ -374,7 +424,7 @@ export default function RwNavMega(props: RwNavMegaProps) {
                             target={l.link?.target || (ext ? "_blank" : undefined)}
                             rel={ext ? "noopener noreferrer" : undefined}
                             className={`rwnm-m-link-item-${uid} ${l.featured ? `rwnm-m-link-featured-${uid}` : ""}`}
-                            onClick={closeMobile}
+                            onClick={handleLinkClick}
                           >
                             <span className={`rwnm-m-link-label-${uid}`}>
                               {l.label}
@@ -390,7 +440,8 @@ export default function RwNavMega(props: RwNavMegaProps) {
               </div>
             )}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       <style>{`
