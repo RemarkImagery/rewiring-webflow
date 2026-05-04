@@ -86,10 +86,7 @@ export default function RwNavMega(props: RwNavMegaProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileDrill, setMobileDrill] = useState<number | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const closeTimer = useRef<number | null>(null);
-
-  useEffect(() => { setMounted(true); }, []);
 
   const get = (k: string) => (props as Record<string, unknown>)[k];
 
@@ -320,7 +317,7 @@ export default function RwNavMega(props: RwNavMegaProps) {
         )}
       </header>
 
-      {mounted && mobileOpen && createPortal(
+      {mobileOpen && typeof document !== "undefined" && createPortal(
         <div className={`rwnm-mobile-${uid}`} role="dialog" aria-modal="true">
           <div className={`rwnm-m-topbar-${uid}`}>
             {mobileDrill === null ? (
