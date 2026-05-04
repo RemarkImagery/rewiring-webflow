@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useId, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 
 interface LinkValue {
   href: string;
@@ -155,12 +154,13 @@ export default function RwNavMega(props: RwNavMegaProps) {
     };
   }, []);
 
-  // bfcache safety: when iOS Safari restores this page from back-forward cache
-  // the mobile menu would otherwise be "stuck" open with body overflow hidden,
-  // which feels exactly like a frozen page. Reset state on pageshow/popstate.
+  // bfcache safety: when iOS Safari restores this page from back-forward cache,
+  // ensure the menu is closed and the body lock is released. Only listens for
+  // pageshow with `persisted` so we don't interfere with normal navigation.
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const reset = () => {
+    const onPageShow = (e: PageTransitionEvent) => {
+      if (!e.persisted) return;
       setMobileOpen(false);
       setMobileDrill(null);
       setSearchOpen(false);
@@ -169,13 +169,8 @@ export default function RwNavMega(props: RwNavMegaProps) {
         document.body.style.overflow = "";
       }
     };
-    const onPageShow = (e: PageTransitionEvent) => { if (e.persisted) reset(); };
     window.addEventListener("pageshow", onPageShow);
-    window.addEventListener("popstate", reset);
-    return () => {
-      window.removeEventListener("pageshow", onPageShow);
-      window.removeEventListener("popstate", reset);
-    };
+    return () => window.removeEventListener("pageshow", onPageShow);
   }, []);
 
   const closeMobile = () => { setMobileOpen(false); setMobileDrill(null); };
@@ -317,7 +312,7 @@ export default function RwNavMega(props: RwNavMegaProps) {
         )}
       </header>
 
-      {mobileOpen && typeof document !== "undefined" && createPortal(
+      {mobileOpen && (
         <div className={`rwnm-mobile-${uid}`} role="dialog" aria-modal="true">
           <div className={`rwnm-m-topbar-${uid}`}>
             {mobileDrill === null ? (
@@ -437,8 +432,7 @@ export default function RwNavMega(props: RwNavMegaProps) {
               </div>
             )}
           </div>
-        </div>,
-        document.body
+        </div>
       )}
 
       <style>{`
