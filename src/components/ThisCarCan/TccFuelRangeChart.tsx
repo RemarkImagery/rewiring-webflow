@@ -17,6 +17,7 @@ import {
 
 interface TccFuelRangeChartProps {
   heading?: string;
+  intro?: string;
   source?: string;
   axisMax?: number;
   axisStep?: number;
@@ -56,6 +57,8 @@ interface Row {
 export default function TccFuelRangeChart(props: TccFuelRangeChartProps) {
   const {
     heading = "How far will $5 of ‘fuel’ get you?",
+    intro =
+      "The cheapest, cleanest way to power a car is with sunshine. The same $5 takes a solar-charged EV more than ten times further than a petrol car.",
     source =
       "Rewiring Aotearoa, 2026. MBIE Energy Prices, 2026. Fueleconomy.gov, Rightcar.govt.nz, Motor Vehicle Register.",
     axisMax = 250,
@@ -192,6 +195,7 @@ export default function TccFuelRangeChart(props: TccFuelRangeChartProps) {
     <section className={`tcc-frc-wrap-${uid}`}>
       <div className={`tcc-frc-inner-${uid}`}>
         <h2 className={`tcc-frc-h2-${uid}`}>{heading}</h2>
+        {intro && <div className={`tcc-frc-intro-${uid}`}>{intro}</div>}
         <div className={`tcc-frc-card-${uid}`}>
           <div className={`tcc-frc-scroll-${uid}`}>
             <div className={`tcc-frc-chart-${uid}`}>
@@ -200,7 +204,7 @@ export default function TccFuelRangeChart(props: TccFuelRangeChartProps) {
                   layout="vertical"
                   data={DATA}
                   margin={{ top: 16, right: 70, left: 24, bottom: 8 }}
-                  barCategoryGap="34%"
+                  barCategoryGap="12%"
                 >
                   <CartesianGrid
                     stroke={gridColor}
@@ -266,10 +270,22 @@ export default function TccFuelRangeChart(props: TccFuelRangeChartProps) {
         .tcc-frc-h2-${uid} {
           font-size: 26px;
           font-weight: 700;
-          margin: 0 0 20px;
+          margin: 0 0 10px;
           letter-spacing: -0.01em;
           color: ${inkColor};
         }
+
+        .tcc-frc-intro-${uid} {
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 1.55;
+          margin: 0 0 22px;
+          max-width: 760px;
+          color: ${inkColor};
+        }
+        .tcc-frc-intro-${uid} p { margin: 0 0 10px; }
+        .tcc-frc-intro-${uid} p:last-child { margin-bottom: 0; }
+        .tcc-frc-intro-${uid} a { color: ${multiplierColor}; }
 
         .tcc-frc-card-${uid} {
           background: ${bgColor};
@@ -300,6 +316,7 @@ export default function TccFuelRangeChart(props: TccFuelRangeChartProps) {
         @media (max-width: 780px) {
           .tcc-frc-inner-${uid} { padding: 24px 16px 36px; }
           .tcc-frc-h2-${uid} { font-size: 21px; }
+          .tcc-frc-intro-${uid} { font-size: 14px; margin-bottom: 18px; }
           .tcc-frc-chart-${uid} { height: 380px; min-width: 560px; }
           .tcc-frc-source-${uid} { font-size: 11px; text-align: left; }
         }

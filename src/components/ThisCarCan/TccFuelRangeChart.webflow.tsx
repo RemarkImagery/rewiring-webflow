@@ -14,6 +14,12 @@ export default declareComponent(TccFuelRangeChart, {
       defaultValue: "How far will $5 of ‘fuel’ get you?",
       group: "Content",
     }),
+    intro: props.RichText({
+      name: "Intro Text",
+      defaultValue:
+        "The cheapest, cleanest way to power a car is with sunshine. The same $5 takes a solar-charged EV more than ten times further than a petrol car.",
+      group: "Content",
+    }),
     source: props.RichText({
       name: "Source / Caption",
       defaultValue:
