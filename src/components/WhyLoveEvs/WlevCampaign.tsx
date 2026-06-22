@@ -16,6 +16,7 @@ interface WlevCampaignProps {
   ctaHeading?: string;
   ctaBody?: string;
   ctaButtonText?: string;
+  ctaButtonLink?: any;
   bgColor?: string;
 }
 
@@ -28,10 +29,17 @@ export default function WlevCampaign(props: WlevCampaignProps) {
     ctaHeading = "Tell Us What Yours Can Do",
     ctaBody = "We want to hear your EV stories. Send us photos, film videos and create your own little placards for social media.",
     ctaButtonText = "Share Your Story",
+    ctaButtonLink = "https://www.rewiring.nz/this-car-can",
     bgColor = "#FFFCF0",
   } = props;
 
   const uid = useId().replace(/:/g, "");
+
+  const ctaHref =
+    typeof ctaButtonLink === "string"
+      ? ctaButtonLink
+      : ctaButtonLink?.href || "https://www.rewiring.nz/this-car-can";
+  const ctaTarget = typeof ctaButtonLink === "object" ? ctaButtonLink?.target : undefined;
 
   const features = [
     { icon: "save", label: "Save money", desc: "Cheaper to run than petrol or diesel" },
@@ -101,21 +109,21 @@ export default function WlevCampaign(props: WlevCampaignProps) {
             {renderRichText(ctaBody, `wlev-cm-cta-body-${uid}`)}
 
             <div className={`wlev-cm-cta-methods-${uid}`}>
-              <div className={`wlev-cm-cta-method-${uid}`}>
+              <a href={ctaHref} target={ctaTarget} className={`wlev-cm-cta-method-${uid}`}>
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2d5c5a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                 <span>Photos</span>
-              </div>
-              <div className={`wlev-cm-cta-method-${uid}`}>
+              </a>
+              <a href={ctaHref} target={ctaTarget} className={`wlev-cm-cta-method-${uid}`}>
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2d5c5a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
                 <span>Videos</span>
-              </div>
-              <div className={`wlev-cm-cta-method-${uid}`}>
+              </a>
+              <a href={ctaHref} target={ctaTarget} className={`wlev-cm-cta-method-${uid}`}>
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2d5c5a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                 <span>Stories</span>
-              </div>
+              </a>
             </div>
 
-            <a href="#" className={`wlev-cm-cta-btn-${uid}`}>{ctaButtonText}</a>
+            <a href={ctaHref} target={ctaTarget} className={`wlev-cm-cta-btn-${uid}`}>{ctaButtonText}</a>
           </div>
         </div>
       </section>
@@ -316,6 +324,7 @@ export default function WlevCampaign(props: WlevCampaignProps) {
           border-radius: 16px;
           border: 1px solid rgba(255, 255, 255, 0.1);
           color: #d1e0df;
+          text-decoration: none;
           font-family: 'Rubik', sans-serif;
           font-size: 0.9rem;
           font-weight: 600;
