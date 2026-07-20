@@ -8,6 +8,7 @@ import { CSS, TEMPLATE } from "./reportContent";
 import {
   StackedBarChart,
   TabbedCharts,
+  CumulativeChart,
   buildBillCfg,
   buildSavingsCfg,
   SOLAR_TABS,
@@ -45,6 +46,13 @@ function mountCharts(root: HTMLElement, d: District): Root[] {
       roots.push(r);
     }
   });
+  const cn = root.querySelector("#cumulative-chart");
+  if (cn && d.cumulative) {
+    cn.classList.remove("cumulative-ph");
+    const r = createRoot(cn);
+    r.render(<CumulativeChart cfg={d.cumulative} />);
+    roots.push(r);
+  }
   return roots;
 }
 

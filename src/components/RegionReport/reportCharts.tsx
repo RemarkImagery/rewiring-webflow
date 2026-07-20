@@ -11,6 +11,10 @@ import {
   ResponsiveContainer,
   LabelList,
   Tooltip,
+  ComposedChart,
+  Area,
+  Line,
+  Legend,
 } from "recharts";
 import type { District } from "./districtData";
 
@@ -262,6 +266,74 @@ export function buildBillCfg(d: District) {
 }
 export function buildSavingsCfg(d: District) {
   return { ...SAVINGS_CFG_BASE, data: d.savings, yMax: d.savingsYMax, yTicks: d.savingsYTicks };
+}
+
+/* ─── Cumulative savings chart (2026–2040) — ported from the live preview.
+   single mode: one cumulative-savings area; dual: net area + bill-savings line. ─── */
+type CumulativePoint = { year: number; bills: number | null; net: number | null };
+export type CumulativeCfg = {
+  data: CumulativePoint[];
+  single?: boolean;
+  billsEnd?: string | null;
+  netEnd?: string | null;
+};
+
+const fmtShort = (n: any) => {
+  if (n == null) return "";
+  const a = Math.abs(n);
+  if (a >= 1e9) return "$" + (n / 1e9).toFixed(1).replace(/\.0$/, "") + "b";
+  if (a >= 1e6) return "$" + (n / 1e6).toFixed(1).replace(/\.0$/, "") + "m";
+  if (a >= 1e3) return "$" + Math.round(n / 1e3) + "k";
+  return "$" + Math.round(n);
+};
+
+const CumulTip = ({ active, payload, label }: any) => {
+  if (!active || !payload || !payload.length) return null;
+  return (
+    <div style={{ background: "#111", color: "#fff", padding: "10px 14px", borderRadius: 8, fontFamily: "Rubik", fontSize: 13, boxShadow: "0 6px 20px rgba(0,0,0,0.18)", pointerEvents: "none" }}>
+      <div style={{ fontWeight: 600, marginBottom: 4 }}>{label}</div>
+      {payload.map((p: any, i: number) => (
+        <div key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ width: 10, height: 10, borderRadius: 2, background: p.color, display: "inline-block" }} />
+          <span>{p.name}: {"$" + Number(p.value).toLocaleString("en-NZ")}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export function CumulativeChart({ cfg }: { cfg: CumulativeCfg }) {
+  const endLabel = (text?: string | null) => (props: any) => {
+    if (props.index !== cfg.data.length - 1 || text == null) return null;
+    return (
+      <text x={props.x + 8} y={props.y + 4} textAnchor="start" fill="#1a3c3c" fontFamily="Rubik" fontSize="14" fontWeight={700}>
+        {text}
+      </text>
+    );
+  };
+  return (
+    <div style={{ width: "100%", height: 380 }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <ComposedChart data={cfg.data} margin={{ top: 16, right: 96, bottom: 4, left: 12 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#e8e8e3" vertical={false} />
+          <XAxis dataKey="year" interval={1} tickLine={false} axisLine={{ stroke: "#c9c9c2" }} tick={{ fill: "#1a3c3c", fontFamily: "Rubik", fontSize: 12 }} />
+          <YAxis tickFormatter={fmtShort} tickLine={false} axisLine={false} width={64} tick={{ fill: "#5f6f6f", fontFamily: "Rubik", fontSize: 12 }} />
+          <Tooltip content={<CumulTip />} cursor={{ stroke: "#c9c9c2", strokeWidth: 1 }} />
+          {!cfg.single && (
+            <Legend wrapperStyle={{ fontFamily: "Rubik", fontSize: 13, color: "#1a3c3c" }} formatter={(v) => <span style={{ color: "#1a3c3c" }}>{v}</span>} />
+          )}
+          {cfg.single ? (
+            <Area type="monotone" dataKey="bills" name="Cumulative savings" stroke="#93c47d" strokeWidth={2} fill="#93c47d" fillOpacity={0.3} dot={false} activeDot={{ r: 5 }} isAnimationActive={false} label={endLabel(cfg.billsEnd)} />
+          ) : (
+            <>
+              <Area type="monotone" dataKey="net" name="Net savings (after upfront costs)" stroke="#93c47d" strokeWidth={2} fill="#93c47d" fillOpacity={0.3} dot={false} activeDot={{ r: 5 }} isAnimationActive={false} label={endLabel(cfg.netEnd)} />
+              <Line type="monotone" dataKey="bills" name="Energy bill savings" stroke="#3c78d8" strokeWidth={2} dot={false} activeDot={{ r: 5 }} isAnimationActive={false} label={endLabel(cfg.billsEnd)} />
+            </>
+          )}
+        </ComposedChart>
+      </ResponsiveContainer>
+    </div>
+  );
 }
 
 /* ─── National appliance-comparison tabs (same for every location) ─── */

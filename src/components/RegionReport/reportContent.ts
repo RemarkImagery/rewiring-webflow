@@ -286,7 +286,7 @@ export const TEMPLATE = `<div class="hero">
           <div class="savings-box">
             <div class="savings-stat">
               <div class="stat-num num-save">{{heatpump_lifetime_savings}} <span class="stat-word">savings</span></div>
-              <div class="meta">lifetime (LPG fire)</div>
+              <div class="meta">lifetime ({{heatpump_switch_short}})</div>
             </div>
             <div class="savings-stat">
               <div class="stat-num num-fossil">{{heaters_fossil}}</div>
@@ -294,7 +294,7 @@ export const TEMPLATE = `<div class="hero">
             </div>
           </div>
           <div class="prose">
-            <p>Heat pumps use around <strong>{{heatpump_energy_pct}} less energy</strong> than gas heaters to deliver the same warmth, and, unlike gas, they cool in summer too. Switching from an LPG fire to a heat pump <strong>saves {{heatpump_15yr_savings}} on bills over 15 years</strong> and {{heatpump_lifetime_savings}} over the lifetime including upfront costs, or around {{heatpump_annual_savings}} every year. Of {{location}}'s {{heaters_fossil}} non-electric heaters, approximately {{heaters_lpg}} are LPG. Whatever the fuel type, going electric brings significant savings, and the comfort upgrade is immediate.</p>
+            <p>Heat pumps use around <strong>{{heatpump_energy_pct}} less energy</strong> than gas heaters to deliver the same warmth, and, unlike gas, they cool in summer too. Switching from {{heatpump_switch_from}} to a heat pump <strong>saves {{heatpump_15yr_savings}} on bills over 15 years</strong> and {{heatpump_lifetime_savings}} over the lifetime including upfront costs, or around {{heatpump_annual_savings}} every year. {{heater_breakdown}} Whatever the fuel type, going electric brings significant savings, and the comfort upgrade is immediate.</p>
           </div>
         </div>
         <div id="heating-tabs"></div>
@@ -314,7 +314,7 @@ export const TEMPLATE = `<div class="hero">
           <div class="savings-box">
             <div class="savings-stat">
               <div class="stat-num num-save">{{water_15yr_savings}} <span class="stat-word">savings</span></div>
-              <div class="meta">bill, 15 years (LPG instant)</div>
+              <div class="meta">bill, 15 years ({{water_switch_short}})</div>
             </div>
             <div class="savings-stat">
               <div class="stat-num num-fossil">{{water_heaters_fossil}}</div>
@@ -322,7 +322,7 @@ export const TEMPLATE = `<div class="hero">
             </div>
           </div>
           <div class="prose">
-            <p>Hot water heat pumps have a higher upfront cost, but <strong>deliver the lowest ongoing energy bills</strong> of any water heating option. In {{location}}, switching from LPG instant to a hot water heat pump <strong>saves {{water_15yr_savings}} on bills over 15 years</strong>, or {{water_lifetime_savings}} over the lifetime including upfront costs. Of {{location}}'s {{water_heaters_fossil}} non-electric water heaters, approximately {{water_heaters_lpg}} are LPG instant.</p>
+            <p>Hot water heat pumps have a higher upfront cost, but <strong>deliver the lowest ongoing energy bills</strong> of any water heating option. In {{location}}, switching from {{water_switch_from}} to a hot water heat pump <strong>saves {{water_15yr_savings}} on bills over 15 years</strong>, or {{water_lifetime_savings}} over the lifetime including upfront costs. {{water_breakdown}}</p>
             <p>Water heating makes up around <strong>{{water_energy_pct}} of an average home's energy load</strong> &mdash; making it one of the highest-impact switches a household can make. Hot water heat pumps can also act as a 'thermal battery' where you time it to heat water when electricity is cheapest, or when your solar panels are generating.</p>
           </div>
         </div>
