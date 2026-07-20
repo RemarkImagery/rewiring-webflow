@@ -81,38 +81,39 @@ const DATA: Matchup[] = [
     cat: "Small car",
     ice: {
       name: "Honda Jazz", type: "Petrol", spec: "$30,700 upfront", img: `${CDN}/honda-jazz.png`,
-      c: { maintenance: 1460, petrol: 2791, diesel: 0, electricity: 0, rucs: 0, fuelCrisis: 706 },
+      c: { maintenance: 1072, petrol: 2048, diesel: 0, electricity: 0, rucs: 0, fuelCrisis: 518 },
     },
     ev: {
       name: "BYD Atto 1", type: "Electric", spec: "$29,990 · 220 km range", img: `${CDN}/byd-atto-1.png`,
-      c: { maintenance: 1033, petrol: 0, diesel: 0, electricity: 645, rucs: 1088, fuelCrisis: 0 },
+      c: { maintenance: 693, petrol: 0, diesel: 0, electricity: 605, rucs: 799, fuelCrisis: 0 },
     },
   },
   {
     cat: "Medium SUV",
     ice: {
       name: "Toyota RAV4", type: "Hybrid", spec: "$57,990 upfront", img: `${CDN}/toyota-rav4.png`,
-      c: { maintenance: 1317, petrol: 2263, diesel: 0, electricity: 0, rucs: 0, fuelCrisis: 572 },
+      c: { maintenance: 967, petrol: 1661, diesel: 0, electricity: 0, rucs: 0, fuelCrisis: 420 },
     },
     ev: {
       name: "Tesla Model Y", type: "Electric", spec: "$68,799 upfront", img: `${CDN}/tesla-model-y.png`,
-      c: { maintenance: 1033, petrol: 0, diesel: 0, electricity: 597, rucs: 1088, fuelCrisis: 0 },
+      c: { maintenance: 788, petrol: 0, diesel: 0, electricity: 560, rucs: 799, fuelCrisis: 0 },
     },
   },
   {
     cat: "Ute",
     ice: {
       name: "Ford Ranger", type: "Diesel", spec: "$57,490 upfront", img: `${CDN}/ford-ranger.png`,
-      c: { maintenance: 2076, petrol: 0, diesel: 2908, electricity: 0, rucs: 1088, fuelCrisis: 3220 },
+      c: { maintenance: 1524, petrol: 0, diesel: 2134, electricity: 0, rucs: 799, fuelCrisis: 2363 },
     },
     ev: {
       name: "Geely Riddara", type: "Electric", spec: "$69,990 · 360 km range", img: `${CDN}/geely-riddara-rd6.png`,
-      c: { maintenance: 1033, petrol: 0, diesel: 0, electricity: 861, rucs: 1088, fuelCrisis: 0 },
+      c: { maintenance: 988, petrol: 0, diesel: 0, electricity: 808, rucs: 799, fuelCrisis: 0 },
     },
   },
 ];
 
-const money = (n: number) => "$" + Math.round(n).toLocaleString();
+const roundUp100 = (n: number) => Math.ceil(n / 100) * 100;
+const money = (n: number) => "$" + roundUp100(n).toLocaleString();
 
 export default function TccVehicleHeadToHead(props: TccVehicleHeadToHeadProps) {
   const {
@@ -136,11 +137,11 @@ export default function TccVehicleHeadToHead(props: TccVehicleHeadToHeadProps) {
     scenario === "crisis" ? ORDER : ORDER.filter((k) => k !== "fuelCrisis");
 
   const total = (c: Costs) =>
-    activeKeys.reduce((s, k) => s + (c[k] || 0), 0);
+    activeKeys.reduce((s, k) => s + roundUp100(c[k] || 0), 0);
 
   const miniBarSegments = (c: Costs, tot: number) =>
     activeKeys.map((k) => {
-      const v = c[k] || 0;
+      const v = roundUp100(c[k] || 0);
       if (!v) return null;
       return (
         <div
@@ -341,11 +342,12 @@ export default function TccVehicleHeadToHead(props: TccVehicleHeadToHeadProps) {
         .tcc-hth-tag-${uid}[data-side="ev"]  { background: #dff0d6; color: #3a6b2a; }
 
         .tcc-hth-carimg-${uid} {
-          height: 160px; display: flex; align-items: center; justify-content: center;
+          height: 180px; display: flex; align-items: center; justify-content: center;
           margin-bottom: 6px;
         }
         .tcc-hth-carimg-${uid} img {
-          max-height: 100%; width: auto; max-width: 100%; display: block;
+          width: 100%; max-width: 320px; height: auto; max-height: 100%;
+          object-fit: contain; display: block;
         }
 
         .tcc-hth-cartitle-${uid} { font-size: 1.5rem; font-weight: 700; margin: 8px 0 4px; color: ${inkColor}; }

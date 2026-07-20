@@ -9,7 +9,7 @@ interface LinkValue {
 
 type Menus = 1 | 2 | 3 | 4 | 5;
 type Cols = 1 | 2 | 3;
-type Links = 1 | 2 | 3 | 4 | 5 | 6;
+type Links = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 type MenuProps = {
   [K in `menu${Menus}Label`]?: string;
@@ -62,7 +62,7 @@ type MenuItem = { label: string; thumb?: ImageValue; columns: ColItem[] };
 
 const MENUS = [1, 2, 3, 4, 5] as const;
 const COLS = [1, 2, 3] as const;
-const LINKS = [1, 2, 3, 4, 5, 6] as const;
+const LINKS = [1, 2, 3, 4, 5, 6, 7] as const;
 
 export default function RwNavMega(props: RwNavMegaProps) {
   const {

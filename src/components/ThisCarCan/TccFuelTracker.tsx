@@ -53,6 +53,21 @@ export default function TccFuelTracker(props: TccFuelTrackerProps) {
         <div className={`tcc-fuel-content-${uid}`}>
           <h2 className={`tcc-fuel-heading-${uid}`}>{heading}</h2>
           <p className={`tcc-fuel-text-${uid}`}>{description}</p>
+          <p className={`tcc-fuel-source-${uid}`}>
+            Petrol and diesel prices sourced from{" "}
+            <a href="https://gaspy.nz" target="_blank" rel="noopener noreferrer">
+              Gaspy
+            </a>
+            . See our{" "}
+            <a
+              href="https://www.rewiring.nz/news/methodology-for-equivalent-fuel-price-calculations"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              methodology for equivalent fuel price calculations
+            </a>
+            .
+          </p>
           {showButton && (
             <a
               href={buttonLink?.href || "#"}
@@ -119,6 +134,26 @@ export default function TccFuelTracker(props: TccFuelTrackerProps) {
           color: ${textColor};
           margin: 0;
           line-height: 1.65;
+        }
+
+        .tcc-fuel-source-${uid} {
+          font-family: 'Rubik', sans-serif;
+          font-size: 0.85rem;
+          font-weight: 400;
+          color: ${textColor};
+          opacity: 0.7;
+          margin: 0;
+          line-height: 1.5;
+        }
+
+        .tcc-fuel-source-${uid} a {
+          color: ${headingColor};
+          text-decoration: underline;
+          text-underline-offset: 2px;
+        }
+
+        .tcc-fuel-source-${uid} a:hover {
+          opacity: 0.75;
         }
 
         .tcc-fuel-btn-${uid} {

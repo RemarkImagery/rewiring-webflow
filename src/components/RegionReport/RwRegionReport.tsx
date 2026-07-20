@@ -1,0 +1,132 @@
+"use client";
+
+import React, { useEffect, useRef } from "react";
+import { createRoot, type Root } from "react-dom/client";
+import { DISTRICTS, type District } from "./districtData";
+import { CSS, TEMPLATE } from "./reportContent";
+import {
+  StackedBarChart,
+  TabbedCharts,
+  buildBillCfg,
+  buildSavingsCfg,
+  SOLAR_TABS,
+  EV_TABS,
+  HEATING_TABS,
+  WATER_TABS,
+  COOKTOP_TABS,
+} from "./reportCharts";
+
+export interface RwRegionReportProps {
+  /** District/region slug, e.g. "dunedin", "queenstown-lakes", "new-zealand" */
+  districtSlug?: string;
+}
+
+function sub(tpl: string, fields: Record<string, string>): string {
+  return tpl.replace(/\{\{\s*(\w+)\s*\}\}/g, (_m, k) => (k in fields ? fields[k] : ""));
+}
+
+function mountCharts(root: HTMLElement, d: District): Root[] {
+  const mounts: Array<[string, React.ReactNode]> = [
+    ["bill-chart", <StackedBarChart cfg={buildBillCfg(d)} id="bills" />],
+    ["savings-chart", <StackedBarChart cfg={buildSavingsCfg(d)} id="savings" />],
+    ["solar-tabs", <TabbedCharts {...SOLAR_TABS} />],
+    ["ev-tabs", <TabbedCharts {...EV_TABS} />],
+    ["heating-tabs", <TabbedCharts {...HEATING_TABS} />],
+    ["water-tabs", <TabbedCharts {...WATER_TABS} />],
+    ["cooktop-tabs", <TabbedCharts {...COOKTOP_TABS} />],
+  ];
+  const roots: Root[] = [];
+  mounts.forEach(([id, node]) => {
+    const n = root.querySelector("#" + id);
+    if (n) {
+      const r = createRoot(n);
+      r.render(node);
+      roots.push(r);
+    }
+  });
+  return roots;
+}
+
+/** Scroll-reveal + active jump-nav, scoped to the report root. Returns a cleanup fn. */
+function initInteractions(root: HTMLElement): () => void {
+  const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const observers: IntersectionObserver[] = [];
+  const clickCleanups: Array<() => void> = [];
+
+  if (!reduce && "IntersectionObserver" in window) {
+    const blocks = root.querySelectorAll(".jumpnav, .section-head, .two-col, .container > .prose, .chart-wrap");
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }),
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+    );
+    blocks.forEach((el) => { el.classList.add("reveal"); io.observe(el); });
+    observers.push(io);
+  }
+
+  const cards = Array.from(root.querySelectorAll<HTMLAnchorElement>(".jump-card"));
+  const byId: Record<string, Element> = {};
+  const sections: Element[] = [];
+  cards.forEach((c) => {
+    const id = (c.getAttribute("href") || "").slice(1);
+    const target = id ? root.querySelector("#" + id) : null;
+    const sec = target ? target.closest(".section") : null;
+    if (sec) {
+      sec.setAttribute("data-spy", id);
+      byId[id] = c;
+      sections.push(sec);
+    }
+    // smooth in-page scroll (html scroll-behavior can't be scoped)
+    const onClick = (ev: Event) => {
+      const t = id ? root.querySelector("#" + id) : null;
+      if (t) { ev.preventDefault(); t.scrollIntoView({ behavior: "smooth", block: "start" }); }
+    };
+    c.addEventListener("click", onClick);
+    clickCleanups.push(() => c.removeEventListener("click", onClick));
+  });
+
+  if ("IntersectionObserver" in window && sections.length) {
+    let current: string | null = null;
+    const spy = new IntersectionObserver(
+      (entries) => entries.forEach((e) => {
+        if (e.isIntersecting) {
+          const id = (e.target as HTMLElement).getAttribute("data-spy");
+          if (id && current !== id) {
+            current = id;
+            cards.forEach((c) => c.classList.remove("is-active"));
+            if (byId[id]) byId[id].classList.add("is-active");
+          }
+        }
+      }),
+      { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
+    );
+    sections.forEach((s) => spy.observe(s));
+    observers.push(spy);
+  }
+
+  return () => {
+    observers.forEach((o) => o.disconnect());
+    clickCleanups.forEach((fn) => fn());
+  };
+}
+
+export default function RwRegionReport({ districtSlug = "new-zealand" }: RwRegionReportProps) {
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const d = DISTRICTS[districtSlug] || DISTRICTS["new-zealand"] || Object.values(DISTRICTS)[0];
+    if (!d) return;
+
+    root.innerHTML = `<style>${CSS}</style>` + sub(TEMPLATE, d.fields);
+    const roots = mountCharts(root, d);
+    const cleanupInteractions = initInteractions(root);
+
+    return () => {
+      roots.forEach((r) => { try { r.unmount(); } catch { /* node already gone */ } });
+      cleanupInteractions();
+    };
+  }, [districtSlug]);
+
+  return <div className="rw-region-report" ref={rootRef} />;
+}

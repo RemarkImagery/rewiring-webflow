@@ -47,7 +47,7 @@ export default declareComponent(NzMadeBanner, {
     }),
     ctaUrl: props.Text({
       name: "CTA URL",
-      defaultValue: "https://nzmadeenergy.nz",
+      defaultValue: "https://pages.rewiring.nz/nz-made-energy",
       group: "Content",
     }),
     bgColor: props.Text({

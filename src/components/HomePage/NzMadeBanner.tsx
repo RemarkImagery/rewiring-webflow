@@ -30,7 +30,7 @@ export default function NzMadeBanner(props: NzMadeBannerProps) {
     headingAccent = "Made Energy",
     tagline = "The status quo is a choice. But there is another option: make New Zealand-made energy our North Star.",
     ctaText = "Learn more",
-    ctaUrl = "https://nzmadeenergy.nz",
+    ctaUrl = "https://pages.rewiring.nz/nz-made-energy",
     bgColor = "#1a3c3c",
   } = props;
 
