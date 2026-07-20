@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import { INTRO_HTML, sub, mergeFields, ensureReportCss, initReveal } from "./reportSections";
+import { INTRO_HTML, sub, mergeFields, ensureReportCss, initReveal, resolveSlug } from "./reportSections";
 
 export interface RwReportIntroProps {
   districtSlug?: string;
@@ -14,7 +14,7 @@ export interface RwReportIntroProps {
 }
 
 export default function RwReportIntro({
-  districtSlug = "dunedin",
+  districtSlug = "",
   location,
   elecSavingsAnnual,
   co2eAnnual,
@@ -28,7 +28,8 @@ export default function RwReportIntro({
     const root = rootRef.current;
     if (!root) return;
     ensureReportCss();
-    const fields = mergeFields(districtSlug, {
+    const slug = resolveSlug(districtSlug);
+    const fields = mergeFields(slug, {
       location,
       elec_savings_annual: elecSavingsAnnual,
       co2e_annual: co2eAnnual,

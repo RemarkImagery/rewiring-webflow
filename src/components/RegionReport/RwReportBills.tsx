@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { BILLS_HTML, sub, mergeFields, getDistrict, ensureReportCss, initReveal } from "./reportSections";
+import { BILLS_HTML, sub, mergeFields, getDistrict, ensureReportCss, initReveal, resolveSlug } from "./reportSections";
 import { StackedBarChart, buildBillCfg } from "./reportCharts";
 
 export interface RwReportBillsProps {
@@ -13,7 +13,7 @@ export interface RwReportBillsProps {
 }
 
 export default function RwReportBills({
-  districtSlug = "dunedin",
+  districtSlug = "",
   location,
   billFossil,
   billElectric,
@@ -24,7 +24,8 @@ export default function RwReportBills({
     const root = rootRef.current;
     if (!root) return;
     ensureReportCss();
-    const fields = mergeFields(districtSlug, {
+    const slug = resolveSlug(districtSlug);
+    const fields = mergeFields(slug, {
       location,
       bill_fossil: billFossil,
       bill_electric: billElectric,
@@ -33,7 +34,7 @@ export default function RwReportBills({
 
     // Bill chart reads the bundled per-location array (not a CMS field).
     const roots: Root[] = [];
-    const d = getDistrict(districtSlug);
+    const d = getDistrict(slug);
     const mount = root.querySelector("#bill-chart");
     if (d && mount) {
       const r = createRoot(mount);

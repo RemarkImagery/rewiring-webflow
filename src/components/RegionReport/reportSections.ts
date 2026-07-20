@@ -37,6 +37,50 @@ export function getDistrict(slug?: string): District | undefined {
   );
 }
 
+// The CMS/URL slugs use the v4.4 extractor's disambiguated district/region
+// names; the bundled data predates that split and uses combined names. Map the
+// CMS slugs that lack an exact bundle entry to the closest bundled dataset so
+// every page renders real data. (Unitary authorities share one dataset; Waikato
+// district vs region is approximate until the bundle is regenerated.)
+const SLUG_ALIASES: Record<string, string> = {
+  "auckland-region": "auckland",
+  "gisborne-district": "gisborne",
+  "gisborne-region": "gisborne",
+  "hawke-s-bay-region": "hawke-s-bay",
+  "marlborough-district": "marlborough",
+  "marlborough-region": "marlborough",
+  "nelson-city": "nelson",
+  "nelson-region": "nelson",
+  "tasman-district": "tasman",
+  "tasman-region": "tasman",
+  "waikato-district": "waikato",
+  "waikato-region": "waikato",
+};
+
+function bundleKey(slug: string): string | null {
+  if (DISTRICTS[slug]) return slug;
+  const alias = SLUG_ALIASES[slug];
+  return alias && DISTRICTS[alias] ? alias : null;
+}
+
+/**
+ * Which location to render. An explicit override wins; otherwise the slug is
+ * taken from the last segment of the page URL (the Webflow Collection Page path,
+ * e.g. /regional-reports/dunedin), so the hard-coded data is chosen at page load
+ * with no CMS binding. Falls back to a friendly default on the Designer canvas
+ * (and any path with no matching region).
+ */
+export function resolveSlug(override?: string, fallback = "dunedin"): string {
+  const clean = (s?: string | null) => (s ?? "").trim().toLowerCase();
+  const o = bundleKey(clean(override));
+  if (o) return o;
+  if (typeof window !== "undefined") {
+    const seg = bundleKey(clean(window.location.pathname.split("/").filter(Boolean).pop()));
+    if (seg) return seg;
+  }
+  return DISTRICTS[fallback] ? fallback : "new-zealand";
+}
+
 /**
  * Merge CMS prop overrides over the bundled per-location fields. An empty/absent
  * prop keeps the bundled value, so an unbound instance still renders real data.

@@ -10,8 +10,8 @@ export default declareComponent(RwRegionReport, {
   options: { ssr: false },
   props: {
     districtSlug: props.Text({
-      name: "District slug",
-      defaultValue: "new-zealand",
+      name: "District slug (blank = auto from URL)",
+      defaultValue: "",
       group: "Content",
     }),
   },

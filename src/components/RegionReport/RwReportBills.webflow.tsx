@@ -9,7 +9,7 @@ export default declareComponent(RwReportBills, {
   group: "Region Reports",
   options: { ssr: false },
   props: {
-    districtSlug: props.Text({ name: "District slug", defaultValue: "dunedin", group: "Data" }),
+    districtSlug: props.Text({ name: "District slug (blank = auto from URL)", defaultValue: "", group: "Data" }),
     location: props.Text({ name: "Location name", defaultValue: "", group: "Content" }),
     billFossil: props.Text({ name: "Fossil-fuel home annual bill", defaultValue: "", group: "Content" }),
     billElectric: props.Text({ name: "Electric home annual bill", defaultValue: "", group: "Content" }),

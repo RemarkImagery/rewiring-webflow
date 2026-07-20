@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { MACHINES_HTML, sub, mergeFields, ensureReportCss, initReveal } from "./reportSections";
+import { MACHINES_HTML, sub, mergeFields, ensureReportCss, initReveal, resolveSlug } from "./reportSections";
 import { TabbedCharts, SOLAR_TABS, EV_TABS, HEATING_TABS, WATER_TABS, COOKTOP_TABS } from "./reportCharts";
 
 export interface RwReportMachinesProps {
@@ -45,14 +45,15 @@ export interface RwReportMachinesProps {
 }
 
 export default function RwReportMachines(p: RwReportMachinesProps) {
-  const { districtSlug = "dunedin" } = p;
+  const { districtSlug = "" } = p;
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
     ensureReportCss();
-    const fields = mergeFields(districtSlug, {
+    const slug = resolveSlug(districtSlug);
+    const fields = mergeFields(slug, {
       location: p.location,
       solar_net_savings: p.solarNetSavings,
       solar_panel_life: p.solarPanelLife,

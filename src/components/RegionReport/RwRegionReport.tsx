@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { DISTRICTS, type District } from "./districtData";
+import { resolveSlug } from "./reportSections";
 import { CSS, TEMPLATE } from "./reportContent";
 import {
   StackedBarChart,
@@ -109,13 +110,14 @@ function initInteractions(root: HTMLElement): () => void {
   };
 }
 
-export default function RwRegionReport({ districtSlug = "new-zealand" }: RwRegionReportProps) {
+export default function RwRegionReport({ districtSlug = "" }: RwRegionReportProps) {
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    const d = DISTRICTS[districtSlug] || DISTRICTS["new-zealand"] || Object.values(DISTRICTS)[0];
+    const slug = resolveSlug(districtSlug);
+    const d = DISTRICTS[slug] || DISTRICTS["new-zealand"] || Object.values(DISTRICTS)[0];
     if (!d) return;
 
     root.innerHTML = `<style>${CSS}</style>` + sub(TEMPLATE, d.fields);
