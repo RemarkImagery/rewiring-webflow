@@ -15,6 +15,8 @@ export default declareComponent(NzmeThermometer, {
       group: "Content",
     }),
     raisedAmount: props.Text({ name: "Raised so far (number)", defaultValue: "0", group: "Content" }),
+    liveTotalsUrl: props.Text({ name: "Live totals URL (JSON {raised})", group: "Content" }),
+    kiwiImage: props.Image({ name: "Kiwi mascot (rides the bar tip)", group: "Content" }),
     tier1Amount: props.Text({ name: "Tier 1 amount", defaultValue: "5000", group: "Tier 1" }),
     tier1Label: props.Text({ name: "Tier 1 label", defaultValue: "Laser Kiwi suit + the big ride", group: "Tier 1" }),
     tier2Amount: props.Text({ name: "Tier 2 amount", defaultValue: "50000", group: "Tier 2" }),

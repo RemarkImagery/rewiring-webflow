@@ -15,6 +15,7 @@ export default declareComponent(NzmeTierGrid, {
       group: "Content",
     }),
     raisedAmount: props.Text({ name: "Raised so far (number)", defaultValue: "0", group: "Content" }),
+    liveTotalsUrl: props.Text({ name: "Live totals URL (JSON {raised})", group: "Content" }),
     tier1Amount: props.Text({ name: "Tier 1 amount", defaultValue: "5000", group: "Tier 1" }),
     tier1Title: props.Text({ name: "Tier 1 title", defaultValue: "The Laser Kiwi suit", group: "Tier 1" }),
     tier1Text: props.Text({

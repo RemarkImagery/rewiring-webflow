@@ -1,0 +1,6 @@
+name = "nzme-raisely-total"
+main = "worker.js"
+compatibility_date = "2026-07-01"
+
+[vars]
+PROFILE_UUID = "af7aae20-89fd-11f1-bbcb-d9b48cf1b0c1"

@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useId } from "react";
+import React, { useEffect, useId, useState } from "react";
 
 interface NzmeTierGridProps {
   heading?: string;
   subheading?: string;
   raisedAmount?: string;
+  liveTotalsUrl?: string;
   tier1Amount?: string;
   tier1Title?: string;
   tier1Text?: string;
@@ -48,6 +49,7 @@ export default function NzmeTierGrid(props: NzmeTierGridProps) {
     heading = "The stretch goals",
     subheading = "The campaign is tiered so we do something great no matter what. Hit a threshold and the next thing unlocks.",
     raisedAmount = "0",
+    liveTotalsUrl,
     tier1Amount = "5000",
     tier1Title = "The Laser Kiwi suit",
     tier1Text = "We buy Mike a Kiwi suit, laserify it, and he rides the length of the South Island — 944 km of electric hotspots, entrepreneurs and community groups, arriving at the Beehive with a Hiko Hikoi of EVs and e-bikes.",
@@ -69,7 +71,22 @@ export default function NzmeTierGrid(props: NzmeTierGridProps) {
   } = props;
 
   const uid = useId().replace(/:/g, "");
-  const raised = parseAmount(raisedAmount, 0);
+  const propRaised = parseAmount(raisedAmount, 0);
+  const [raised, setRaised] = useState(propRaised);
+  useEffect(() => setRaised(propRaised), [propRaised]);
+  useEffect(() => {
+    if (!liveTotalsUrl) return;
+    let alive = true;
+    fetch(liveTotalsUrl)
+      .then((r) => r.json())
+      .then((j) => {
+        if (alive && typeof j.raised === "number") setRaised(j.raised);
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, [liveTotalsUrl]);
   const tiers = [
     { amount: parseAmount(tier1Amount, 5000), title: tier1Title, text: tier1Text, img: resolveImage(tier1Image) },
     { amount: parseAmount(tier2Amount, 50000), title: tier2Title, text: tier2Text, img: resolveImage(tier2Image) },
