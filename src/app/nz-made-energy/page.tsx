@@ -7,9 +7,9 @@ import NzmeAuction from "../../components/NzMadeEnergy/NzmeAuction";
 import NzmeSupportCta from "../../components/NzMadeEnergy/NzmeSupportCta";
 
 export const metadata = {
-  title: "New Zealand Made Energy — Operation Laser Kiwi",
+  title: "New Zealand Made Energy - Operation Laser Kiwi",
   description:
-    "Help send Mike Casey to the Beehive dressed as a Laser Kiwi — and unlock billboards, TV ads and the world's biggest ever Laser Kiwi.",
+    "Help send Mike Casey to the Beehive dressed as a Laser Kiwi - and unlock billboards, TV ads and the world's biggest ever Laser Kiwi.",
 };
 
 // Live raised total comes from the Raisely campaign via the CF Worker;
@@ -25,7 +25,7 @@ export default function NzMadeEnergyPage() {
       <NzmeThermometer
         raisedAmount={RAISED}
         liveTotalsUrl={TOTALS_URL}
-        kiwiImage="/nzme/nzme-hero-laser-kiwi.png"
+        kiwiImage="/nzme/nzme-kiwi-felt.png"
       />
       <NzmeDonate campaignPath="new-zealand-made-energy" />
       <NzmeTierGrid

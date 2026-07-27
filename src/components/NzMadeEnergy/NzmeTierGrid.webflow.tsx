@@ -21,7 +21,7 @@ export default declareComponent(NzmeTierGrid, {
     tier1Text: props.Text({
       name: "Tier 1 text",
       defaultValue:
-        "We buy Mike a Kiwi suit, laserify it, and he rides the length of the South Island — 944 km of electric hotspots, entrepreneurs and community groups, arriving at the Beehive with a Hiko Hikoi of EVs and e-bikes.",
+        "We buy Mike a Kiwi suit, laserify it, and he rides the length of the South Island - 944 km of electric hotspots, entrepreneurs and community groups, arriving at the Beehive with a Hiko Hikoi of EVs and e-bikes.",
       group: "Tier 1",
     }),
     tier1Image: props.Image({ name: "Tier 1 image", group: "Tier 1" }),
@@ -30,7 +30,7 @@ export default declareComponent(NzmeTierGrid, {
     tier2Text: props.Text({
       name: "Tier 2 text",
       defaultValue:
-        "A nationwide billboard campaign pushing New Zealand-made energy — plus $10,000 of plug-in solar panels donated to low-income homes.",
+        "A nationwide billboard campaign pushing New Zealand-made energy - plus $10,000 of plug-in solar panels donated to low-income homes.",
       group: "Tier 2",
     }),
     tier2Image: props.Image({ name: "Tier 2 image", group: "Tier 2" }),
@@ -39,7 +39,7 @@ export default declareComponent(NzmeTierGrid, {
     tier3Text: props.Text({
       name: "Tier 3 text",
       defaultValue:
-        "TV ads take the message mainstream before the election — plus $20,000 of plug-in solar panels for low-income homes.",
+        "TV ads take the message mainstream before the election - plus $20,000 of plug-in solar panels for low-income homes.",
       group: "Tier 3",
     }),
     tier3Image: props.Image({ name: "Tier 3 image", group: "Tier 3" }),
@@ -48,7 +48,7 @@ export default declareComponent(NzmeTierGrid, {
     tier4Text: props.Text({
       name: "Tier 4 text",
       defaultValue:
-        "The full ad campaign, $50,000 of solar for low-income homes, and the world's biggest ever Laser Kiwi — solar panels on its back, green laser eyes — built and towed to Wellington.",
+        "The full ad campaign, $50,000 of solar for low-income homes, and the world's biggest ever Laser Kiwi - solar panels on its back, green laser eyes - built and towed to Wellington.",
       group: "Tier 4",
     }),
     tier4Image: props.Image({ name: "Tier 4 image", group: "Tier 4" }),

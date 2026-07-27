@@ -4,7 +4,7 @@ import { declareComponent } from "@webflow/react";
 
 export default declareComponent(NzmeAuction, {
   name: "NZME Auction Grid",
-  description: "Trade Me-style auction cards (demo, frontend only) — email + bid + T&C checkbox, local bid state.",
+  description: "Trade Me-style auction cards (demo, frontend only) - email + bid + T&C checkbox, local bid state.",
   group: "NZ Made Energy",
   options: { ssr: true },
   props: {
@@ -15,11 +15,11 @@ export default declareComponent(NzmeAuction, {
         "Legends of the electric movement have donated one-of-a-kind experiences. Every winning bid goes straight into the campaign.",
       group: "Content",
     }),
-    demoNote: props.Text({ name: "Demo note", defaultValue: "Demo only — bids aren't stored or binding (yet!).", group: "Content" }),
+    demoNote: props.Text({ name: "Demo note", defaultValue: "Demo only - bids aren't stored or binding (yet!).", group: "Content" }),
     item1Title: props.Text({ name: "Item 1 title", defaultValue: "Guitar lesson with Jon Toogood", group: "Item 1" }),
     item1Desc: props.Text({
       name: "Item 1 description",
-      defaultValue: "An hour one-on-one with the Shihad frontman. Bring your own axe — the amp runs on New Zealand-made energy.",
+      defaultValue: "An hour one-on-one with the Shihad frontman. Bring your own axe - the amp runs on New Zealand-made energy.",
       group: "Item 1",
     }),
     item1Image: props.Image({ name: "Item 1 image", group: "Item 1" }),
@@ -28,7 +28,7 @@ export default declareComponent(NzmeAuction, {
     item2Title: props.Text({ name: "Item 2 title", defaultValue: "Party on an electric hydrofoil boat", group: "Item 2" }),
     item2Desc: props.Text({
       name: "Item 2 description",
-      defaultValue: "You and your mates on the Vessev — a silent, flying, fully-electric boat party on Auckland harbour.",
+      defaultValue: "You and your mates on the Vessev - a silent, flying, fully-electric boat party on Auckland harbour.",
       group: "Item 2",
     }),
     item2Image: props.Image({ name: "Item 2 image", group: "Item 2" }),

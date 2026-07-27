@@ -40,7 +40,7 @@ function formatNZD(n: number): string {
 export default function NzmeThermometer(props: NzmeThermometerProps) {
   const {
     heading = "The fundraising thermometer",
-    subheading = "Four thresholds. We do something no matter what — but every dollar takes it up a notch.",
+    subheading = "Four thresholds. We do something no matter what - but every dollar takes it up a notch.",
     raisedAmount = "0",
     liveTotalsUrl,
     kiwiImage,

@@ -36,7 +36,7 @@ function formatNZD(n: number): string {
 export default function NzmeDonate(props: NzmeDonateProps) {
   const {
     heading = "Chip in to Operation Laser Kiwi",
-    subheading = "Pick your pew. Every dollar pushes the thermometer up — and payment goes through Rewiring's secure Raisely checkout.",
+    subheading = "Pick your pew. Every dollar pushes the thermometer up - and payment goes through Rewiring's secure Raisely checkout.",
     campaignPath = "new-zealand-made-energy",
     amount1 = "20",
     label1 = "Pew pew!",
@@ -271,7 +271,7 @@ export default function NzmeDonate(props: NzmeDonateProps) {
                 {freq === "MONTHLY" ? " monthly" : ""} &rarr;
               </button>
               <p className={`nzmd-note-${uid}`}>
-                Secure checkout by Raisely — the same platform behind rewiring.nz/donate.
+                Secure checkout by Raisely - the same platform behind rewiring.nz/donate.
               </p>
             </>
           )}

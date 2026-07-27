@@ -27,14 +27,14 @@ function resolveLink(val: any, fallback: string): string {
 export default function NzmeSupportCta(props: NzmeSupportCtaProps) {
   const {
     heading = "Help make the electric boat go faster",
-    subheading = "Three ways to get behind Operation Laser Kiwi — every dollar pushes the thermometer up a tier.",
+    subheading = "Three ways to get behind Operation Laser Kiwi - every dollar pushes the thermometer up a tier.",
     card1Title = "Donate",
-    card1Text = "Chip in whatever you can, or grab some merch — Laser Kiwi t-shirts, key rings, stickers and the Sexiest Electric Machines calendar.",
+    card1Text = "Chip in whatever you can, or grab some merch - Laser Kiwi t-shirts, key rings, stickers and the Sexiest Electric Machines calendar.",
     card2Title = "Donate something of value",
-    card2Text = "Got an experience worth auctioning? A guitar lesson, a boat party, a drag race in an electric truck, lunch at the cherry orchard — we'll auction it for the cause.",
+    card2Text = "Got an experience worth auctioning? A guitar lesson, a boat party, a drag race in an electric truck, lunch at the cherry orchard - we'll auction it for the cause.",
     card3Title = "Business contra offers",
     card3Text = "In the sector? Donate an EV, a solar and battery install, an induction hob, a hot water heat pump, an EV charger or $10,000 of electricity.",
-    matchNote = "We're working on a funder matching every dollar raised — doubling whatever you give.",
+    matchNote = "We're working on a funder matching every dollar raised - doubling whatever you give.",
     ctaText = "Donate to the campaign",
     ctaUrl = "#donate",
     darkColor = "#1a3c3c",

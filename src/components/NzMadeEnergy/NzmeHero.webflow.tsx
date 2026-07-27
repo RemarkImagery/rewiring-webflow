@@ -4,7 +4,7 @@ import { declareComponent } from "@webflow/react";
 
 export default declareComponent(NzmeHero, {
   name: "NZME Hero",
-  description: "NZ Made Energy campaign hero — neon outline headline, Laser Kiwi image, dual CTAs.",
+  description: "NZ Made Energy campaign hero - neon outline headline, Laser Kiwi image, dual CTAs.",
   group: "NZ Made Energy",
   options: { ssr: true },
   props: {
@@ -14,7 +14,7 @@ export default declareComponent(NzmeHero, {
     tagline: props.Text({
       name: "Tagline",
       defaultValue:
-        "We're sending Mike Casey to the Beehive dressed as a Laser Kiwi. The more you chip in, the bigger this gets — billboards, TV ads, and maybe the world's biggest ever Laser Kiwi towed to Wellington.",
+        "We're sending Mike Casey to the Beehive dressed as a Laser Kiwi. The more you chip in, the bigger this gets - billboards, TV ads, and maybe the world's biggest ever Laser Kiwi towed to Wellington.",
       group: "Content",
     }),
     ctaText: props.Text({ name: "Primary CTA text", defaultValue: "Donate now", group: "CTAs" }),

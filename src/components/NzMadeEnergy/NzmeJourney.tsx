@@ -24,15 +24,15 @@ interface NzmeJourneyProps {
 export default function NzmeJourney(props: NzmeJourneyProps) {
   const {
     heading = "The road to Wellington",
-    subheading = "From Cromwell to the Beehive — the campaign runs in chunks around the launch, the fundraising and the journey.",
+    subheading = "From Cromwell to the Beehive - the campaign runs in chunks around the launch, the fundraising and the journey.",
     date1 = "27 July",
     text1 = "Design of Mike's Laser Kiwi suit and the campaign collateral (including merch) begins.",
     date2 = "3 August",
-    text2 = "Campaign launches. Fundraising begins — donate money, donate something of value, help make the electric boat go faster.",
+    text2 = "Campaign launches. Fundraising begins - donate money, donate something of value, help make the electric boat go faster.",
     date3 = "1 September",
     text3 = "Fundraising finishes. If the stretch targets are hit, ad planning and the Laser Kiwi build kick off.",
     date4 = "Mid September",
-    text4 = "Mike's Laser Kiwi Tour begins — 944 km up the South Island, stopping at electric hotspots to meet entrepreneurs and community groups.",
+    text4 = "Mike's Laser Kiwi Tour begins - 944 km up the South Island, stopping at electric hotspots to meet entrepreneurs and community groups.",
     date5 = "Late September",
     text5 = "Arrival in Wellington with a 'Hiko Hikoi' of electric cars and bikes, delivering the New Zealand-made energy manifesto to the Beehive.",
     date6 = "October",

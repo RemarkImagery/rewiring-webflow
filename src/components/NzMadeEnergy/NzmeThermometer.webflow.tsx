@@ -11,7 +11,7 @@ export default declareComponent(NzmeThermometer, {
     heading: props.Text({ name: "Heading", defaultValue: "The fundraising thermometer", group: "Content" }),
     subheading: props.Text({
       name: "Subheading",
-      defaultValue: "Four thresholds. We do something no matter what — but every dollar takes it up a notch.",
+      defaultValue: "Four thresholds. We do something no matter what - but every dollar takes it up a notch.",
       group: "Content",
     }),
     raisedAmount: props.Text({ name: "Raised so far (number)", defaultValue: "0", group: "Content" }),

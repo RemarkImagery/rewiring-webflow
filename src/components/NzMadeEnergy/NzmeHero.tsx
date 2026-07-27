@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useId } from "react";
+import React, { useEffect, useId, useRef } from "react";
 
 interface NzmeHeroProps {
   eyebrow?: string;
@@ -36,7 +36,7 @@ export default function NzmeHero(props: NzmeHeroProps) {
     eyebrow = "Operation Laser Kiwi",
     headingLine1 = "New Zealand",
     headingLine2 = "Made Energy",
-    tagline = "We're sending Mike Casey to the Beehive dressed as a Laser Kiwi. The more you chip in, the bigger this gets — billboards, TV ads, and maybe the world's biggest ever Laser Kiwi towed to Wellington.",
+    tagline = "We're sending Mike Casey to the Beehive dressed as a Laser Kiwi. The more you chip in, the bigger this gets - billboards, TV ads, and maybe the world's biggest ever Laser Kiwi towed to Wellington.",
     ctaText = "Donate now",
     ctaUrl = "#donate",
     secondaryCtaText = "See the stretch goals",
@@ -53,6 +53,31 @@ export default function NzmeHero(props: NzmeHeroProps) {
   const ctaHref = resolveLink(ctaUrl, "#donate");
   const secondaryHref = resolveLink(secondaryCtaUrl, "#tiers");
   const twoCol = Boolean(kiwiSrc && !bgSrc);
+
+  // Parallax: the background pans at ~1/3 scroll speed while the hero is in
+  // view. Translating down at <1x never exposes the top edge, so the layer
+  // needs no oversizing.
+  const bgRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = bgRef.current;
+    if (!el || !bgSrc) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const y = Math.max(0, window.scrollY);
+        el.style.transform = `translate3d(0, ${(y * 0.35).toFixed(1)}px, 0)`;
+      });
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [bgSrc]);
 
   return (
     <section className={`nzmh-wrap-${uid}`}>
@@ -71,6 +96,7 @@ export default function NzmeHero(props: NzmeHeroProps) {
         .nzmh-bg-${uid} {
           position: absolute; inset: 0;
           background: url('${bgSrc || ""}') center / cover no-repeat;
+          will-change: transform;
         }
         .nzmh-scrim-${uid} {
           position: absolute; inset: 0;
@@ -173,7 +199,7 @@ export default function NzmeHero(props: NzmeHeroProps) {
         }
       `}</style>
 
-      {bgSrc && <div className={`nzmh-bg-${uid}`} />}
+      {bgSrc && <div ref={bgRef} className={`nzmh-bg-${uid}`} />}
       {bgSrc && <div className={`nzmh-scrim-${uid}`} />}
       <div className={`nzmh-glow-${uid}`} />
       <div className={`nzmh-inner-${uid}`}>

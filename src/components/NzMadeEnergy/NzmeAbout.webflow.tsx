@@ -4,7 +4,7 @@ import { declareComponent } from "@webflow/react";
 
 export default declareComponent(NzmeAbout, {
   name: "NZME About / Big Idea",
-  description: "Campaign explainer — the big idea, top-down/bottom-up/a-bit-mad pillars, and headline stats.",
+  description: "Campaign explainer - the big idea, top-down/bottom-up/a-bit-mad pillars, and headline stats.",
   group: "NZ Made Energy",
   options: { ssr: true },
   props: {
@@ -13,20 +13,20 @@ export default declareComponent(NzmeAbout, {
     intro1: props.Text({
       name: "Intro paragraph 1",
       defaultValue:
-        "Energy is a low-interest category — most New Zealanders switch off the moment it comes up. So we're doing something a bit mad to switch them back on: sending Mike Casey the length of the country to the Beehive, dressed as a Laser Kiwi, to make the case for New Zealand-made energy.",
+        "Energy is a low-interest category - most New Zealanders switch off the moment it comes up. So we're doing something a bit mad to switch them back on: sending Mike Casey the length of the country to the Beehive, dressed as a Laser Kiwi, to make the case for New Zealand-made energy.",
       group: "Content",
     }),
     intro2: props.Text({
       name: "Intro paragraph 2",
       defaultValue:
-        "More than half of the energy New Zealand uses is imported. Energy independence doesn't come on ships — it comes from rooftops, hydro dams, wind turbines, geothermal wells and solar farms, running through efficient electric machines. Everyone wins when we go electric.",
+        "More than half of the energy New Zealand uses is imported. Energy independence doesn't come on ships - it comes from rooftops, hydro dams, wind turbines, geothermal wells and solar farms, running through efficient electric machines. Everyone wins when we go electric.",
       group: "Content",
     }),
     card1Title: props.Text({ name: "Pillar 1 title", defaultValue: "Top-down", group: "Pillars" }),
     card1Text: props.Text({
       name: "Pillar 1 text",
       defaultValue:
-        "Get every MP — whatever their colours — pushing for New Zealand-made energy, so electrification is baked into our national psyche well beyond the election.",
+        "Get every MP - whatever their colours - pushing for New Zealand-made energy, so electrification is baked into our national psyche well beyond the election.",
       group: "Pillars",
     }),
     card2Title: props.Text({ name: "Pillar 2 title", defaultValue: "Bottom-up", group: "Pillars" }),
@@ -40,7 +40,7 @@ export default declareComponent(NzmeAbout, {
     card3Text: props.Text({
       name: "Pillar 3 text",
       defaultValue:
-        "Capture attention the Rewiring way — a Laser Kiwi mission to Parliament, and if the country gets behind it, the world's biggest ever Laser Kiwi.",
+        "Capture attention the Rewiring way - a Laser Kiwi mission to Parliament, and if the country gets behind it, the world's biggest ever Laser Kiwi.",
       group: "Pillars",
     }),
     stat1Number: props.Text({ name: "Stat 1 number", defaultValue: "$7,600", group: "Stats" }),
