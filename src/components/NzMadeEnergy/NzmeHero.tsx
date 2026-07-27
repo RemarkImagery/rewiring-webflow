@@ -37,7 +37,7 @@ export default function NzmeHero(props: NzmeHeroProps) {
     headingLine2 = "Made Energy",
     tagline = "We're sending Mike Casey to the Beehive dressed as a Laser Kiwi. The more you chip in, the bigger this gets — billboards, TV ads, and maybe the world's biggest ever Laser Kiwi towed to Wellington.",
     ctaText = "Donate now",
-    ctaUrl = "#support",
+    ctaUrl = "#donate",
     secondaryCtaText = "See the stretch goals",
     secondaryCtaUrl = "#tiers",
     kiwiImage,
@@ -47,7 +47,7 @@ export default function NzmeHero(props: NzmeHeroProps) {
 
   const uid = useId().replace(/:/g, "");
   const kiwiSrc = resolveImage(kiwiImage);
-  const ctaHref = resolveLink(ctaUrl, "#support");
+  const ctaHref = resolveLink(ctaUrl, "#donate");
   const secondaryHref = resolveLink(secondaryCtaUrl, "#tiers");
 
   return (

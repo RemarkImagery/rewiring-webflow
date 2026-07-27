@@ -36,7 +36,7 @@ export default function NzmeSupportCta(props: NzmeSupportCtaProps) {
     card3Text = "In the sector? Donate an EV, a solar and battery install, an induction hob, a hot water heat pump, an EV charger or $10,000 of electricity.",
     matchNote = "We're working on a funder matching every dollar raised — doubling whatever you give.",
     ctaText = "Donate to the campaign",
-    ctaUrl = "https://www.rewiring.nz/donate",
+    ctaUrl = "#donate",
     darkColor = "#1a3c3c",
   } = props;
 
@@ -47,7 +47,7 @@ export default function NzmeSupportCta(props: NzmeSupportCtaProps) {
     { title: card3Title, text: card3Text },
   ].filter((c) => c.title && c.text);
 
-  const ctaHref = resolveLink(ctaUrl, "https://www.rewiring.nz/donate");
+  const ctaHref = resolveLink(ctaUrl, "#donate");
   const external = /^(https?:\/\/|www\.)/i.test(ctaHref);
 
   return (

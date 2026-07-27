@@ -3,6 +3,7 @@ import NzmeThermometer from "../../components/NzMadeEnergy/NzmeThermometer";
 import NzmeTierGrid from "../../components/NzMadeEnergy/NzmeTierGrid";
 import NzmeJourney from "../../components/NzMadeEnergy/NzmeJourney";
 import NzmeSupportCta from "../../components/NzMadeEnergy/NzmeSupportCta";
+import NzmeDonate from "../../components/NzMadeEnergy/NzmeDonate";
 
 export const metadata = {
   title: "New Zealand Made Energy — Operation Laser Kiwi",
@@ -27,6 +28,7 @@ export default function NzMadeEnergyPage() {
       />
       <NzmeJourney />
       <NzmeSupportCta />
+      <NzmeDonate />
     </main>
   );
 }
