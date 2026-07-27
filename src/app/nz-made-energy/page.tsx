@@ -17,7 +17,7 @@ const RAISED = "32500";
 export default function NzMadeEnergyPage() {
   return (
     <main style={{ fontFamily: "'Rubik', system-ui, sans-serif" }}>
-      <NzmeHero kiwiImage="/nzme/nzme-hero-laser-kiwi.png" />
+      <NzmeHero backgroundImage="/nzme/nzme-hero-bg-felt.jpeg" />
       <NzmeThermometer raisedAmount={RAISED} />
       <NzmeTierGrid
         raisedAmount={RAISED}

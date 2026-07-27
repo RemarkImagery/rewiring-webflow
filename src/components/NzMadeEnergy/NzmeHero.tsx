@@ -12,6 +12,7 @@ interface NzmeHeroProps {
   secondaryCtaText?: string;
   secondaryCtaUrl?: any;
   kiwiImage?: any;
+  backgroundImage?: any;
   bgColor?: string;
   neonColor?: string;
 }
@@ -41,14 +42,17 @@ export default function NzmeHero(props: NzmeHeroProps) {
     secondaryCtaText = "See the stretch goals",
     secondaryCtaUrl = "#tiers",
     kiwiImage,
+    backgroundImage,
     bgColor = "#143a1e",
     neonColor = "#4bf03c",
   } = props;
 
   const uid = useId().replace(/:/g, "");
   const kiwiSrc = resolveImage(kiwiImage);
+  const bgSrc = resolveImage(backgroundImage);
   const ctaHref = resolveLink(ctaUrl, "#donate");
   const secondaryHref = resolveLink(secondaryCtaUrl, "#tiers");
+  const twoCol = Boolean(kiwiSrc && !bgSrc);
 
   return (
     <section className={`nzmh-wrap-${uid}`}>
@@ -64,6 +68,17 @@ export default function NzmeHero(props: NzmeHeroProps) {
           align-items: center;
           font-family: 'Rubik', sans-serif;
         }
+        .nzmh-bg-${uid} {
+          position: absolute; inset: 0;
+          background: url('${bgSrc || ""}') center / cover no-repeat;
+        }
+        .nzmh-scrim-${uid} {
+          position: absolute; inset: 0;
+          background:
+            linear-gradient(90deg, rgba(8,26,12,0.86) 0%, rgba(8,26,12,0.55) 42%, rgba(8,26,12,0.08) 75%, rgba(8,26,12,0.25) 100%),
+            linear-gradient(180deg, rgba(8,26,12,0.35) 0%, transparent 30%, transparent 70%, rgba(8,26,12,0.55) 100%);
+          pointer-events: none;
+        }
         .nzmh-glow-${uid} {
           position: absolute; inset: 0;
           background:
@@ -76,10 +91,14 @@ export default function NzmeHero(props: NzmeHeroProps) {
           max-width: 1180px; margin: 0 auto;
           padding: 96px 32px 72px;
           display: grid;
-          grid-template-columns: 1.15fr 0.85fr;
+          grid-template-columns: ${twoCol ? "1.15fr 0.85fr" : "1fr"};
           gap: 40px;
           align-items: center;
           width: 100%;
+        }
+        .nzmh-copy-${uid} { max-width: ${twoCol ? "none" : "640px"}; }
+        .nzmh-copy-${uid} .nzmh-tagline-${uid} {
+          ${bgSrc ? "text-shadow: 0 1px 10px rgba(8,26,12,0.8);" : ""}
         }
         .nzmh-eyebrow-${uid} {
           display: inline-block;
@@ -154,9 +173,11 @@ export default function NzmeHero(props: NzmeHeroProps) {
         }
       `}</style>
 
+      {bgSrc && <div className={`nzmh-bg-${uid}`} />}
+      {bgSrc && <div className={`nzmh-scrim-${uid}`} />}
       <div className={`nzmh-glow-${uid}`} />
       <div className={`nzmh-inner-${uid}`}>
-        <div>
+        <div className={`nzmh-copy-${uid}`}>
           {eyebrow && <span className={`nzmh-eyebrow-${uid}`}>{eyebrow}</span>}
           <h1 className={`nzmh-heading-${uid}`}>
             {headingLine1}
@@ -170,7 +191,7 @@ export default function NzmeHero(props: NzmeHeroProps) {
             )}
           </div>
         </div>
-        {kiwiSrc && (
+        {twoCol && (
           <div className={`nzmh-kiwi-${uid}`}>
             <img src={kiwiSrc} alt="Laser Kiwi with solar panels firing green laser eyes" />
           </div>
