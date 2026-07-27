@@ -229,8 +229,13 @@ export default function NzmeAuction(props: NzmeAuctionProps) {
         }
         .nzau-grid-${uid} {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+          grid-template-columns: 1fr;
           gap: 26px;
+          /* start-aligned so one card's bid notification never stretches its neighbours */
+          align-items: start;
+        }
+        @media (min-width: 700px) {
+          .nzau-grid-${uid} { grid-template-columns: repeat(2, 1fr); }
         }
         .nzau-card-${uid} {
           background: #ffffff;
@@ -256,7 +261,7 @@ export default function NzmeAuction(props: NzmeAuctionProps) {
         }
         .nzau-body-${uid} { padding: 20px 20px 24px; display: flex; flex-direction: column; flex: 1; }
         .nzau-title-${uid} { font-size: 1.08rem; font-weight: 700; color: ${darkColor}; margin: 0 0 8px; }
-        .nzau-desc-${uid} { font-size: 0.88rem; color: #5c7a78; line-height: 1.6; margin: 0 0 16px; flex: 1; }
+        .nzau-desc-${uid} { font-size: 0.88rem; color: #5c7a78; line-height: 1.6; margin: 0 0 16px; }
         .nzau-bidrow-${uid} {
           display: flex; align-items: flex-end; justify-content: space-between;
           padding: 12px 14px;

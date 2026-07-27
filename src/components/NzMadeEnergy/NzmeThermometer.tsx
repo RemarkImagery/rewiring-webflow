@@ -150,7 +150,7 @@ export default function NzmeThermometer(props: NzmeThermometerProps) {
           max-width: 620px; margin: 0 auto 24px; line-height: 1.6;
         }
         .nzmt-raised-${uid} {
-          text-align: center; margin-bottom: ${kiwiSrc ? "84px" : "44px"};
+          text-align: center; margin-bottom: ${kiwiSrc ? "110px" : "44px"};
         }
         .nzmt-raised-num-${uid} {
           font-size: clamp(2.4rem, 5vw, 3.6rem);
@@ -164,10 +164,10 @@ export default function NzmeThermometer(props: NzmeThermometerProps) {
         .nzmt-trackwrap-${uid} { position: relative; }
         .nzmt-track-${uid} {
           position: relative;
-          height: 38px;
+          height: 64px;
           background: #ffffff;
-          border: 3px solid ${darkColor};
-          border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+          border: 4px solid ${darkColor};
+          border-radius: 255px 20px 225px 20px / 30px 225px 30px 255px;
           overflow: hidden;
         }
         .nzmt-fill-${uid} {
@@ -175,14 +175,14 @@ export default function NzmeThermometer(props: NzmeThermometerProps) {
           width: ${fill}%;
           overflow: hidden;
           background: repeating-linear-gradient(
-            -45deg, ${neonColor}, ${neonColor} 14px, #3ed432 14px, #3ed432 28px
+            -45deg, ${neonColor}, ${neonColor} 20px, #3ed432 20px, #3ed432 40px
           );
           transition: width 1.6s cubic-bezier(0.22, 1, 0.36, 1);
           animation: nzmt-stripes-${uid} 0.8s linear infinite,
                      nzmt-glow-${uid} 2.2s ease-in-out infinite;
         }
         @keyframes nzmt-stripes-${uid} {
-          to { background-position: 39.6px 0; }
+          to { background-position: 56.6px 0; }
         }
         @keyframes nzmt-glow-${uid} {
           0%, 100% { box-shadow: 0 0 10px ${neonColor}66, inset 0 0 6px rgba(255,255,255,0.25); }
@@ -202,9 +202,9 @@ export default function NzmeThermometer(props: NzmeThermometerProps) {
         .nzmt-kiwi-${uid} {
           position: absolute;
           left: ${fill}%;
-          bottom: 26px;
+          bottom: 44px;
           transform: translateX(-50%);
-          width: clamp(56px, 8vw, 84px);
+          width: clamp(72px, 9vw, 108px);
           z-index: 3;
           transition: left 1.6s cubic-bezier(0.22, 1, 0.36, 1);
           pointer-events: none;
@@ -232,8 +232,8 @@ export default function NzmeThermometer(props: NzmeThermometerProps) {
         }
         .nzmt-mark-${uid}::before {
           content: '';
-          position: absolute; right: 0; top: -56px;
-          width: 3px; height: 32px;
+          position: absolute; right: 0; top: -82px;
+          width: 4px; height: 56px;
           background: ${darkColor};
           opacity: 0.35;
         }

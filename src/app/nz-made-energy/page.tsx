@@ -1,9 +1,9 @@
 import NzmeHero from "../../components/NzMadeEnergy/NzmeHero";
+import NzmeAbout from "../../components/NzMadeEnergy/NzmeAbout";
 import NzmeThermometer from "../../components/NzMadeEnergy/NzmeThermometer";
 import NzmeDonate from "../../components/NzMadeEnergy/NzmeDonate";
 import NzmeTierGrid from "../../components/NzMadeEnergy/NzmeTierGrid";
 import NzmeAuction from "../../components/NzMadeEnergy/NzmeAuction";
-import NzmeJourney from "../../components/NzMadeEnergy/NzmeJourney";
 import NzmeSupportCta from "../../components/NzMadeEnergy/NzmeSupportCta";
 
 export const metadata = {
@@ -21,6 +21,7 @@ export default function NzMadeEnergyPage() {
   return (
     <main style={{ fontFamily: "'Rubik', system-ui, sans-serif" }}>
       <NzmeHero backgroundImage="/nzme/nzme-hero-bg-felt.jpeg" />
+      <NzmeAbout />
       <NzmeThermometer
         raisedAmount={RAISED}
         liveTotalsUrl={TOTALS_URL}
@@ -41,7 +42,6 @@ export default function NzMadeEnergyPage() {
         item3Image="/nzme/nzme-auction-dragrace.jpeg"
         item4Image="/nzme/nzme-auction-wrecking.jpeg"
       />
-      <NzmeJourney />
       <NzmeSupportCta />
     </main>
   );
