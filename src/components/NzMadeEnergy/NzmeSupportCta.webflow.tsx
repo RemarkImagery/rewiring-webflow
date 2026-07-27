@@ -21,6 +21,7 @@ export default declareComponent(NzmeSupportCta, {
         "Chip in whatever you can, or grab some merch - Laser Kiwi t-shirts, key rings, stickers and the Sexiest Electric Machines calendar.",
       group: "Card 1",
     }),
+    card1Image: props.Image({ name: "Card 1 image", group: "Card 1" }),
     card2Title: props.Text({ name: "Card 2 title", defaultValue: "Donate something of value", group: "Card 2" }),
     card2Text: props.Text({
       name: "Card 2 text",
@@ -28,6 +29,7 @@ export default declareComponent(NzmeSupportCta, {
         "Got an experience worth auctioning? A guitar lesson, a boat party, a drag race in an electric truck, lunch at the cherry orchard - we'll auction it for the cause.",
       group: "Card 2",
     }),
+    card2Image: props.Image({ name: "Card 2 image", group: "Card 2" }),
     card3Title: props.Text({ name: "Card 3 title", defaultValue: "Business contra offers", group: "Card 3" }),
     card3Text: props.Text({
       name: "Card 3 text",
@@ -35,6 +37,7 @@ export default declareComponent(NzmeSupportCta, {
         "In the sector? Donate an EV, a solar and battery install, an induction hob, a hot water heat pump, an EV charger or $10,000 of electricity.",
       group: "Card 3",
     }),
+    card3Image: props.Image({ name: "Card 3 image", group: "Card 3" }),
     matchNote: props.Text({
       name: "Matched funding note",
       defaultValue: "We're working on a funder matching every dollar raised - doubling whatever you give.",

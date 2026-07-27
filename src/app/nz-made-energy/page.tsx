@@ -3,6 +3,7 @@ import NzmeAbout from "../../components/NzMadeEnergy/NzmeAbout";
 import NzmeThermometer from "../../components/NzMadeEnergy/NzmeThermometer";
 import NzmeDonate from "../../components/NzMadeEnergy/NzmeDonate";
 import NzmeTierGrid from "../../components/NzMadeEnergy/NzmeTierGrid";
+import NzmeSolar from "../../components/NzMadeEnergy/NzmeSolar";
 import NzmeAuction from "../../components/NzMadeEnergy/NzmeAuction";
 import NzmeSupportCta from "../../components/NzMadeEnergy/NzmeSupportCta";
 
@@ -36,13 +37,18 @@ export default function NzMadeEnergyPage() {
         tier3Image="/nzme/nzme-tier3-tv.jpeg"
         tier4Image="/nzme/nzme-tier4-giant-kiwi.jpeg"
       />
+      <NzmeSolar image="/nzme/nzme-solar-plugin.jpeg" />
       <NzmeAuction
         item1Image="/nzme/nzme-auction-guitar.jpeg"
         item2Image="/nzme/nzme-auction-boat.jpeg"
         item3Image="/nzme/nzme-auction-dragrace.jpeg"
         item4Image="/nzme/nzme-auction-wrecking.jpeg"
       />
-      <NzmeSupportCta />
+      <NzmeSupportCta
+        card1Image="/nzme/nzme-support-donate.jpeg"
+        card2Image="/nzme/nzme-support-auction.jpeg"
+        card3Image="/nzme/nzme-support-contra.jpeg"
+      />
     </main>
   );
 }

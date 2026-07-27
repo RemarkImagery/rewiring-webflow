@@ -14,7 +14,7 @@ export default declareComponent(NzmeHero, {
     tagline: props.Text({
       name: "Tagline",
       defaultValue:
-        "We're sending Mike Casey to the Beehive dressed as a Laser Kiwi. The more you chip in, the bigger this gets - billboards, TV ads, and maybe the world's biggest ever Laser Kiwi towed to Wellington.",
+        "We're sending Mike Casey on a mission to the Beehive dressed as a Laser Kiwi to promote the idea of New Zealand-made energy. We will do something no matter what, but if we raise money, we can take things up a few notches.",
       group: "Content",
     }),
     ctaText: props.Text({ name: "Primary CTA text", defaultValue: "Donate now", group: "CTAs" }),

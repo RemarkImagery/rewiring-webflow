@@ -13,42 +13,42 @@ export default declareComponent(NzmeAbout, {
     intro1: props.Text({
       name: "Intro paragraph 1",
       defaultValue:
-        "Energy is a low-interest category - most New Zealanders switch off the moment it comes up. So we're doing something a bit mad to switch them back on: sending Mike Casey the length of the country to the Beehive, dressed as a Laser Kiwi, to make the case for New Zealand-made energy.",
+        "As always, our approach is to try and capture mainstream and social media attention and share our serious message in an engaging way. To do that, we need to do something a bit mad, so we're sending Mike Casey on a mission to the Beehive dressed as a Laser Kiwi to promote the idea of New Zealand-made energy.",
       group: "Content",
     }),
     intro2: props.Text({
       name: "Intro paragraph 2",
       defaultValue:
-        "More than half of the energy New Zealand uses is imported. Energy independence doesn't come on ships - it comes from rooftops, hydro dams, wind turbines, geothermal wells and solar farms, running through efficient electric machines. Everyone wins when we go electric.",
+        "Everyone wins when we go electric. And in the coming years, New Zealand has a unique opportunity to set itself up as a beacon for the world to follow on. This campaign is a cherry on top of three years of relentless advocacy to ensure that happens.",
       group: "Content",
     }),
     card1Title: props.Text({ name: "Pillar 1 title", defaultValue: "Top-down", group: "Pillars" }),
     card1Text: props.Text({
       name: "Pillar 1 text",
       defaultValue:
-        "Get every MP - whatever their colours - pushing for New Zealand-made energy, so electrification is baked into our national psyche well beyond the election.",
+        "We want all our MPs, no matter where they are on the political spectrum, to push for more New Zealand-made energy running through more efficient electric machines, because electrification is key to our economic growth, energy security and emissions reduction goals.",
       group: "Pillars",
     }),
     card2Title: props.Text({ name: "Pillar 2 title", defaultValue: "Bottom-up", group: "Pillars" }),
     card2Text: props.Text({
       name: "Pillar 2 text",
       defaultValue:
-        "Show everyday New Zealanders what going electric does for their own lives: warmer homes, cheaper driving, lower bills.",
+        "We want more New Zealanders to understand the benefits of going electric in their own lives. Energy is a low-interest category. We want to capture their attention.",
       group: "Pillars",
     }),
     card3Title: props.Text({ name: "Pillar 3 title", defaultValue: "A bit mad", group: "Pillars" }),
     card3Text: props.Text({
       name: "Pillar 3 text",
       defaultValue:
-        "Capture attention the Rewiring way - a Laser Kiwi mission to Parliament, and if the country gets behind it, the world's biggest ever Laser Kiwi.",
+        "If we get enough support, we'll go bigger and book billboards and TV ads, or actually build the world's largest Laser Kiwi that we will tow to Wellington.",
       group: "Pillars",
     }),
     stat1Number: props.Text({ name: "Stat 1 number", defaultValue: "$7,600", group: "Stats" }),
-    stat1Label: props.Text({ name: "Stat 1 label", defaultValue: "a household can save every year by going electric", group: "Stats" }),
-    stat2Number: props.Text({ name: "Stat 2 number", defaultValue: ">50%", group: "Stats" }),
-    stat2Label: props.Text({ name: "Stat 2 label", defaultValue: "of the energy New Zealand uses is imported", group: "Stats" }),
+    stat1Label: props.Text({ name: "Stat 1 label", defaultValue: "if you're selfish, that's what going electric could save you every year", group: "Stats" }),
+    stat2Number: props.Text({ name: "Stat 2 number", defaultValue: "Over half", group: "Stats" }),
+    stat2Label: props.Text({ name: "Stat 2 label", defaultValue: "of our energy is imported", group: "Stats" }),
     stat3Number: props.Text({ name: "Stat 3 number", defaultValue: "Billions", group: "Stats" }),
-    stat3Label: props.Text({ name: "Stat 3 label", defaultValue: "saved for the country when we run on our own electrons", group: "Stats" }),
+    stat3Label: props.Text({ name: "Stat 3 label", defaultValue: "if you're patriotic, that's what this could save the country", group: "Stats" }),
     bgColor: props.Text({ name: "Background colour", defaultValue: "#143a1e", group: "Theme" }),
     neonColor: props.Text({ name: "Neon colour", defaultValue: "#4bf03c", group: "Theme" }),
   },

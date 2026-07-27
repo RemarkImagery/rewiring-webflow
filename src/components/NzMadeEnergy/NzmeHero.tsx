@@ -36,7 +36,7 @@ export default function NzmeHero(props: NzmeHeroProps) {
     eyebrow = "Operation Laser Kiwi",
     headingLine1 = "New Zealand",
     headingLine2 = "Made Energy",
-    tagline = "We're sending Mike Casey to the Beehive dressed as a Laser Kiwi. The more you chip in, the bigger this gets - billboards, TV ads, and maybe the world's biggest ever Laser Kiwi towed to Wellington.",
+    tagline = "We're sending Mike Casey on a mission to the Beehive dressed as a Laser Kiwi to promote the idea of New Zealand-made energy. We will do something no matter what, but if we raise money, we can take things up a few notches.",
     ctaText = "Donate now",
     ctaUrl = "#donate",
     secondaryCtaText = "See the stretch goals",

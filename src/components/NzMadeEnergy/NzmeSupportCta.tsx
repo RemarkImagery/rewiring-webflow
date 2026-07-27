@@ -7,10 +7,13 @@ interface NzmeSupportCtaProps {
   subheading?: string;
   card1Title?: string;
   card1Text?: string;
+  card1Image?: any;
   card2Title?: string;
   card2Text?: string;
+  card2Image?: any;
   card3Title?: string;
   card3Text?: string;
+  card3Image?: any;
   matchNote?: string;
   ctaText?: string;
   ctaUrl?: any;
@@ -19,6 +22,13 @@ interface NzmeSupportCtaProps {
   formSuccess?: string;
   darkColor?: string;
   neonColor?: string;
+}
+
+function resolveImage(val: any): string | undefined {
+  if (!val) return undefined;
+  if (typeof val === "string") return val;
+  if (typeof val === "object" && val.src) return val.src;
+  return undefined;
 }
 
 function resolveLink(val: any, fallback: string): string {
@@ -36,10 +46,13 @@ export default function NzmeSupportCta(props: NzmeSupportCtaProps) {
     subheading = "Three ways to get behind Operation Laser Kiwi - every dollar pushes the thermometer up a tier.",
     card1Title = "Donate",
     card1Text = "Chip in whatever you can, or grab some merch - Laser Kiwi t-shirts, key rings, stickers and the Sexiest Electric Machines calendar.",
+    card1Image,
     card2Title = "Donate something of value",
     card2Text = "Got an experience worth auctioning? A guitar lesson, a boat party, a drag race in an electric truck, lunch at the cherry orchard - we'll auction it for the cause.",
+    card2Image,
     card3Title = "Business contra offers",
     card3Text = "In the sector? Donate an EV, a solar and battery install, an induction hob, a hot water heat pump, an EV charger or $10,000 of electricity.",
+    card3Image,
     matchNote = "We're working on a funder matching every dollar raised - doubling whatever you give.",
     ctaText = "Donate to the campaign",
     ctaUrl = "#donate",
@@ -91,9 +104,9 @@ export default function NzmeSupportCta(props: NzmeSupportCtaProps) {
   }
 
   const cards = [
-    { title: card1Title, text: card1Text, href: "#donate", hint: "Donate now" },
-    { title: card2Title, text: card2Text, href: "#auctions", hint: "See the auctions" },
-    { title: card3Title, text: card3Text, href: null, hint: "Offer a product or service" },
+    { title: card1Title, text: card1Text, img: resolveImage(card1Image), href: "#donate", hint: "Donate now" },
+    { title: card2Title, text: card2Text, img: resolveImage(card2Image), href: "#auctions", hint: "See the auctions" },
+    { title: card3Title, text: card3Text, img: resolveImage(card3Image), href: null, hint: "Offer a product or service" },
   ].filter((c) => c.title && c.text);
 
   return (
@@ -127,13 +140,26 @@ export default function NzmeSupportCta(props: NzmeSupportCtaProps) {
           background: #ffffff;
           border: 3px dashed ${darkColor};
           border-radius: 8px 22px 8px 22px;
-          padding: 26px 24px;
+          padding: 0;
+          overflow: hidden;
           transition: transform 0.3s, border-style 0.3s, box-shadow 0.3s;
           cursor: pointer;
           text-decoration: none;
           font-family: 'Rubik', sans-serif;
           text-align: left;
         }
+        .nzsc-cardimg-${uid} {
+          position: relative;
+          aspect-ratio: 2 / 1;
+          background: #FFFCF0;
+          border-bottom: 2px dashed ${darkColor}33;
+        }
+        .nzsc-cardimg-${uid} img {
+          position: absolute; inset: 0;
+          width: 100%; height: 100%;
+          object-fit: cover; display: block;
+        }
+        .nzsc-cardbody-${uid} { padding: 22px 24px 26px; }
         .nzsc-card-${uid}:hover {
           transform: translateY(-4px); border-style: solid;
           box-shadow: 0 14px 30px rgba(26,60,60,0.14);
@@ -253,13 +279,27 @@ export default function NzmeSupportCta(props: NzmeSupportCtaProps) {
         <h2 className={`nzsc-heading-${uid}`}>{heading}</h2>
         <p className={`nzsc-sub-${uid}`}>{subheading}</p>
         <div className={`nzsc-grid-${uid}`}>
-          {cards.map((c, i) =>
-            c.href ? (
+          {cards.map((c, i) => {
+            const inner = (
+              <>
+                {c.img && (
+                  <div className={`nzsc-cardimg-${uid}`}>
+                    <img src={c.img} alt="" />
+                  </div>
+                )}
+                <div className={`nzsc-cardbody-${uid}`}>
+                  <span className={`nzsc-num-${uid}`}>{i + 1}</span>
+                  <h3 className={`nzsc-card-title-${uid}`}>{c.title}</h3>
+                  <p className={`nzsc-card-text-${uid}`}>{c.text}</p>
+                  <span className={`nzsc-card-hint-${uid}`}>
+                    {!c.href && formOpen ? "Close the form" : c.hint} &rarr;
+                  </span>
+                </div>
+              </>
+            );
+            return c.href ? (
               <a key={i} href={c.href} className={`nzsc-card-${uid}`}>
-                <span className={`nzsc-num-${uid}`}>{i + 1}</span>
-                <h3 className={`nzsc-card-title-${uid}`}>{c.title}</h3>
-                <p className={`nzsc-card-text-${uid}`}>{c.text}</p>
-                <span className={`nzsc-card-hint-${uid}`}>{c.hint} &rarr;</span>
+                {inner}
               </a>
             ) : (
               <button
@@ -268,15 +308,10 @@ export default function NzmeSupportCta(props: NzmeSupportCtaProps) {
                 onClick={toggleForm}
                 className={`nzsc-card-${uid}${formOpen ? ` nzsc-cardon-${uid}` : ""}`}
               >
-                <span className={`nzsc-num-${uid}`}>{i + 1}</span>
-                <h3 className={`nzsc-card-title-${uid}`}>{c.title}</h3>
-                <p className={`nzsc-card-text-${uid}`}>{c.text}</p>
-                <span className={`nzsc-card-hint-${uid}`}>
-                  {formOpen ? "Close the form" : c.hint} &rarr;
-                </span>
+                {inner}
               </button>
-            )
-          )}
+            );
+          })}
         </div>
 
         {formOpen && (
