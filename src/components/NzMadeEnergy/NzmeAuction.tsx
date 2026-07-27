@@ -247,10 +247,15 @@ export default function NzmeAuction(props: NzmeAuctionProps) {
         .nzau-imgwrap-${uid} {
           position: relative;
           background: #FFFCF0;
-          aspect-ratio: 1 / 1;
+          aspect-ratio: 2 / 1;
           border-bottom: 3px dashed ${darkColor}33;
+          overflow: hidden;
         }
-        .nzau-imgwrap-${uid} img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .nzau-imgwrap-${uid} img {
+          position: absolute; inset: 0;
+          width: 100%; height: 100%;
+          object-fit: cover; display: block;
+        }
         .nzau-closes-${uid} {
           position: absolute; top: 12px; left: 12px;
           font-size: 11px; font-weight: 800;

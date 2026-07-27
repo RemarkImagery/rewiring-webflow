@@ -42,6 +42,14 @@ export default declareComponent(NzmeSupportCta, {
     }),
     ctaText: props.Text({ name: "CTA text", defaultValue: "Donate to the campaign", group: "CTA" }),
     ctaUrl: props.Link({ name: "CTA URL", group: "CTA" }),
+    formHeading: props.Text({ name: "Contra form heading", defaultValue: "Offer a product or service", group: "Contra form" }),
+    formDemoNote: props.Text({ name: "Contra form demo note", defaultValue: "Demo only - offers aren't stored or binding (yet!).", group: "Contra form" }),
+    formSuccess: props.Text({
+      name: "Contra form success message",
+      defaultValue: "Legend! Your offer is in. The Rewiring team will be in touch to sort the details.",
+      group: "Contra form",
+    }),
     darkColor: props.Text({ name: "Dark colour", defaultValue: "#1a3c3c", group: "Theme" }),
+    neonColor: props.Text({ name: "Neon colour", defaultValue: "#4bf03c", group: "Theme" }),
   },
 });
