@@ -37,6 +37,11 @@ export interface RwLocalStoryCardProps {
    * multi-reference (Electric technologies) which Webflow can't bind to a
    * text prop — set manually or bind a plain-text mirror field. */
   technologies?: string;
+  /** Gold card background — matches the print report story card */
+  cardColor?: string;
+  /** Dark frame/border colour */
+  frameColor?: string;
+  /** Check + arrow green */
   accentColor?: string;
   inkColor?: string;
 }
@@ -57,8 +62,10 @@ export default function RwLocalStoryCard({
   highlightQuote = "We don't have to worry about fuel and energy prices.",
   largeQuote = "We don't have to worry about fuel and energy prices and we've really appreciated having our own generation and battery backup when storms have caused blackouts.",
   technologies = "Battery, EV, Heat pump, Hot water heat pump, Induction cooking, Solar",
-  accentColor = "#234e4c",
-  inkColor = "#1a3c3c",
+  cardColor = "#f5b731",
+  frameColor = "#131a18",
+  accentColor = "#2f9e44",
+  inkColor = "#23312e",
 }: RwLocalStoryCardProps) {
   const [expanded, setExpanded] = useState(false);
   const tags = (technologies || "")
@@ -77,42 +84,37 @@ export default function RwLocalStoryCard({
   const hasMore = Boolean(longQuote && longQuote !== shortQuote);
 
   return (
-    <div className={`rw-story-card${expanded ? " expanded" : ""}`}>
+    <div className="rw-story-wrap">
       <style>{`
-        .rw-story-card { display: grid; grid-template-columns: 240px 1fr; gap: 0; background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.10); font-family: 'Rubik', system-ui, sans-serif; color: ${inkColor}; max-width: 920px; margin: 0 auto; }
-        .rw-story-card .rw-sc-photo { background: #e9e3cf; min-height: 220px; }
-        .rw-story-card .rw-sc-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .rw-story-card .rw-sc-body { padding: 28px 30px; }
-        .rw-story-card .rw-sc-title { font-size: 22px; font-weight: 700; margin: 0 0 4px; color: ${inkColor}; }
-        .rw-story-card .rw-sc-meta { font-size: 14px; color: #5c7a78; margin-bottom: 14px; }
-        .rw-story-card .rw-sc-saved { font-size: 17px; font-weight: 700; color: ${accentColor}; margin-bottom: 14px; }
-        .rw-story-card .rw-sc-stats { font-size: 15px; line-height: 1.7; margin-bottom: 14px; }
-        .rw-story-card .rw-sc-stats strong { font-weight: 600; }
-        .rw-story-card .rw-sc-arrow { color: ${accentColor}; font-weight: 600; }
-        .rw-story-card .rw-sc-quote { font-size: 15px; line-height: 1.6; font-style: italic; color: #3a5b59; margin: 0 0 10px; }
+        @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Rubik:wght@400;500;600;700;800&display=swap');
+        .rw-story-wrap { max-width: 920px; margin: 0 auto; padding: 12px 0; font-family: 'Rubik', system-ui, sans-serif; color: ${inkColor}; }
+        .rw-story-card { position: relative; margin-left: 180px; background: ${cardColor}; border: 4px solid ${frameColor}; border-radius: 20px; padding: 26px 28px 24px 60px; min-height: 220px; }
+        .rw-story-card .rw-sc-photo { position: absolute; left: -180px; top: -10px; width: 212px; height: calc(100% + 20px); object-fit: cover; border: 5px solid ${frameColor}; border-radius: 16px; transform: rotate(-0.6deg); background: #ddd; display: block; }
+        .rw-story-card .rw-sc-title { font-family: 'Permanent Marker', cursive; font-weight: 400; font-size: 24px; letter-spacing: 0.03em; text-transform: uppercase; margin: 0 0 4px; color: ${frameColor}; }
+        .rw-story-card .rw-sc-meta { font-size: 14px; font-weight: 500; margin-bottom: 12px; }
+        .rw-story-card .rw-sc-stats { font-size: 15px; line-height: 1.7; margin-bottom: 8px; }
+        .rw-story-card .rw-sc-stats strong { font-weight: 700; }
+        .rw-story-card .rw-sc-arrow { color: ${accentColor}; font-weight: 800; }
+        .rw-story-card .rw-sc-saved { font-size: 18px; font-weight: 800; margin-bottom: 12px; }
+        .rw-story-card .rw-sc-quote { font-size: 14.5px; line-height: 1.55; margin: 0 0 8px; }
         .rw-story-card .rw-sc-quote-more { max-height: 0; overflow: hidden; opacity: 0; transition: max-height .3s ease, opacity .3s ease, margin .3s ease; margin: 0; }
-        .rw-story-card.expanded .rw-sc-quote-more { max-height: 400px; opacity: 1; margin-bottom: 10px; }
+        .rw-story-card.expanded .rw-sc-quote-more { max-height: 400px; opacity: 1; margin-bottom: 8px; }
         .rw-story-card.expanded .rw-sc-quote-short { display: none; }
-        .rw-story-card .rw-sc-readmore { background: none; border: none; color: ${accentColor}; font-weight: 600; font-size: 14px; cursor: pointer; padding: 0; margin-bottom: 16px; text-decoration: underline; font-family: inherit; }
-        .rw-story-card .rw-sc-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-        .rw-story-card .rw-sc-tag { display: inline-flex; align-items: center; gap: 6px; background: #f3efe0; border-radius: 100px; padding: 6px 12px; font-size: 13px; font-weight: 500; }
-        .rw-story-card .rw-sc-check { width: 14px; height: 14px; border-radius: 50%; background: ${accentColor}; display: inline-block; position: relative; flex: none; }
-        .rw-story-card .rw-sc-check::after { content: ""; position: absolute; left: 4px; top: 1.5px; width: 4px; height: 8px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
-        @media (max-width: 640px) { .rw-story-card { grid-template-columns: 1fr; } .rw-story-card .rw-sc-photo { min-height: 200px; } }
+        .rw-story-card .rw-sc-readmore { background: none; border: none; color: ${frameColor}; font-weight: 700; font-size: 14px; cursor: pointer; padding: 0; margin-bottom: 14px; text-decoration: underline; font-family: inherit; }
+        .rw-story-card .rw-sc-tags { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+        .rw-story-card .rw-sc-tag { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 700; white-space: nowrap; }
+        .rw-story-card .rw-sc-check { width: 16px; height: 16px; border-radius: 4px; background: #fff; border: 2px solid ${frameColor}; display: inline-flex; align-items: center; justify-content: center; flex: none; position: relative; }
+        .rw-story-card .rw-sc-check::after { content: ""; position: absolute; left: 4px; top: 0.5px; width: 4px; height: 8px; border: solid ${accentColor}; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
+        @media (max-width: 720px) {
+          .rw-story-card { margin-left: 0; padding: 20px 20px 18px; }
+          .rw-story-card .rw-sc-photo { position: static; width: calc(100% + 8px); height: 220px; margin: -4px 0 14px -4px; transform: rotate(-0.6deg); }
+        }
       `}</style>
 
-      <div className="rw-sc-photo">
-        {photoSrc ? <img src={photoSrc} alt={name} /> : null}
-      </div>
-      <div className="rw-sc-body">
-        <h3 className="rw-sc-title">{name}</h3>
+      <div className={`rw-story-card${expanded ? " expanded" : ""}`}>
+        {photoSrc ? <img className="rw-sc-photo" src={photoSrc} alt={name} /> : null}
+        <h3 className="rw-sc-title">Local story: {name}</h3>
         {meta ? <div className="rw-sc-meta">{meta}</div> : null}
-        {headlineStat ? (
-          <div className="rw-sc-saved">
-            {headlineStat}
-            {headlineStatLabel ? ` ${headlineStatLabel}` : ""}
-          </div>
-        ) : null}
         {stats.length > 0 && (
           <div className="rw-sc-stats">
             {stats.map((s, i) => (
@@ -124,6 +126,12 @@ export default function RwLocalStoryCard({
             ))}
           </div>
         )}
+        {headlineStat ? (
+          <div className="rw-sc-saved">
+            {headlineStat}
+            {headlineStatLabel ? ` ${headlineStatLabel}` : ""}
+          </div>
+        ) : null}
         {shortQuote ? <p className="rw-sc-quote rw-sc-quote-short">“{shortQuote}”</p> : null}
         {hasMore ? <p className="rw-sc-quote rw-sc-quote-more">“{longQuote}”</p> : null}
         {hasMore && (

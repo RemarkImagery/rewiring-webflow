@@ -24,7 +24,9 @@ export default declareComponent(RwLocalStoryCard, {
     stat2Label: props.Text({ name: "Stat 2 Label", defaultValue: "Vehicle costs", group: "Stats" }),
     stat2Before: props.Text({ name: "Stat 2 Before", defaultValue: "$180 / month", group: "Stats" }),
     stat2After: props.Text({ name: "Stat 2 After", defaultValue: "$10 / month", group: "Stats" }),
-    accentColor: props.Text({ name: "Accent colour", defaultValue: "#234e4c", group: "Style" }),
-    inkColor: props.Text({ name: "Text colour", defaultValue: "#1a3c3c", group: "Style" }),
+    cardColor: props.Text({ name: "Card background (gold)", defaultValue: "#f5b731", group: "Style" }),
+    frameColor: props.Text({ name: "Frame colour", defaultValue: "#131a18", group: "Style" }),
+    accentColor: props.Text({ name: "Check / arrow green", defaultValue: "#2f9e44", group: "Style" }),
+    inkColor: props.Text({ name: "Text colour", defaultValue: "#23312e", group: "Style" }),
   },
 });
