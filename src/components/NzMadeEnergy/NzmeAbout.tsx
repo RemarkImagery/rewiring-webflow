@@ -34,13 +34,13 @@ export default function NzmeAbout(props: NzmeAboutProps) {
     card2Title = "Bottom-up",
     card2Text = "We want more New Zealanders to understand the benefits of going electric in their own lives. Energy is a low-interest category. We want to capture their attention.",
     card3Title = "A bit mad",
-    card3Text = "If we get enough support, we'll go bigger and book billboards and TV ads, or actually build the world's largest Laser Kiwi that we will tow to Wellington.",
-    stat1Number = "$7,600",
-    stat1Label = "if you're selfish, that's what going electric could save you every year",
-    stat2Number = "Over half",
-    stat2Label = "of our energy is imported",
-    stat3Number = "Billions",
-    stat3Label = "if you're patriotic, that's what this could save the country",
+    card3Text = "If we get enough support, we'll go bigger and book billboards and TV ads, or actually build a massive Laser Kiwi that we will tow to Wellington.",
+    stat1Number = "",
+    stat1Label = "",
+    stat2Number = "",
+    stat2Label = "",
+    stat3Number = "",
+    stat3Label = "",
     bgColor = "#143a1e",
     neonColor = "#4bf03c",
   } = props;
@@ -154,14 +154,16 @@ export default function NzmeAbout(props: NzmeAboutProps) {
             </div>
           ))}
         </div>
-        <div className={`nzab-stats-${uid}`}>
-          {stats.map((s, i) => (
-            <div key={i}>
-              <span className={`nzab-statnum-${uid}`}>{s.num}</span>
-              <span className={`nzab-statlbl-${uid}`}>{s.label}</span>
-            </div>
-          ))}
-        </div>
+        {stats.length > 0 && (
+          <div className={`nzab-stats-${uid}`}>
+            {stats.map((s, i) => (
+              <div key={i}>
+                <span className={`nzab-statnum-${uid}`}>{s.num}</span>
+                <span className={`nzab-statlbl-${uid}`}>{s.label}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

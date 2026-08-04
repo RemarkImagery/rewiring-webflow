@@ -34,14 +34,14 @@ export default declareComponent(NzmeAuction, {
     item2Image: props.Image({ name: "Item 2 image", group: "Item 2" }),
     item2StartBid: props.Text({ name: "Item 2 start bid", defaultValue: "500", group: "Item 2" }),
     item2Closes: props.Text({ name: "Item 2 closes label", defaultValue: "Closes Mon 1 Sep", group: "Item 2" }),
-    item3Title: props.Text({ name: "Item 3 title", defaultValue: "Drag race an electric truck", group: "Item 3" }),
+    item3Title: props.Text({ name: "Item 3 title", defaultValue: "A Lightfoot scooter", group: "Item 3" }),
     item3Desc: props.Text({
       name: "Item 3 description",
-      defaultValue: "Line up against Ross Linton in his electric truck. Spoiler: instant torque wins. Passenger seat for the brave.",
+      defaultValue: "Take home a Lightfoot - the New Zealand-designed electric scooter that charges itself from the sun. New Zealand-made energy on two wheels.",
       group: "Item 3",
     }),
     item3Image: props.Image({ name: "Item 3 image", group: "Item 3" }),
-    item3StartBid: props.Text({ name: "Item 3 start bid", defaultValue: "200", group: "Item 3" }),
+    item3StartBid: props.Text({ name: "Item 3 start bid", defaultValue: "500", group: "Item 3" }),
     item3Closes: props.Text({ name: "Item 3 closes label", defaultValue: "Closes Mon 1 Sep", group: "Item 3" }),
     item4Title: props.Text({ name: "Item 4 title", defaultValue: "The wrecking room", group: "Item 4" }),
     item4Desc: props.Text({

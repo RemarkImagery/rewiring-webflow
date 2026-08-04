@@ -38,7 +38,7 @@ export default function NzmeSolar(props: NzmeSolarProps) {
     eyebrow = "The charitable component",
     heading = "Plug-in solar for low-income homes",
     intro = "If we reach our stretch targets, we will commit to buying plug-in solar panels that we can give to low-income homes. The further the thermometer climbs, the more homes get New Zealand-made energy on the wall.",
-    outro = "The charitable component is also something that should inspire plenty of support.",
+    outro = "",
     image,
     chip1Raised = "$50,000 raised",
     chip1Solar = "$10,000 worth of plug-in solar panels for low-income homes",

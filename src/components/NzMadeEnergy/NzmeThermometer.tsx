@@ -44,14 +44,14 @@ export default function NzmeThermometer(props: NzmeThermometerProps) {
     raisedAmount = "0",
     liveTotalsUrl,
     kiwiImage,
-    tier1Amount = "5000",
-    tier1Label = "Laser Kiwi suit + the big ride",
+    tier1Amount = "25000",
+    tier1Label = "Laser Kiwi suit + the big ride + Wellington billboards",
     tier2Amount = "50000",
-    tier2Label = "Billboards + $10k of solar for homes",
+    tier2Label = "National billboards + $10k of solar for homes",
     tier3Amount = "100000",
     tier3Label = "TV ads + $20k of solar for homes",
     tier4Amount = "250000",
-    tier4Label = "The world's biggest Laser Kiwi",
+    tier4Label = "All of the above, plus we build a massive laser kiwi and tow it to Wellington.",
     neonColor = "#4bf03c",
     darkColor = "#1a3c3c",
   } = props;
@@ -76,7 +76,7 @@ export default function NzmeThermometer(props: NzmeThermometerProps) {
   }, [liveTotalsUrl]);
 
   const tiers = [
-    { amount: parseAmount(tier1Amount, 5000), label: tier1Label },
+    { amount: parseAmount(tier1Amount, 25000), label: tier1Label },
     { amount: parseAmount(tier2Amount, 50000), label: tier2Label },
     { amount: parseAmount(tier3Amount, 100000), label: tier3Label },
     { amount: parseAmount(tier4Amount, 250000), label: tier4Label },

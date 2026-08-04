@@ -18,7 +18,7 @@ export default declareComponent(NzmeSolar, {
     }),
     outro: props.Text({
       name: "Outro",
-      defaultValue: "The charitable component is also something that should inspire plenty of support.",
+      defaultValue: "",
       group: "Content",
     }),
     image: props.Image({ name: "Image", group: "Content" }),

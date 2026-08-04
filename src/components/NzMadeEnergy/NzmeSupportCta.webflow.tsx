@@ -18,7 +18,7 @@ export default declareComponent(NzmeSupportCta, {
     card1Text: props.Text({
       name: "Card 1 text",
       defaultValue:
-        "Chip in whatever you can, or grab some merch - Laser Kiwi t-shirts, key rings, stickers and the Sexiest Electric Machines calendar.",
+        "Chip in whatever you can, or grab some merch - New Zealand-made energy t-shirts, key rings, stickers and the Sexiest Electric Machines calendar.",
       group: "Card 1",
     }),
     card1Image: props.Image({ name: "Card 1 image", group: "Card 1" }),

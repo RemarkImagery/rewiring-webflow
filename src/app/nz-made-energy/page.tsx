@@ -2,15 +2,16 @@ import NzmeHero from "../../components/NzMadeEnergy/NzmeHero";
 import NzmeAbout from "../../components/NzMadeEnergy/NzmeAbout";
 import NzmeThermometer from "../../components/NzMadeEnergy/NzmeThermometer";
 import NzmeDonate from "../../components/NzMadeEnergy/NzmeDonate";
+import NzmeMerch from "../../components/NzMadeEnergy/NzmeMerch";
 import NzmeTierGrid from "../../components/NzMadeEnergy/NzmeTierGrid";
 import NzmeSolar from "../../components/NzMadeEnergy/NzmeSolar";
 import NzmeAuction from "../../components/NzMadeEnergy/NzmeAuction";
 import NzmeSupportCta from "../../components/NzMadeEnergy/NzmeSupportCta";
 
 export const metadata = {
-  title: "New Zealand Made Energy - Operation Laser Kiwi",
+  title: "Operation Laser Kiwi - New Zealand-made Energy",
   description:
-    "Help send Mike Casey to the Beehive dressed as a Laser Kiwi - and unlock billboards, TV ads and the world's biggest ever Laser Kiwi.",
+    "Help send Mike Casey to the Beehive dressed as a Laser Kiwi - and unlock billboards, TV ads and a massive Laser Kiwi towed to Wellington.",
 };
 
 // Live raised total comes from the Raisely campaign via the CF Worker;
@@ -29,10 +30,16 @@ export default function NzMadeEnergyPage() {
         kiwiImage="/nzme/nzme-kiwi-felt.png"
       />
       <NzmeDonate campaignPath="new-zealand-made-energy" />
+      <NzmeMerch
+        item1Image="/nzme/nzme-merch-tshirt.jpeg"
+        item2Image="/nzme/nzme-merch-keyring.jpeg"
+        item3Image="/nzme/nzme-merch-stickers.jpeg"
+        item4Image="/nzme/nzme-merch-calendar.jpeg"
+      />
       <NzmeTierGrid
         raisedAmount={RAISED}
         liveTotalsUrl={TOTALS_URL}
-        tier1Image="/nzme/nzme-tier1-kiwi-suit.jpeg"
+        tier1Image="/nzme/nzme-tier1-riddara.jpeg"
         tier2Image="/nzme/nzme-tier2-billboard.jpeg"
         tier3Image="/nzme/nzme-tier3-tv.jpeg"
         tier4Image="/nzme/nzme-tier4-giant-kiwi.jpeg"
@@ -41,7 +48,7 @@ export default function NzMadeEnergyPage() {
       <NzmeAuction
         item1Image="/nzme/nzme-auction-guitar.jpeg"
         item2Image="/nzme/nzme-auction-boat.jpeg"
-        item3Image="/nzme/nzme-auction-dragrace.jpeg"
+        item3Image="/nzme/nzme-auction-lightfoot.jpeg"
         item4Image="/nzme/nzme-auction-wrecking.jpeg"
       />
       <NzmeSupportCta

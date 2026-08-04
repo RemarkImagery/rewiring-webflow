@@ -33,9 +33,9 @@ function resolveLink(val: any, fallback: string): string {
 
 export default function NzmeHero(props: NzmeHeroProps) {
   const {
-    eyebrow = "Operation Laser Kiwi",
-    headingLine1 = "New Zealand",
-    headingLine2 = "Made Energy",
+    eyebrow = "New Zealand-made Energy",
+    headingLine1 = "Operation",
+    headingLine2 = "Laser Kiwi",
     tagline = "We're sending Mike Casey on a mission to the Beehive dressed as a Laser Kiwi to promote the idea of New Zealand-made energy. We will do something no matter what, but if we raise money, we can take things up a few notches.",
     ctaText = "Donate now",
     ctaUrl = "#donate",

@@ -8,9 +8,9 @@ export default declareComponent(NzmeHero, {
   group: "NZ Made Energy",
   options: { ssr: true },
   props: {
-    eyebrow: props.Text({ name: "Eyebrow", defaultValue: "Operation Laser Kiwi", group: "Content" }),
-    headingLine1: props.Text({ name: "Heading line 1", defaultValue: "New Zealand", group: "Content" }),
-    headingLine2: props.Text({ name: "Heading line 2", defaultValue: "Made Energy", group: "Content" }),
+    eyebrow: props.Text({ name: "Eyebrow", defaultValue: "New Zealand-made Energy", group: "Content" }),
+    headingLine1: props.Text({ name: "Heading line 1", defaultValue: "Operation", group: "Content" }),
+    headingLine2: props.Text({ name: "Heading line 2", defaultValue: "Laser Kiwi", group: "Content" }),
     tagline: props.Text({
       name: "Tagline",
       defaultValue:

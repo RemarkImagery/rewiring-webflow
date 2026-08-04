@@ -45,7 +45,7 @@ export default function NzmeSupportCta(props: NzmeSupportCtaProps) {
     heading = "Help make the electric boat go faster",
     subheading = "Three ways to get behind Operation Laser Kiwi - every dollar pushes the thermometer up a tier.",
     card1Title = "Donate",
-    card1Text = "Chip in whatever you can, or grab some merch - Laser Kiwi t-shirts, key rings, stickers and the Sexiest Electric Machines calendar.",
+    card1Text = "Chip in whatever you can, or grab some merch - New Zealand-made energy t-shirts, key rings, stickers and the Sexiest Electric Machines calendar.",
     card1Image,
     card2Title = "Donate something of value",
     card2Text = "Got an experience worth auctioning? A guitar lesson, a boat party, a drag race in an electric truck, lunch at the cherry orchard - we'll auction it for the cause.",

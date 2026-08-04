@@ -16,17 +16,17 @@ export default declareComponent(NzmeTierGrid, {
     }),
     raisedAmount: props.Text({ name: "Raised so far (number)", defaultValue: "0", group: "Content" }),
     liveTotalsUrl: props.Text({ name: "Live totals URL (JSON {raised})", group: "Content" }),
-    tier1Amount: props.Text({ name: "Tier 1 amount", defaultValue: "5000", group: "Tier 1" }),
+    tier1Amount: props.Text({ name: "Tier 1 amount", defaultValue: "25000", group: "Tier 1" }),
     tier1Title: props.Text({ name: "Tier 1 title", defaultValue: "The Laser Kiwi suit", group: "Tier 1" }),
     tier1Text: props.Text({
       name: "Tier 1 text",
       defaultValue:
-        "We buy Mike a Kiwi suit, laserify it, and he rides the length of the South Island - 944 km of electric hotspots, entrepreneurs and community groups, arriving at the Beehive with a Hiko Hikoi of EVs and e-bikes.",
+        "We buy Mike a Kiwi suit, laserify it, and he rides the length of the South Island - 944 km of electric hotspots, entrepreneurs and community groups, arriving at the Beehive with a Hiko Hikoi of EVs and e-bikes. Plus billboards across Wellington.",
       group: "Tier 1",
     }),
     tier1Image: props.Image({ name: "Tier 1 image", group: "Tier 1" }),
     tier2Amount: props.Text({ name: "Tier 2 amount", defaultValue: "50000", group: "Tier 2" }),
-    tier2Title: props.Text({ name: "Tier 2 title", defaultValue: "Billboards + solar for homes", group: "Tier 2" }),
+    tier2Title: props.Text({ name: "Tier 2 title", defaultValue: "National billboards + solar for homes", group: "Tier 2" }),
     tier2Text: props.Text({
       name: "Tier 2 text",
       defaultValue:
@@ -44,11 +44,11 @@ export default declareComponent(NzmeTierGrid, {
     }),
     tier3Image: props.Image({ name: "Tier 3 image", group: "Tier 3" }),
     tier4Amount: props.Text({ name: "Tier 4 amount", defaultValue: "250000", group: "Tier 4" }),
-    tier4Title: props.Text({ name: "Tier 4 title", defaultValue: "The world's biggest Laser Kiwi", group: "Tier 4" }),
+    tier4Title: props.Text({ name: "Tier 4 title", defaultValue: "A massive Laser Kiwi", group: "Tier 4" }),
     tier4Text: props.Text({
       name: "Tier 4 text",
       defaultValue:
-        "The full ad campaign, $50,000 of solar for low-income homes, and the world's biggest ever Laser Kiwi - solar panels on its back, green laser eyes - built and towed to Wellington.",
+        "The full ad campaign, $50,000 of solar for low-income homes, and a massive Laser Kiwi - solar panels on its back, green laser eyes - built and towed to Wellington.",
       group: "Tier 4",
     }),
     tier4Image: props.Image({ name: "Tier 4 image", group: "Tier 4" }),
