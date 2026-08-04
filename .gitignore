@@ -7,3 +7,4 @@ dist/
 next-env.d.ts
 tsconfig.tsbuildinfo
 .list-key-local
+.wrangler/
