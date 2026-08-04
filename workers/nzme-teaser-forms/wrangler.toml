@@ -1,0 +1,7 @@
+name = "nzme-teaser-forms"
+main = "worker.js"
+compatibility_date = "2026-07-01"
+
+kv_namespaces = [
+  { binding = "NZME_TEASER", id = "9828ae37666d4402adeac041a44206f8" }
+]

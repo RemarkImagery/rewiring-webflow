@@ -6,3 +6,4 @@ dist/
 .env.local
 next-env.d.ts
 tsconfig.tsbuildinfo
+.list-key-local
