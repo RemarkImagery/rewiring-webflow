@@ -1,6 +1,6 @@
 import NzmeHero from "../../components/NzMadeEnergy/NzmeHero";
 import NzmeAbout from "../../components/NzMadeEnergy/NzmeAbout";
-import NzmeTeaserPledge from "../../components/NzMadeEnergy/NzmeTeaserPledge";
+import NzmeDonate from "../../components/NzMadeEnergy/NzmeDonate";
 import NzmeAuctionDonate from "../../components/NzMadeEnergy/NzmeAuctionDonate";
 
 export const metadata = {
@@ -16,7 +16,7 @@ export default function OperationLaserKiwiTeaserPage() {
         backgroundImage="/nzme/nzme-hero-bg-felt.jpeg"
         tagline="Something a bit mad is coming. We're about to send Mike Casey on a mission to the Beehive dressed as a Laser Kiwi to promote the idea of New Zealand-made energy. Get in before the lasers switch on: pledge your support, or donate an item for the auctions."
         ctaText="Make a pledge"
-        ctaUrl="#pledge"
+        ctaUrl="#donate"
         secondaryCtaText="Donate an auction item"
         secondaryCtaUrl="#donate-an-item"
       />
@@ -32,7 +32,11 @@ export default function OperationLaserKiwiTeaserPage() {
         card3Title="The auctions"
         card3Text="Legends of the electric movement donate one-of-a-kind items and experiences, and we auction them off with every winning bid going straight into the campaign. That's where you come in."
       />
-      <NzmeTeaserPledge />
+      <NzmeDonate
+        heading="Make a pre-campaign pledge"
+        subheading="The thermometer isn't live yet, but your support can be. Chip in now through Rewiring's secure Raisely checkout and your pledge counts from day one of the campaign."
+        campaignPath="new-zealand-made-energy"
+      />
       <NzmeAuctionDonate />
     </main>
   );
