@@ -26,9 +26,9 @@ export default function OperationLaserKiwiTeaserPage() {
         intro1="Operation Laser Kiwi is the next campaign from Rewiring Aotearoa: a serious message about New Zealand-made energy, delivered in the least serious way possible. Here's the shape of it."
         intro2=""
         card1Title="The mission"
-        card1Text="Mike Casey rides the length of the South Island in a laserified Kiwi suit - 944 km of electric hotspots, entrepreneurs and community groups, arriving at the Beehive with a Hiko Hikoi of EVs and e-bikes."
+        card1Text="Mike Casey travels to Wellington in a special Laser Kiwi suit, stopping off to talk to electric entrepreneurs and community groups. Plus, we run billboards across Wellington before the 'electric election' to make sure our politicians know that more New Zealand-made energy running through electric machines is the key to our prosperity."
         card2Title="The stretch goals"
-        card2Text="The more we raise, the madder it gets: Wellington billboards, national billboards, prime-time TV ads, plug-in solar for low-income homes, and a massive Laser Kiwi towed to Wellington."
+        card2Text="The more we raise, the madder it gets: Wellington billboards, national billboards, prime-time TV ads, solar for low-income homes, and a massive Laser Kiwi towed to Wellington."
         card3Title="The auctions"
         card3Text="Legends of the electric movement donate one-of-a-kind items and experiences, and we auction them off with every winning bid going straight into the campaign. That's where you come in."
       />
