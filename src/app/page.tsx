@@ -1,6 +1,7 @@
 import TcccCard from "../components/ThisCarCan/TcccCard";
 import TcccDetail from "../components/ThisCarCan/TcccDetail";
 import TccFuelRangeChart from "../components/ThisCarCan/TccFuelRangeChart";
+import TccLeaderboardCta from "../components/ThisCarCan/TccLeaderboardCta";
 
 const NZ_POST_FLEET_DATA = `Internal Fleet: corporate, mail and operational support vehicles
 Car,,101,9,,110,100%
@@ -22,6 +23,9 @@ Total,,,,,2410,4.7%`;
 export default function Home() {
   return (
     <main style={{ fontFamily: "'Rubik', system-ui, sans-serif" }}>
+      {/* EV Leaderboard CTA Preview */}
+      <TccLeaderboardCta />
+
       {/* Fuel Range Chart Preview */}
       <TccFuelRangeChart />
 
