@@ -4,3 +4,4 @@ compatibility_date = "2026-07-01"
 
 [vars]
 PROFILE_UUID = "af7aae20-89fd-11f1-bbcb-d9b48cf1b0c1"
+CAMPAIGN_UUID = "af764150-89fd-11f1-804d-6571277a00a9"
