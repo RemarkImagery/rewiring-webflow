@@ -1,3 +1,5 @@
+import OlkCtaCard from "../components/HomePage/OlkCtaCard";
+import OlkVideoCard from "../components/HomePage/OlkVideoCard";
 import TcccCard from "../components/ThisCarCan/TcccCard";
 import TcccDetail from "../components/ThisCarCan/TcccDetail";
 import TccFuelRangeChart from "../components/ThisCarCan/TccFuelRangeChart";
@@ -23,6 +25,10 @@ Total,,,,,2410,4.7%`;
 export default function Home() {
   return (
     <main style={{ fontFamily: "'Rubik', system-ui, sans-serif" }}>
+      {/* OLK home page components Preview */}
+      <OlkCtaCard />
+      <OlkVideoCard />
+
       {/* EV Leaderboard CTA Preview */}
       <TccLeaderboardCta />
 
