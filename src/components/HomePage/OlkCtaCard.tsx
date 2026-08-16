@@ -41,7 +41,10 @@ export default function OlkCtaCard(props: OlkCtaCardProps) {
   } = props;
 
   const uid = useId().replace(/:/g, "");
-  const kiwiSrc = resolveImage(kiwiImage);
+  // Ships with the campaign hero art; picking an image in Webflow overrides it.
+  const kiwiSrc =
+    resolveImage(kiwiImage) ||
+    "https://pages.rewiring.nz/themes/rewiring/images/olk/nzme-hero-bg-felt.jpeg";
   const [raised, setRaised] = useState<number | null>(null);
 
   useEffect(() => {
