@@ -33,13 +33,17 @@ export default function OlkCtaCard(props: OlkCtaCardProps) {
     ctaText = "Join the mission",
     ctaUrl = "https://pages.rewiring.nz/operation-laser-kiwi",
     kiwiImage,
-    liveTotalsUrl = "https://nzme-raisely-total.oj-f3d.workers.dev",
+    liveTotalsUrl = "https://pages.rewiring.nz/operation-laser-kiwi/total",
     raisedSuffix = "raised so far",
     bgColor = "#143a1e",
     accentColor = "#4bf03c",
     buttonColor = "#f5b731",
   } = props;
 
+  // Totals come from the campaign page, NOT the Raisely worker directly:
+  // the published figure is Raisely + the manual CMS offset + the leading
+  // auction bids, and only the page knows the last two. Reading the worker
+  // here would show a smaller number than the thermometer.
   const uid = useId().replace(/:/g, "");
   // Ships with the campaign hero art; picking an image in Webflow overrides it.
   const kiwiSrc =

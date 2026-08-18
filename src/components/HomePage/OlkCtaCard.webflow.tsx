@@ -23,9 +23,12 @@ export default declareComponent(OlkCtaCard, {
       group: "Content",
     }),
     kiwiImage: props.Image({ name: "Side image (optional)", group: "Content" }),
+    // Campaign page endpoint: Raisely + the manual CMS offset + leading
+    // auction bids. Do NOT point this at the Raisely worker - it omits the
+    // last two and shows a smaller number than the campaign page.
     liveTotalsUrl: props.Text({
       name: "Live totals URL",
-      defaultValue: "https://nzme-raisely-total.oj-f3d.workers.dev",
+      defaultValue: "https://pages.rewiring.nz/operation-laser-kiwi/total",
       group: "Advanced",
     }),
     raisedSuffix: props.Text({ name: "Raised suffix", defaultValue: "raised so far", group: "Advanced" }),
