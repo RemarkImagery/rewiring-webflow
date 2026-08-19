@@ -59,10 +59,6 @@ export default function RwRegionFooter({
     const slug = resolveSlug(districtSlug);
     const d = getDistrict(slug);
     setAuto({ href: PDF_BASE + slug + ".pdf", loc: d?.fields?.location || "" });
-    // the location copy can add a line after hydration — nudge the host
-    // (Webflow Designer canvas) to re-measure the component's height
-    const t = setTimeout(() => window.dispatchEvent(new Event("resize")), 50);
-    return () => clearTimeout(t);
   }, [districtSlug]);
 
   const loc = location || auto.loc;
