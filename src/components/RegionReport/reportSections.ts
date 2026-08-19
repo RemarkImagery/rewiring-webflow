@@ -9,58 +9,41 @@ import { CSS, TEMPLATE } from "./reportContent";
 import { DISTRICTS, type District } from "./districtData";
 
 // Split the monolithic template at its section-comment boundaries. Matching on
-// stable ASCII substrings (not the box-drawing chars) keeps this robust.
+// stable ASCII substrings (not the box-drawing chars) keeps this robust. The v2
+// generator (build_components.py) cuts the Local Stories carousel out of the
+// TEMPLATE and leaves a "SPLIT: Machines" marker at the cut, so the machines
+// chunk starts exactly where a CMS story collection slots in on the page.
 const iBills = TEMPLATE.indexOf("PAGE 2: Bills");
-const iSolar = TEMPLATE.indexOf("Solar & Batteries");
+const iMachines = TEMPLATE.indexOf("SPLIT: Machines");
 const cutBack = (i: number) => (i < 0 ? -1 : TEMPLATE.lastIndexOf("<!--", i));
 const bBills = cutBack(iBills);
-const bSolar = cutBack(iSolar);
+const bMachines = cutBack(iMachines);
 
-/** Hero + opportunity stats + cumulative headline + jump-nav. */
+/** Report banner + hero + opportunity stats + cumulative graph + jump-navs + economics + emissions. */
 export const INTRO_HTML = TEMPLATE.slice(0, bBills);
-/** Fossil vs electric bill stat cards + the stacked bill chart. */
-export const BILLS_HTML = TEMPLATE.slice(bBills, bSolar);
+/** Bills section: headline stat boxes + the two-tab bills chart. */
+export const BILLS_HTML = TEMPLATE.slice(bBills, bMachines);
 /** Solar, EV, heat pump, hot water and induction sections + their tab charts. */
-export const MACHINES_HTML = TEMPLATE.slice(bSolar);
+export const MACHINES_HTML = TEMPLATE.slice(bMachines);
 
 /** Fill {{token}} placeholders. */
 export function sub(tpl: string, fields: Record<string, string>): string {
   return tpl.replace(/\{\{\s*(\w+)\s*\}\}/g, (_m, k) => (k in fields ? fields[k] : ""));
 }
 
-/** Bundled district for a slug, falling back to New Zealand then the first entry. */
+/** Bundled district for a slug, falling back to Dunedin then the first entry.
+ *  (The v2 bundle uses the v4.4 extractor's disambiguated slugs directly and
+ *  no longer carries an NZ-wide entry, so the old slug-alias shim is gone.) */
 export function getDistrict(slug?: string): District | undefined {
   return (
     (slug && DISTRICTS[slug]) ||
-    DISTRICTS["new-zealand"] ||
+    DISTRICTS["dunedin"] ||
     Object.values(DISTRICTS)[0]
   );
 }
 
-// The CMS/URL slugs use the v4.4 extractor's disambiguated district/region
-// names; the bundled data predates that split and uses combined names. Map the
-// CMS slugs that lack an exact bundle entry to the closest bundled dataset so
-// every page renders real data. (Unitary authorities share one dataset; Waikato
-// district vs region is approximate until the bundle is regenerated.)
-const SLUG_ALIASES: Record<string, string> = {
-  "auckland-region": "auckland",
-  "gisborne-district": "gisborne",
-  "gisborne-region": "gisborne",
-  "hawke-s-bay-region": "hawke-s-bay",
-  "marlborough-district": "marlborough",
-  "marlborough-region": "marlborough",
-  "nelson-city": "nelson",
-  "nelson-region": "nelson",
-  "tasman-district": "tasman",
-  "tasman-region": "tasman",
-  "waikato-district": "waikato",
-  "waikato-region": "waikato",
-};
-
 function bundleKey(slug: string): string | null {
-  if (DISTRICTS[slug]) return slug;
-  const alias = SLUG_ALIASES[slug];
-  return alias && DISTRICTS[alias] ? alias : null;
+  return DISTRICTS[slug] ? slug : null;
 }
 
 /**

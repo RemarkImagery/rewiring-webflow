@@ -9,6 +9,7 @@ export interface RwReportIntroProps {
   districtSlug?: string;
   location?: string;
   elecSavingsAnnual?: string;
+  machinesTotal?: string;
   co2eAnnual?: string;
   jobsCreated?: string;
   billSavings?: string;
@@ -19,6 +20,7 @@ export default function RwReportIntro({
   districtSlug = "",
   location,
   elecSavingsAnnual,
+  machinesTotal,
   co2eAnnual,
   jobsCreated,
   billSavings,
@@ -34,6 +36,7 @@ export default function RwReportIntro({
     const fields = mergeFields(slug, {
       location,
       elec_savings_annual: elecSavingsAnnual,
+      machines_total: machinesTotal,
       co2e_annual: co2eAnnual,
       jobs_created: jobsCreated,
       bill_savings: billSavings,
@@ -63,7 +66,7 @@ export default function RwReportIntro({
       });
       cleanupReveal();
     };
-  }, [districtSlug, location, elecSavingsAnnual, co2eAnnual, jobsCreated, billSavings, cumulativeSavings]);
+  }, [districtSlug, location, elecSavingsAnnual, machinesTotal, co2eAnnual, jobsCreated, billSavings, cumulativeSavings]);
 
   return <div className="rw-region-report" ref={rootRef} />;
 }

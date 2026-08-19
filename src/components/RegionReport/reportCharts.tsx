@@ -1,7 +1,10 @@
 "use client";
 
-/* Ported from the Electrifying-[region] report prototype. Recharts 3. */
-import React, { useState } from "react";
+// v2 chart runtime for the Region Report components — TSX port of the live
+// preview's chart script (rewiring-region-reports.pages.dev, 2026-08-19).
+// Per-location configs come from District.billTabs / District.machineTabs;
+// the national fallbacks in reportTabs.ts fill any missing tab.
+import React, { useEffect, useState } from "react";
 import {
   BarChart,
   Bar,
@@ -17,18 +20,67 @@ import {
   Legend,
 } from "recharts";
 import type { District } from "./districtData";
+import {
+  BILL_CFG,
+  SAVINGS_CFG,
+  HEATING_TABS,
+  WATER_TABS,
+  COOKTOP_TABS,
+  EV_TABS,
+} from "./reportTabs";
 
-const fmt =
-  (prefix?: string, suffix?: string) =>
-  (n: any) =>
-    (prefix || "") + Number(n).toLocaleString("en-NZ") + (suffix || "");
+export { HEATING_TABS, WATER_TABS, COOKTOP_TABS, EV_TABS };
 
-const MultiLineTick = ({ x, y, payload }: any) => {
+/* ─── Shared helpers ─── */
+const fmt = (prefix?: string, suffix?: string) => (n: any) =>
+  (prefix || "") + Number(n).toLocaleString("en-NZ") + (suffix || "");
+
+/** Phone breakpoint; components re-render when the breakpoint is crossed. */
+function useIsPhone(): boolean {
+  const [phone, setPhone] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(max-width: 640px)").matches,
+  );
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 640px)");
+    const on = () => setPhone(mq.matches);
+    if (mq.addEventListener) mq.addEventListener("change", on);
+    else (mq as any).addListener(on);
+    return () => {
+      if (mq.removeEventListener) mq.removeEventListener("change", on);
+      else (mq as any).removeListener(on);
+    };
+  }, []);
+  return phone;
+}
+
+const MultiLineTick = ({ x, y, payload, fs }: any) => {
+  const size = fs || 13;
   const lines = String(payload.value).split("\n");
   return (
     <g transform={`translate(${x},${y + 12})`}>
       {lines.map((ln: string, i: number) => (
-        <text key={i} x={0} y={i * 16} textAnchor="middle" fill="#1a3c3c" fontFamily="Rubik" fontSize="13" fontWeight={600}>
+        <text key={i} x={0} y={i * (size + 3)} textAnchor="middle" fill="#1a3c3c" fontFamily="Rubik" fontSize={size} fontWeight={600}>
+          {ln}
+        </text>
+      ))}
+    </g>
+  );
+};
+
+/* two-line word-wrapped category tick for narrow horizontal charts */
+const WrapTick = ({ x, y, payload }: any) => {
+  const words = String(payload.value).replace("\n", " ").split(" ");
+  const lines: string[] = [""];
+  words.forEach((w: string) => {
+    const cur = lines[lines.length - 1];
+    if (cur && (cur + " " + w).length > 13 && lines.length < 3) lines.push(w);
+    else lines[lines.length - 1] = cur ? cur + " " + w : w;
+  });
+  const y0 = y - (lines.length - 1) * 5.5;
+  return (
+    <g>
+      {lines.map((ln, i) => (
+        <text key={i} x={x} y={y0 + i * 11} textAnchor="end" fill="#1a3c3c" fontFamily="Rubik" fontSize="10" fontWeight={500} dominantBaseline="central">
           {ln}
         </text>
       ))}
@@ -46,16 +98,22 @@ const TotalLabel = ({ x, y, width, index, data }: any) => {
   );
 };
 
-/* ─── Vertical stacked bar (bills + lifetime-savings) ─── */
+/* ─── Vertical stacked bar chart (bills comparison) ─── */
 export function StackedBarChart({ cfg }: { cfg: any; id?: string }) {
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const [sticky, setSticky] = useState(false);
-  const COLORS: any = Object.fromEntries(cfg.segments.map((s: any) => [s.key, s.color]));
-  const LABELS: any = Object.fromEntries(cfg.segments.map((s: any) => [s.key, s.label]));
+  const mobile = useIsPhone();
+  const rows = mobile ? cfg.data.map((r: any) => ({ ...r, name: r.short || String(r.name).split("\n")[0] })) : cfg.data;
+  const COLORS = Object.fromEntries(cfg.segments.map((s: any) => [s.key, s.color]));
+  const LABELS = Object.fromEntries(cfg.segments.map((s: any) => [s.key, s.label]));
   const STACK = cfg.segments.map((s: any) => s.key);
-  const fmtVal = fmt(cfg.valuePrefix, cfg.valueSuffix);
+  const fmtFull = fmt(cfg.valuePrefix, cfg.valueSuffix);
+  const fmtVal =
+    mobile && cfg.valuePrefix === "$"
+      ? (v: any) => (Math.abs(v) >= 1000 ? "$" + (v / 1000).toFixed(v % 1000 ? 1 : 0).replace(/\.0$/, "") + "k" : "$" + v)
+      : fmtFull;
   const topKey = (row: any) => [...STACK].reverse().find((k) => row[k] > 0);
-  const rowTotal = (row: any) => STACK.reduce((a: number, k: string) => a + (row[k] || 0), 0);
+  const rowTotal = (row: any) => STACK.reduce((a: number, k: string) => a + (k === "base" ? 0 : row[k] || 0), 0);
 
   const clear = () => {
     setActiveKey(null);
@@ -84,59 +142,97 @@ export function StackedBarChart({ cfg }: { cfg: any; id?: string }) {
 
   return (
     <div className="chart-wrap">
-      <div className="chart-title">{cfg.title}</div>
+      {cfg.titleHtml ? (
+        <div className="chart-title" dangerouslySetInnerHTML={{ __html: cfg.titleHtml }} />
+      ) : (
+        <div className="chart-title">{cfg.title}</div>
+      )}
       <div className="legend">
         {cfg.legendOrder.map((k: string) => (
-          <div className="legend-item" key={k} data-dim={activeKey != null && activeKey !== k}
+          <div
+            className="legend-item"
+            key={k}
+            data-dim={activeKey != null && activeKey !== k}
             onClick={() => {
               if (activeKey === k && sticky) clear();
               else {
                 setActiveKey(k);
                 setSticky(true);
               }
-            }}>
+            }}
+          >
             <span className="swatch" style={{ background: COLORS[k] }} />
             <span>{LABELS[k]}</span>
           </div>
         ))}
       </div>
-      <div style={{ padding: "0" }} onClick={(e) => { if (e.target === e.currentTarget && sticky) clear(); }}>
+      <div
+        style={{ padding: "0" }}
+        onClick={(e) => {
+          if (e.target === e.currentTarget && sticky) clear();
+        }}
+      >
         <div className="chart-scroll">
           <div className="chart-inner">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={cfg.data} margin={{ top: 40, right: 24, left: 0, bottom: 60 }} barCategoryGap="30%">
+              <BarChart data={rows} margin={{ top: 40, right: mobile ? 6 : 24, left: 0, bottom: mobile ? 34 : 60 }} barCategoryGap={mobile ? "18%" : "30%"}>
                 <CartesianGrid stroke="#E3E3E3" strokeDasharray="6 6" vertical={false} />
-                <XAxis dataKey="name" tickLine={false} axisLine={{ stroke: "#000", strokeWidth: 1.5 }} interval={0} tick={<MultiLineTick />} height={60} />
-                <YAxis tickFormatter={fmtVal} tickLine={false} axisLine={false} domain={[cfg.yMin, cfg.yMax]} ticks={cfg.yTicks} width={70} tick={{ fontFamily: "Rubik", fontSize: 12, fill: "#1a3c3c" } as any} />
+                <XAxis dataKey="name" tickLine={false} axisLine={{ stroke: "#000", strokeWidth: 1.5 }} interval={0} tick={<MultiLineTick fs={mobile ? 11 : 13} />} height={mobile ? 34 : 60} />
+                <YAxis tickFormatter={fmtVal} tickLine={false} axisLine={false} domain={[cfg.yMin, cfg.yMax]} ticks={cfg.yTicks} width={mobile ? 44 : 70} tick={{ fontFamily: "Rubik", fontSize: mobile ? 11 : 12, fill: "#1a3c3c" }} />
                 <Tooltip cursor={false} isAnimationActive={false} wrapperStyle={{ outline: "none" }} content={<SegTip />} />
                 {cfg.segments.map((s: any, i: number) => (
-                  <Bar key={s.key} dataKey={s.key} stackId="a" isAnimationActive={false}
-                    onMouseEnter={() => { if (!sticky) setActiveKey(s.key); }}
-                    onMouseLeave={() => { if (!sticky) clear(); }}
-                    onClick={() => { if (sticky && activeKey === s.key) clear(); else { setActiveKey(s.key); setSticky(true); } }}
+                  <Bar
+                    key={s.key}
+                    dataKey={s.key}
+                    stackId="a"
+                    isAnimationActive={false}
+                    onMouseEnter={() => {
+                      if (!sticky) setActiveKey(s.key);
+                    }}
+                    onMouseLeave={() => {
+                      if (!sticky) clear();
+                    }}
+                    onClick={() => {
+                      if (sticky && activeKey === s.key) clear();
+                      else {
+                        setActiveKey(s.key);
+                        setSticky(true);
+                      }
+                    }}
                     shape={(props: any) => {
                       const { x, y, width, height, index } = props;
-                      if (!height) return <g />;
-                      const isTop = topKey(cfg.data[index]) === s.key;
+                      if (!height || s.key === "base") return <g />;
+                      const isTop = topKey(rows[index]) === s.key;
                       const r = isTop ? 6 : 0;
                       const opacity = dim(s.key);
-                      const val = cfg.data[index][s.key];
+                      const val = rows[index][s.key];
                       const cx = x + width / 2;
                       const cy = y + height / 2;
-                      const showLabel = height > 60 && width > 100 && val > 0;
+                      const showLabel = !cfg.hideSegLabels && height > 60 && width > 100 && val > 0;
                       const showValue = height > 30 && val > 0;
-                      const rectEl = r
-                        ? <path d={`M${x},${y + r} Q${x},${y} ${x + r},${y} L${x + width - r},${y} Q${x + width},${y} ${x + width},${y + r} L${x + width},${y + height} L${x},${y + height} Z`} fill={s.color} opacity={opacity} style={{ transition: "opacity 120ms" }} />
-                        : <rect x={x} y={y} width={width} height={height} fill={s.color} opacity={opacity} style={{ transition: "opacity 120ms" }} />;
+                      const rectEl = r ? (
+                        <path d={`M${x},${y + r} Q${x},${y} ${x + r},${y} L${x + width - r},${y} Q${x + width},${y} ${x + width},${y + r} L${x + width},${y + height} L${x},${y + height} Z`} fill={s.color} opacity={opacity} style={{ transition: "opacity 120ms" }} />
+                      ) : (
+                        <rect x={x} y={y} width={width} height={height} fill={s.color} opacity={opacity} style={{ transition: "opacity 120ms" }} />
+                      );
                       return (
                         <g>
                           {rectEl}
-                          {showLabel && <text x={cx} y={cy - (showValue ? 7 : 0)} textAnchor="middle" dominantBaseline="central" fill="#fff" fontFamily="Rubik" fontSize="11" fontWeight={500} opacity={opacity} style={{ transition: "opacity 120ms", pointerEvents: "none" }}>{LABELS[s.key]}</text>}
-                          {showValue && <text x={cx} y={cy + (showLabel ? 9 : 0)} textAnchor="middle" dominantBaseline="central" fill="#fff" fontFamily="Rubik" fontSize="13" fontWeight={700} opacity={opacity} style={{ transition: "opacity 120ms", pointerEvents: "none" }}>{fmtVal(val)}</text>}
+                          {showLabel && (
+                            <text x={cx} y={cy - (showValue ? 7 : 0)} textAnchor="middle" dominantBaseline="central" fill="#fff" fontFamily="Rubik" fontSize="11" fontWeight={500} opacity={opacity} style={{ transition: "opacity 120ms", pointerEvents: "none" }}>
+                              {LABELS[s.key]}
+                            </text>
+                          )}
+                          {showValue && (
+                            <text x={cx} y={cy + (showLabel ? 9 : 0)} textAnchor="middle" dominantBaseline="central" fill="#fff" fontFamily="Rubik" fontSize="13" fontWeight={700} opacity={opacity} style={{ transition: "opacity 120ms", pointerEvents: "none" }}>
+                              {fmtVal(val)}
+                            </text>
+                          )}
                         </g>
                       );
-                    }}>
-                    {i === cfg.segments.length - 1 && <LabelList content={<TotalLabel data={cfg.data} />} />}
+                    }}
+                  >
+                    {i === cfg.segments.length - 1 && <LabelList content={<TotalLabel data={rows} />} />}
                   </Bar>
                 ))}
               </BarChart>
@@ -149,12 +245,17 @@ export function StackedBarChart({ cfg }: { cfg: any; id?: string }) {
   );
 }
 
-/* ─── Horizontal bar (machine comparisons) ─── */
+/* ─── Horizontal bar chart (machine comparisons) ─── */
 function HorizBarChart({ data, segments, xMax, xTicks, valuePrefix, valueSuffix, subtitle }: any) {
-  const fmtVal = fmt(valuePrefix, valueSuffix);
+  const mobile = useIsPhone();
+  const fmtFull = fmt(valuePrefix, valueSuffix);
+  const fmtVal =
+    mobile && valuePrefix === "$"
+      ? (v: any) => (Math.abs(v) >= 1000 ? "$" + (v / 1000).toFixed(v % 1000 ? 1 : 0).replace(/\.0$/, "") + "k" : "$" + v)
+      : fmtFull;
   const STACK = segments.map((s: any) => s.key);
   const rightKey = (row: any) => [...STACK].reverse().find((k) => row[k] > 0);
-  const chartH = Math.max(280, data.length * 62 + 50);
+  const chartH = Math.max(mobile ? 220 : 280, data.length * (mobile ? 46 : 62) + 50);
 
   return (
     <div>
@@ -169,12 +270,18 @@ function HorizBarChart({ data, segments, xMax, xTicks, valuePrefix, valueSuffix,
       <div className="chart-scroll">
         <div className="horiz-chart-inner" style={{ height: chartH }}>
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={data} layout="vertical" margin={{ top: 8, right: 80, left: 10, bottom: 8 }} barCategoryGap="6%" barSize={46}>
+            <BarChart data={data} layout="vertical" margin={{ top: 8, right: mobile ? 52 : 80, left: mobile ? 0 : 10, bottom: 8 }} barCategoryGap="6%" barSize={mobile ? 30 : 46}>
               <CartesianGrid stroke="#E3E3E3" strokeDasharray="6 6" horizontal={false} />
-              <YAxis dataKey="name" type="category" tickLine={false} axisLine={false} width={140} tick={{ fontFamily: "Rubik", fontSize: 12, fill: "#1a3c3c", fontWeight: 500 } as any} />
-              <XAxis type="number" tickFormatter={fmtVal} tickLine={false} axisLine={{ stroke: "#000", strokeWidth: 1.5 }} domain={[0, xMax]} ticks={xTicks} tick={{ fontFamily: "Rubik", fontSize: 11, fill: "#5c7a78" } as any} />
+              <YAxis dataKey="name" type="category" tickLine={false} axisLine={false} width={mobile ? 104 : 188} tick={mobile ? <WrapTick /> : { fontFamily: "Rubik", fontSize: 12, fill: "#1a3c3c", fontWeight: 500 }} />
+              <XAxis type="number" tickFormatter={fmtVal} tickLine={false} axisLine={{ stroke: "#000", strokeWidth: 1.5 }} domain={[0, xMax]} ticks={mobile && xTicks.length > 4 ? xTicks.filter((_t: any, i: number) => i % 2 === 0) : xTicks} tick={{ fontFamily: "Rubik", fontSize: mobile ? 10 : 11, fill: "#5c7a78" }} />
               {segments.map((s: any, i: number) => (
-                <Bar key={s.key} dataKey={s.key} stackId="a" fill={s.color} isAnimationActive={false} radius={0}
+                <Bar
+                  key={s.key}
+                  dataKey={s.key}
+                  stackId="a"
+                  fill={s.color}
+                  isAnimationActive={false}
+                  radius={0}
                   shape={(props: any) => {
                     const { x, y, width, height } = props;
                     if (!width) return <g />;
@@ -186,13 +293,25 @@ function HorizBarChart({ data, segments, xMax, xTicks, valuePrefix, valueSuffix,
                       return <path d={path} fill={s.color} />;
                     }
                     return <rect x={x} y={y} width={width} height={height} fill={s.color} />;
-                  }}>
+                  }}
+                >
                   {i === segments.length - 1 && (
-                    <LabelList content={({ x, y, width, height, index }: any) => {
-                      const d = data[index];
-                      if (!d || !d.total) return null;
-                      return <text x={x + width + 8} y={y + height / 2} dominantBaseline="central" fill="#1a3c3c" fontFamily="Rubik" fontSize="13" fontWeight={700}>{d.total}</text>;
-                    }} />
+                    <LabelList
+                      content={({ x, y, width, height, index }: any) => {
+                        const d = data[index];
+                        if (!d || !d.total) return null;
+                        let label = d.total;
+                        if (mobile && /^\$[\d,]+/.test(String(label))) {
+                          const n = parseInt(String(label).replace(/[^0-9]/g, ""), 10);
+                          if (n >= 10000) label = "$" + Math.round(n / 1000) + "k" + (String(d.total).indexOf("/yr") > -1 ? " /yr" : "");
+                        }
+                        return (
+                          <text x={x + width + 8} y={y + height / 2} dominantBaseline="central" fill="#1a3c3c" fontFamily="Rubik" fontSize={mobile ? 11 : 13} fontWeight={700}>
+                            {label}
+                          </text>
+                        );
+                      }}
+                    />
                   )}
                 </Bar>
               ))}
@@ -205,74 +324,73 @@ function HorizBarChart({ data, segments, xMax, xTicks, valuePrefix, valueSuffix,
   );
 }
 
-/* ─── Tabbed wrapper ─── */
+/* ─── Tabbed chart wrapper (with optional per-tab group picker) ─── */
 export function TabbedCharts({ title, tabs }: any) {
   const [active, setActive] = useState(0);
+  const [groupSel, setGroupSel] = useState<Record<number, number>>({});
   return (
     <div>
       <div className="tabs-title">{title}</div>
       <div className="tabs-header">
         {tabs.map((t: any, i: number) => (
-          <button key={i} className={`tab-btn ${i === active ? "active" : ""}`} onClick={() => setActive(i)}>{t.label}</button>
+          <button key={i} className={`tab-btn ${i === active ? "active" : ""}`} onClick={() => setActive(i)}>
+            {t.label}
+          </button>
         ))}
       </div>
       <div className="tabs-card">
-        {tabs.map((t: any, i: number) => (
-          <div key={i} className={`tab-panel ${i === active ? "active" : ""}`}>
-            <HorizBarChart {...t.chart} />
-          </div>
-        ))}
+        {tabs.map((t: any, i: number) => {
+          const gi = groupSel[i] !== undefined ? groupSel[i] : t.defaultGroup || 0;
+          return (
+            <div key={i} className={`tab-panel ${i === active ? "active" : ""}`}>
+              {t.groups && t.groups.length ? (
+                <React.Fragment>
+                  <div className="group-picker">
+                    <label>{t.pickerLabel || "Type"}</label>
+                    <select value={gi} onChange={(e) => setGroupSel({ ...groupSel, [i]: +e.target.value })}>
+                      {t.groups.map((g: any, j: number) => (
+                        <option key={j} value={j}>
+                          {g.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <HorizBarChart {...t.groups[Math.min(gi, t.groups.length - 1)].chart} />
+                </React.Fragment>
+              ) : (
+                <HorizBarChart {...t.chart} />
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
 }
 
-/* ─── Per-location config builders ─── */
-const BILL_CFG_BASE = {
-  title: "Energy bills per year in 2026",
-  subtitle: "Excludes upfront costs. Based on 2026 energy prices. Average household for the selected location.",
-  yMin: 0,
-  valuePrefix: "$",
-  valueSuffix: "",
-  segments: [
-    { key: "maintenance", label: "Car maintenance", color: "#A0A0A0" },
-    { key: "electricity", label: "Electricity bills", color: "#4A90E2" },
-    { key: "gas", label: "Gas bills", color: "#9B7DC8" },
-    { key: "petrol", label: "Petrol bills", color: "#E88B8B" },
-    { key: "rucs", label: "RUCs", color: "#E89420" },
-    { key: "savings", label: "Savings", color: "#7DB87D" },
-  ],
-  legendOrder: ["petrol", "gas", "electricity", "maintenance", "rucs", "savings"],
-};
-
-const SAVINGS_CFG_BASE = {
-  title: "Lifetime savings by electrification switch",
-  subtitle: "Net savings including upfront costs. Solar: 30 years, 9kW system at 5.5% finance. All others: 15 years. Vehicle and cooking figures use bill savings (not net) as upfront costs vary.",
-  yMin: 0,
-  valuePrefix: "$",
-  valueSuffix: "",
-  segments: [{ key: "savings", label: "Net savings / bill savings", color: "#234e4c" }],
-  legendOrder: ["savings"],
-};
-
-export function buildBillCfg(d: District) {
-  return {
-    ...BILL_CFG_BASE,
-    title: `The average ${d.fields.location} home could save ${d.fields.bill_savings} every year by electrifying`,
-    data: d.bill,
-    yMax: d.billYMax,
-    yTicks: d.billYTicks,
-  };
-}
-export function buildSavingsCfg(d: District) {
-  return { ...SAVINGS_CFG_BASE, data: d.savings, yMax: d.savingsYMax, yTicks: d.savingsYTicks };
+/* ─── Bills: two-tab wrapper (annual bills / incl. upfront) ─── */
+export function BillTabs({ cfgA, cfgB }: { cfgA?: any; cfgB?: any }) {
+  const tabs = ["Bill savings", "Bill savings including upfront costs"];
+  const [active, setActive] = useState(0);
+  const a = cfgA || BILL_CFG;
+  const b = cfgB || SAVINGS_CFG;
+  return (
+    <div>
+      <div className="tabs-header">
+        {tabs.map((t, i) => (
+          <button key={i} className={`tab-btn ${i === active ? "active" : ""}`} onClick={() => setActive(i)}>
+            {t}
+          </button>
+        ))}
+      </div>
+      {active === 0 ? <StackedBarChart cfg={a} id="bills" /> : <StackedBarChart cfg={b} id="savings" />}
+    </div>
+  );
 }
 
-/* ─── Cumulative savings chart (2026–2040) — ported from the live preview.
-   single mode: one cumulative-savings area; dual: net area + bill-savings line. ─── */
-type CumulativePoint = { year: number; bills: number | null; net: number | null };
+/* ─── Cumulative savings chart (net-first, endpoint == the C23 headline) ─── */
 export type CumulativeCfg = {
-  data: CumulativePoint[];
+  data: Array<{ year: number; bills: number | null; net: number | null }>;
   single?: boolean;
   billsEnd?: string | null;
   netEnd?: string | null;
@@ -295,7 +413,9 @@ const CumulTip = ({ active, payload, label }: any) => {
       {payload.map((p: any, i: number) => (
         <div key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ width: 10, height: 10, borderRadius: 2, background: p.color, display: "inline-block" }} />
-          <span>{p.name}: {"$" + Number(p.value).toLocaleString("en-NZ")}</span>
+          <span>
+            {p.name}: {"$" + Number(p.value).toLocaleString("en-NZ")}
+          </span>
         </div>
       ))}
     </div>
@@ -303,32 +423,32 @@ const CumulTip = ({ active, payload, label }: any) => {
 };
 
 export function CumulativeChart({ cfg }: { cfg: CumulativeCfg }) {
-  const endLabel = (text?: string | null) => (props: any) => {
+  const mobile = useIsPhone();
+  const endLabel = (text: string | null | undefined) => (props: any) => {
     if (props.index !== cfg.data.length - 1 || text == null) return null;
+    const label = mobile ? String(text).replace(" billion", "b").replace(" million", "m") : text;
     return (
-      <text x={props.x + 8} y={props.y + 4} textAnchor="start" fill="#1a3c3c" fontFamily="Rubik" fontSize="14" fontWeight={700}>
-        {text}
+      <text x={props.x + 6} y={props.y + 4} textAnchor="start" fill="#1a3c3c" fontFamily="Rubik" fontSize={mobile ? 11 : 14} fontWeight={700}>
+        {label}
       </text>
     );
   };
   return (
-    <div style={{ width: "100%", height: 380 }}>
+    <div style={{ width: "100%", height: mobile ? 300 : 380 }}>
       <ResponsiveContainer width="100%" height="100%">
-        <ComposedChart data={cfg.data} margin={{ top: 16, right: 96, bottom: 4, left: 12 }}>
+        <ComposedChart data={cfg.data} margin={{ top: 16, right: mobile ? 56 : 96, bottom: 4, left: mobile ? 0 : 12 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e8e8e3" vertical={false} />
-          <XAxis dataKey="year" interval={1} tickLine={false} axisLine={{ stroke: "#c9c9c2" }} tick={{ fill: "#1a3c3c", fontFamily: "Rubik", fontSize: 12 }} />
-          <YAxis tickFormatter={fmtShort} tickLine={false} axisLine={false} width={64} tick={{ fill: "#5f6f6f", fontFamily: "Rubik", fontSize: 12 }} />
+          <XAxis dataKey="year" interval={mobile ? 3 : 1} tickLine={false} axisLine={{ stroke: "#c9c9c2" }} tick={{ fill: "#1a3c3c", fontFamily: "Rubik", fontSize: mobile ? 11 : 12 }} />
+          <YAxis tickFormatter={fmtShort} tickLine={false} axisLine={false} width={mobile ? 50 : 64} tick={{ fill: "#5f6f6f", fontFamily: "Rubik", fontSize: mobile ? 11 : 12 }} />
           <Tooltip content={<CumulTip />} cursor={{ stroke: "#c9c9c2", strokeWidth: 1 }} />
-          {!cfg.single && (
-            <Legend wrapperStyle={{ fontFamily: "Rubik", fontSize: 13, color: "#1a3c3c" }} formatter={(v) => <span style={{ color: "#1a3c3c" }}>{v}</span>} />
-          )}
+          {!cfg.single && <Legend wrapperStyle={{ fontFamily: "Rubik", fontSize: 13, color: "#1a3c3c" }} formatter={(v) => <span style={{ color: "#1a3c3c" }}>{v}</span>} />}
           {cfg.single ? (
             <Area type="monotone" dataKey="bills" name="Cumulative savings" stroke="#93c47d" strokeWidth={2} fill="#93c47d" fillOpacity={0.3} dot={false} activeDot={{ r: 5 }} isAnimationActive={false} label={endLabel(cfg.billsEnd)} />
           ) : (
-            <>
+            <React.Fragment>
               <Area type="monotone" dataKey="net" name="Net savings (after upfront costs)" stroke="#93c47d" strokeWidth={2} fill="#93c47d" fillOpacity={0.3} dot={false} activeDot={{ r: 5 }} isAnimationActive={false} label={endLabel(cfg.netEnd)} />
               <Line type="monotone" dataKey="bills" name="Energy bill savings" stroke="#3c78d8" strokeWidth={2} dot={false} activeDot={{ r: 5 }} isAnimationActive={false} label={endLabel(cfg.billsEnd)} />
-            </>
+            </React.Fragment>
           )}
         </ComposedChart>
       </ResponsiveContainer>
@@ -336,276 +456,25 @@ export function CumulativeChart({ cfg }: { cfg: CumulativeCfg }) {
   );
 }
 
-/* ─── National appliance-comparison tabs (same for every location) ─── */
-export const HEATING_TABS = {
-  title: "Space heating savings",
-  tabs: [
-    { label: "15 Year Lifetime", chart: {
-      segments: [
-        { key: "upfront", label: "Upfront costs", color: "#5B2D8E" },
-        { key: "elec", label: "Electricity costs", color: "#4A90E2" },
-        { key: "wood", label: "Wood costs", color: "#B8A060" },
-        { key: "gasVol", label: "Gas costs (volume)", color: "#7DB87D" },
-        { key: "gasDaily", label: "Gas costs (daily)", color: "#A8D4A8" },
-        { key: "lpgVol", label: "LPG costs (volume)", color: "#9B7DC8" },
-        { key: "lpgDaily", label: "LPG costs (daily)", color: "#C4ADE0" },
-      ],
-      xMax: 35000, xTicks: [0, 5000, 10000, 15000, 20000, 25000, 30000, 35000],
-      valuePrefix: "$", valueSuffix: "",
-      subtitle: "Based on average home heating needs (RBS 2021), 2026 energy prices with forward inflation (real) based on historic averages, 15 year appliance lifetime.",
-      data: [
-        { name: "Heat pump", upfront: 3500, elec: 5600, wood: 0, gasVol: 0, gasDaily: 0, lpgVol: 0, lpgDaily: 0, total: "$9,100" },
-        { name: "Wood fire", upfront: 4500, elec: 0, wood: 13700, gasVol: 0, gasDaily: 0, lpgVol: 0, lpgDaily: 0, total: "$18,200" },
-        { name: "Resistive heater", upfront: 500, elec: 20500, wood: 0, gasVol: 0, gasDaily: 0, lpgVol: 0, lpgDaily: 0, total: "$21,000" },
-        { name: "Gas heater flued", upfront: 3000, elec: 0, wood: 0, gasVol: 15500, gasDaily: 5600, lpgVol: 0, lpgDaily: 0, total: "$24,100" },
-        { name: "Gas heater fire", upfront: 3000, elec: 0, wood: 0, gasVol: 17800, gasDaily: 5600, lpgVol: 0, lpgDaily: 0, total: "$26,400" },
-        { name: "LPG heater flued", upfront: 3000, elec: 0, wood: 0, gasVol: 0, gasDaily: 0, lpgVol: 22500, lpgDaily: 3000, total: "$28,500" },
-        { name: "LPG heater fire", upfront: 3000, elec: 0, wood: 0, gasVol: 0, gasDaily: 0, lpgVol: 25400, lpgDaily: 3000, total: "$31,400" },
-      ],
-    }},
-    { label: "Yearly Bills", chart: {
-      segments: [
-        { key: "elec", label: "Electricity costs", color: "#4A90E2" },
-        { key: "wood", label: "Wood costs", color: "#B8A060" },
-        { key: "gasVol", label: "Gas costs (volume)", color: "#7DB87D" },
-        { key: "gasDaily", label: "Gas costs (daily)", color: "#A8D4A8" },
-        { key: "lpgVol", label: "LPG costs (volume)", color: "#9B7DC8" },
-        { key: "lpgDaily", label: "LPG costs (daily)", color: "#C4ADE0" },
-      ],
-      xMax: 1750, xTicks: [0, 250, 500, 750, 1000, 1250, 1500, 1750],
-      valuePrefix: "$", valueSuffix: "",
-      subtitle: "Based on 2026 energy prices.",
-      data: [
-        { name: "Heat pump", elec: 330, wood: 0, gasVol: 0, gasDaily: 0, lpgVol: 0, lpgDaily: 0, total: "$330 /yr" },
-        { name: "Wood fire", elec: 0, wood: 740, gasVol: 0, gasDaily: 0, lpgVol: 0, lpgDaily: 0, total: "$740 /yr" },
-        { name: "Resistive heater", elec: 1220, wood: 0, gasVol: 0, gasDaily: 0, lpgVol: 0, lpgDaily: 0, total: "$1,220 /yr" },
-        { name: "Gas heater flued", elec: 0, wood: 0, gasVol: 870, gasDaily: 320, lpgVol: 0, lpgDaily: 0, total: "$1,190 /yr" },
-        { name: "Gas heater fire", elec: 0, wood: 0, gasVol: 950, gasDaily: 320, lpgVol: 0, lpgDaily: 0, total: "$1,270 /yr" },
-        { name: "LPG heater flued", elec: 0, wood: 0, gasVol: 0, gasDaily: 0, lpgVol: 1210, lpgDaily: 200, total: "$1,410 /yr" },
-        { name: "LPG heater fire", elec: 0, wood: 0, gasVol: 0, gasDaily: 0, lpgVol: 1350, lpgDaily: 200, total: "$1,550 /yr" },
-      ],
-    }},
-    { label: "Yearly Emissions", chart: {
-      segments: [{ key: "emissions", label: "Yearly emissions (kg CO2e/yr)", color: "#E88B8B" }],
-      xMax: 1250, xTicks: [0, 250, 500, 750, 1000, 1250],
-      valuePrefix: "", valueSuffix: "",
-      subtitle: "Based on average home heating needs (RBS 2021), 2023 emissions factors (Ministry for the Environment 2023).",
-      data: [
-        { name: "Heat pump", emissions: 80, total: "80" },
-        { name: "Wood fire", emissions: 100, total: "100" },
-        { name: "Resistive heater", emissions: 290, total: "290" },
-        { name: "Gas heater flued", emissions: 1000, total: "1,000" },
-        { name: "Gas heater fire", emissions: 1100, total: "1,100" },
-        { name: "LPG heater flued", emissions: 1090, total: "1,090" },
-        { name: "LPG heater fire", emissions: 1200, total: "1,200" },
-      ],
-    }},
-  ],
-};
+/* ─── Per-location shaping ─── */
 
-export const WATER_TABS = {
-  title: "Water heating savings",
-  tabs: [
-    { label: "15 Year Lifetime", chart: {
-      segments: [
-        { key: "upfront", label: "Upfront costs", color: "#5B2D8E" },
-        { key: "solar", label: "Solar financed", color: "#F5C542" },
-        { key: "ripple", label: "Ripple", color: "#4A90E2" },
-        { key: "elec", label: "Electricity costs", color: "#7BAFD4" },
-        { key: "gasVol", label: "Gas costs (volume)", color: "#7DB87D" },
-        { key: "gasDaily", label: "Gas costs (daily)", color: "#A8D4A8" },
-        { key: "lpgVol", label: "LPG costs (volume)", color: "#9B7DC8" },
-        { key: "lpgDaily", label: "LPG costs (daily)", color: "#C4ADE0" },
-      ],
-      xMax: 25000, xTicks: [0, 5000, 10000, 15000, 20000, 25000],
-      valuePrefix: "$", valueSuffix: "",
-      subtitle: "Based on average home water heating needs (RBS 2021), 2026 energy prices with forward inflation, 15 year appliance lifetime.",
-      data: [
-        { name: "Hot water heat pump (solar)", upfront: 5000, solar: 3600, ripple: 0, elec: 0, gasVol: 0, gasDaily: 0, lpgVol: 0, lpgDaily: 0, total: "$8,600" },
-        { name: "Hot water heat pump (night)", upfront: 5000, solar: 0, ripple: 4500, elec: 0, gasVol: 0, gasDaily: 0, lpgVol: 0, lpgDaily: 0, total: "$9,500" },
-        { name: "Hot water heat pump (grid)", upfront: 5000, solar: 0, ripple: 0, elec: 6000, gasVol: 0, gasDaily: 0, lpgVol: 0, lpgDaily: 0, total: "$11,000" },
-        { name: "Resistive on solar", upfront: 1500, solar: 8350, ripple: 0, elec: 0, gasVol: 0, gasDaily: 0, lpgVol: 0, lpgDaily: 0, total: "$9,850" },
-        { name: "Resistive night rate", upfront: 1500, solar: 0, ripple: 11950, elec: 0, gasVol: 0, gasDaily: 0, lpgVol: 0, lpgDaily: 0, total: "$13,450" },
-        { name: "Resistive avg grid", upfront: 1500, solar: 0, ripple: 0, elec: 17950, gasVol: 0, gasDaily: 0, lpgVol: 0, lpgDaily: 0, total: "$19,450" },
-        { name: "Gas instant", upfront: 3000, solar: 0, ripple: 0, elec: 0, gasVol: 10000, gasDaily: 4500, lpgVol: 0, lpgDaily: 0, total: "$17,500" },
-        { name: "Gas tank", upfront: 3000, solar: 0, ripple: 0, elec: 0, gasVol: 12900, gasDaily: 4500, lpgVol: 0, lpgDaily: 0, total: "$20,400" },
-        { name: "LPG instant", upfront: 3000, solar: 0, ripple: 0, elec: 0, gasVol: 0, gasDaily: 0, lpgVol: 13700, lpgDaily: 3000, total: "$19,700" },
-      ],
-    }},
-    { label: "Yearly Bills", chart: {
-      segments: [
-        { key: "solar", label: "Solar financed", color: "#F5C542" },
-        { key: "ripple", label: "Ripple", color: "#4A90E2" },
-        { key: "elec", label: "Electricity costs", color: "#7BAFD4" },
-        { key: "gasVol", label: "Gas costs (volume)", color: "#7DB87D" },
-        { key: "gasDaily", label: "Gas costs (daily)", color: "#A8D4A8" },
-        { key: "lpgVol", label: "LPG costs (volume)", color: "#9B7DC8" },
-        { key: "lpgDaily", label: "LPG costs (daily)", color: "#C4ADE0" },
-      ],
-      xMax: 1250, xTicks: [0, 250, 500, 750, 1000, 1250],
-      valuePrefix: "$", valueSuffix: "",
-      subtitle: "Based on 2026 energy prices.",
-      data: [
-        { name: "Hot water heat pump (solar)", solar: 90, ripple: 0, elec: 0, gasVol: 0, gasDaily: 0, lpgVol: 0, lpgDaily: 0, total: "$90 /yr" },
-        { name: "Hot water heat pump (night)", solar: 0, ripple: 130, elec: 0, gasVol: 0, gasDaily: 0, lpgVol: 0, lpgDaily: 0, total: "$130 /yr" },
-        { name: "Hot water heat pump (grid)", solar: 0, ripple: 0, elec: 220, gasVol: 0, gasDaily: 0, lpgVol: 0, lpgDaily: 0, total: "$220 /yr" },
-        { name: "Resistive on solar", solar: 360, ripple: 0, elec: 0, gasVol: 0, gasDaily: 0, lpgVol: 0, lpgDaily: 0, total: "$360 /yr" },
-        { name: "Resistive night rate", solar: 0, ripple: 540, elec: 0, gasVol: 0, gasDaily: 0, lpgVol: 0, lpgDaily: 0, total: "$540 /yr" },
-        { name: "Resistive avg grid", solar: 0, ripple: 0, elec: 910, gasVol: 0, gasDaily: 0, lpgVol: 0, lpgDaily: 0, total: "$910 /yr" },
-        { name: "Gas instant", solar: 0, ripple: 0, elec: 0, gasVol: 540, gasDaily: 300, lpgVol: 0, lpgDaily: 0, total: "$840 /yr" },
-        { name: "Gas tank", solar: 0, ripple: 0, elec: 0, gasVol: 640, gasDaily: 300, lpgVol: 0, lpgDaily: 0, total: "$940 /yr" },
-        { name: "LPG instant", solar: 0, ripple: 0, elec: 0, gasVol: 0, gasDaily: 0, lpgVol: 750, lpgDaily: 200, total: "$950 /yr" },
-      ],
-    }},
-    { label: "Yearly Emissions", chart: {
-      segments: [{ key: "emissions", label: "Yearly emissions (kg CO2e/yr)", color: "#E88B8B" }],
-      xMax: 800, xTicks: [0, 200, 400, 600, 800],
-      valuePrefix: "", valueSuffix: "",
-      subtitle: "Based on average water heating needs (RBS 2021), 2023 emissions factors (Ministry for the Environment 2023).",
-      data: [
-        { name: "Hot water heat pump", emissions: 50, total: "50" },
-        { name: "Resistive", emissions: 220, total: "220" },
-        { name: "Gas instant", emissions: 620, total: "620" },
-        { name: "Gas tank", emissions: 740, total: "740" },
-        { name: "LPG instant", emissions: 670, total: "670" },
-      ],
-    }},
-  ],
-};
+/** Overlay a location's tab list (from District.machineTabs) onto a national base. */
+export function mergeTabs(base: any, locTabs: any) {
+  if (!locTabs || !locTabs.length) return base;
+  const t = base.tabs.slice();
+  for (let i = 0; i < locTabs.length && i < t.length; i++) t[i] = locTabs[i];
+  return { title: base.title, tabs: t };
+}
 
-export const COOKTOP_TABS = {
-  title: "Cooking savings",
-  tabs: [
-    { label: "15 Year Lifetime", chart: {
-      segments: [
-        { key: "upfront", label: "Upfront costs", color: "#5B2D8E" },
-        { key: "elec", label: "Electricity costs", color: "#4A90E2" },
-        { key: "gasVol", label: "Gas costs (volume)", color: "#7DB87D" },
-        { key: "gasDaily", label: "Gas costs (daily)", color: "#A8D4A8" },
-        { key: "lpgVol", label: "LPG costs (volume)", color: "#9B7DC8" },
-        { key: "lpgDaily", label: "LPG costs (daily)", color: "#C4ADE0" },
-      ],
-      xMax: 5000, xTicks: [0, 1000, 2000, 3000, 4000, 5000],
-      valuePrefix: "$", valueSuffix: "",
-      subtitle: "Based on average cooktop energy needs (RBS 2021), 2026 energy prices with forward inflation (real), 15 year appliance lifetime.",
-      data: [
-        { name: "Induction cooktop", upfront: 1200, elec: 2127, gasVol: 0, gasDaily: 0, lpgVol: 0, lpgDaily: 0, total: "$3,327" },
-        { name: "Resistive cooktop", upfront: 500, elec: 2565, gasVol: 0, gasDaily: 0, lpgVol: 0, lpgDaily: 0, total: "$3,065" },
-        { name: "Gas cooktop", upfront: 800, elec: 0, gasVol: 1824, gasDaily: 1000, lpgVol: 0, lpgDaily: 0, total: "$3,624" },
-        { name: "LPG cooktop", upfront: 800, elec: 0, gasVol: 0, gasDaily: 0, lpgVol: 2977, lpgDaily: 1000, total: "$4,777" },
-      ],
-    }},
-    { label: "Yearly Bills", chart: {
-      segments: [
-        { key: "elec", label: "Electricity costs", color: "#4A90E2" },
-        { key: "gasVol", label: "Gas costs (volume)", color: "#7DB87D" },
-        { key: "gasDaily", label: "Gas costs (daily)", color: "#A8D4A8" },
-        { key: "lpgVol", label: "LPG costs (volume)", color: "#9B7DC8" },
-        { key: "lpgDaily", label: "LPG costs (daily)", color: "#C4ADE0" },
-      ],
-      xMax: 200, xTicks: [0, 50, 100, 150, 200],
-      valuePrefix: "$", valueSuffix: "",
-      subtitle: "Based on 2026 energy prices.",
-      data: [
-        { name: "Induction cooktop", elec: 80, gasVol: 0, gasDaily: 0, lpgVol: 0, lpgDaily: 0, total: "$80 /yr" },
-        { name: "Resistive cooktop", elec: 89, gasVol: 0, gasDaily: 0, lpgVol: 0, lpgDaily: 0, total: "$89 /yr" },
-        { name: "Gas cooktop", elec: 0, gasVol: 50, gasDaily: 68, lpgVol: 0, lpgDaily: 0, total: "$118 /yr" },
-        { name: "LPG cooktop", elec: 0, gasVol: 0, gasDaily: 0, lpgVol: 120, lpgDaily: 67, total: "$187 /yr" },
-      ],
-    }},
-    { label: "Yearly Emissions", chart: {
-      segments: [{ key: "emissions", label: "Yearly emissions (kg CO2e/yr)", color: "#E88B8B" }],
-      xMax: 150, xTicks: [0, 50, 100, 150],
-      valuePrefix: "", valueSuffix: "",
-      subtitle: "Based on average cooktop energy needs (RBS 2021), 2023 emissions factors (Ministry for the Environment 2023).",
-      data: [
-        { name: "Induction cooktop", emissions: 19, total: "19" },
-        { name: "Resistive cooktop", emissions: 21, total: "21" },
-        { name: "Gas cooktop", emissions: 136, total: "136" },
-        { name: "LPG cooktop", emissions: 147, total: "147" },
-      ],
-    }},
-  ],
-};
-
-export const SOLAR_TABS = {
-  title: "Solar & battery savings",
-  tabs: [
-    { label: "Effective Price", chart: {
-      segments: [{ key: "price", label: "Effective electricity price (c/kWh)", color: "#234e4c" }],
-      xMax: 50, xTicks: [0, 10, 20, 30, 40, 50],
-      valuePrefix: "", valueSuffix: "c",
-      subtitle: "Effective price per kWh paid by the household, including financing at 5.5%. Lower is better.",
-      data: [
-        { name: "Grid only", price: 40, total: "40c" },
-        { name: "Solar only", price: 28, total: "28c" },
-        { name: "Solar + battery", price: 23, total: "23c" },
-      ],
-    }},
-    { label: "15 Year Electricity Cost", chart: {
-      segments: [{ key: "cost", label: "Electricity cost over 15 years", color: "#234e4c" }],
-      xMax: 50000, xTicks: [0, 10000, 20000, 30000, 40000, 50000],
-      valuePrefix: "$", valueSuffix: "",
-      subtitle: "Total household electricity spend over 15 years, including solar and battery financing at 5.5%.",
-      data: [
-        { name: "Grid only", cost: 48000, total: "$48,000" },
-        { name: "Solar only", cost: 26000, total: "$26,000" },
-        { name: "Solar + battery", cost: 13700, total: "$13,700" },
-      ],
-    }},
-  ],
-};
-
-export const EV_TABS = {
-  title: "Vehicle savings",
-  tabs: [
-    { label: "15 Year Lifetime", chart: {
-      segments: [
-        { key: "elec", label: "Electricity costs", color: "#4A90E2" },
-        { key: "petrol", label: "Petrol costs", color: "#E88B8B" },
-        { key: "diesel", label: "Diesel costs", color: "#C4884A" },
-        { key: "rucs", label: "Road user charges", color: "#E89420" },
-        { key: "maintenance", label: "Maintenance", color: "#A0A0A0" },
-      ],
-      xMax: 55000, xTicks: [0, 10000, 20000, 30000, 40000, 50000],
-      valuePrefix: "$", valueSuffix: "",
-      subtitle: "Running costs only (excludes vehicle purchase price). Medium vehicle, 188km/week, 2026 prices with forward inflation, 15 year ownership.",
-      data: [
-        { name: "Electric (EV)", elec: 9500, petrol: 0, diesel: 0, rucs: 13400, maintenance: 3800, total: "$26,700" },
-        { name: "Hybrid SUV", elec: 0, petrol: 25200, diesel: 0, rucs: 0, maintenance: 7800, total: "$33,000" },
-        { name: "Petrol SUV", elec: 0, petrol: 41000, diesel: 0, rucs: 0, maintenance: 8500, total: "$49,500" },
-        { name: "Diesel ute", elec: 0, petrol: 0, diesel: 31500, rucs: 13400, maintenance: 9000, total: "$53,900" },
-      ],
-    }},
-    { label: "Yearly Bills", chart: {
-      segments: [
-        { key: "elec", label: "Electricity costs", color: "#4A90E2" },
-        { key: "petrol", label: "Petrol costs", color: "#E88B8B" },
-        { key: "diesel", label: "Diesel costs", color: "#C4884A" },
-        { key: "rucs", label: "Road user charges", color: "#E89420" },
-        { key: "maintenance", label: "Maintenance", color: "#A0A0A0" },
-      ],
-      xMax: 4000, xTicks: [0, 1000, 2000, 3000, 4000],
-      valuePrefix: "$", valueSuffix: "",
-      subtitle: "Based on 2026 energy prices, 188km/week.",
-      data: [
-        { name: "Electric (EV)", elec: 530, petrol: 0, diesel: 0, rucs: 745, maintenance: 300, total: "$1,575 /yr" },
-        { name: "Hybrid SUV", elec: 0, petrol: 1400, diesel: 0, rucs: 0, maintenance: 600, total: "$2,000 /yr" },
-        { name: "Petrol SUV", elec: 0, petrol: 2600, diesel: 0, rucs: 0, maintenance: 700, total: "$3,300 /yr" },
-        { name: "Diesel ute", elec: 0, petrol: 0, diesel: 2000, rucs: 750, maintenance: 800, total: "$3,550 /yr" },
-      ],
-    }},
-    { label: "Yearly Emissions", chart: {
-      segments: [{ key: "emissions", label: "Yearly emissions (kg CO2e/yr)", color: "#E88B8B" }],
-      xMax: 3000, xTicks: [0, 1000, 2000, 3000],
-      valuePrefix: "", valueSuffix: "",
-      subtitle: "Tailpipe and electricity emissions, 2023 emissions factors (Ministry for the Environment 2023).",
-      data: [
-        { name: "Electric (EV)", emissions: 130, total: "130" },
-        { name: "Hybrid SUV", emissions: 1400, total: "1,400" },
-        { name: "Petrol SUV", emissions: 2300, total: "2,300" },
-        { name: "Diesel ute", emissions: 2600, total: "2,600" },
-      ],
-    }},
-  ],
-};
+/** Build the two BillTabs configs for a district, with the per-location savings title. */
+export function buildBillTabs(d: District): { cfgA: any; cfgB: any } {
+  const title = (sav: string) =>
+    "The average " + (d.fields.location || "NZ") + ' home could save around <span style="color:#27ae60">' + sav + "</span> on their bills every year by electrifying";
+  const bt: any = (d as any).billTabs;
+  if (bt) {
+    const cfgA = { ...bt.a, titleHtml: title(bt.billSavings) };
+    const cfgB = { ...bt.b, titleHtml: title(bt.netSavings) + " (incl. upfront costs)" };
+    return { cfgA, cfgB };
+  }
+  return { cfgA: BILL_CFG, cfgB: SAVINGS_CFG };
+}

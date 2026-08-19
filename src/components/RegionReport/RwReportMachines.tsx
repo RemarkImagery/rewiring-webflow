@@ -2,8 +2,8 @@
 
 import React, { useEffect, useRef } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { MACHINES_HTML, sub, mergeFields, ensureReportCss, initReveal, resolveSlug } from "./reportSections";
-import { TabbedCharts, SOLAR_TABS, EV_TABS, HEATING_TABS, WATER_TABS, COOKTOP_TABS } from "./reportCharts";
+import { MACHINES_HTML, sub, mergeFields, getDistrict, ensureReportCss, initReveal, resolveSlug } from "./reportSections";
+import { TabbedCharts, mergeTabs, EV_TABS, HEATING_TABS, WATER_TABS, COOKTOP_TABS } from "./reportCharts";
 
 export interface RwReportMachinesProps {
   districtSlug?: string;
@@ -87,15 +87,16 @@ export default function RwReportMachines(p: RwReportMachinesProps) {
     });
     root.innerHTML = sub(MACHINES_HTML, fields);
 
-    // Tabbed charts use shared/national figures (flagged to Josh), so they need
-    // no per-location data — but keep the mount pattern so drift is easy to fix.
+    // v2: tabbed charts are PER-LOCATION (District.machineTabs overlays the
+    // national fallbacks). The solar chart was removed per client feedback.
+    const d = getDistrict(slug);
+    const MT: any = (d as any)?.machineTabs || {};
     const roots: Root[] = [];
     const mounts: Array<[string, React.ReactNode]> = [
-      ["solar-tabs", <TabbedCharts {...SOLAR_TABS} />],
-      ["ev-tabs", <TabbedCharts {...EV_TABS} />],
-      ["heating-tabs", <TabbedCharts {...HEATING_TABS} />],
-      ["water-tabs", <TabbedCharts {...WATER_TABS} />],
-      ["cooktop-tabs", <TabbedCharts {...COOKTOP_TABS} />],
+      ["ev-tabs", <TabbedCharts {...mergeTabs(EV_TABS, MT.ev)} />],
+      ["heating-tabs", <TabbedCharts {...mergeTabs(HEATING_TABS, MT.heating)} />],
+      ["water-tabs", <TabbedCharts {...mergeTabs(WATER_TABS, MT.water)} />],
+      ["cooktop-tabs", <TabbedCharts {...mergeTabs(COOKTOP_TABS, MT.cooktop)} />],
     ];
     mounts.forEach(([id, node]) => {
       const n = root.querySelector("#" + id);

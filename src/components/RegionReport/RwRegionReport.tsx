@@ -6,12 +6,11 @@ import { DISTRICTS, type District } from "./districtData";
 import { resolveSlug } from "./reportSections";
 import { CSS, TEMPLATE } from "./reportContent";
 import {
-  StackedBarChart,
   TabbedCharts,
+  BillTabs,
   CumulativeChart,
-  buildBillCfg,
-  buildSavingsCfg,
-  SOLAR_TABS,
+  buildBillTabs,
+  mergeTabs,
   EV_TABS,
   HEATING_TABS,
   WATER_TABS,
@@ -19,7 +18,7 @@ import {
 } from "./reportCharts";
 
 export interface RwRegionReportProps {
-  /** District/region slug, e.g. "dunedin", "queenstown-lakes", "new-zealand" */
+  /** District/region slug, e.g. "dunedin", "queenstown-lakes-district", "waikato-region" */
   districtSlug?: string;
 }
 
@@ -28,14 +27,14 @@ function sub(tpl: string, fields: Record<string, string>): string {
 }
 
 function mountCharts(root: HTMLElement, d: District): Root[] {
+  const { cfgA, cfgB } = buildBillTabs(d);
+  const MT: any = (d as any).machineTabs || {};
   const mounts: Array<[string, React.ReactNode]> = [
-    ["bill-chart", <StackedBarChart cfg={buildBillCfg(d)} id="bills" />],
-    ["savings-chart", <StackedBarChart cfg={buildSavingsCfg(d)} id="savings" />],
-    ["solar-tabs", <TabbedCharts {...SOLAR_TABS} />],
-    ["ev-tabs", <TabbedCharts {...EV_TABS} />],
-    ["heating-tabs", <TabbedCharts {...HEATING_TABS} />],
-    ["water-tabs", <TabbedCharts {...WATER_TABS} />],
-    ["cooktop-tabs", <TabbedCharts {...COOKTOP_TABS} />],
+    ["bill-chart", <BillTabs cfgA={cfgA} cfgB={cfgB} />],
+    ["ev-tabs", <TabbedCharts {...mergeTabs(EV_TABS, MT.ev)} />],
+    ["heating-tabs", <TabbedCharts {...mergeTabs(HEATING_TABS, MT.heating)} />],
+    ["water-tabs", <TabbedCharts {...mergeTabs(WATER_TABS, MT.water)} />],
+    ["cooktop-tabs", <TabbedCharts {...mergeTabs(COOKTOP_TABS, MT.cooktop)} />],
   ];
   const roots: Root[] = [];
   mounts.forEach(([id, node]) => {
@@ -63,7 +62,7 @@ function initInteractions(root: HTMLElement): () => void {
   const clickCleanups: Array<() => void> = [];
 
   if (!reduce && "IntersectionObserver" in window) {
-    const blocks = root.querySelectorAll(".jumpnav, .section-head, .two-col, .container > .prose, .chart-wrap");
+    const blocks = root.querySelectorAll(".jumpnav, .section-head, .two-col, .container > .prose, .chart-wrap, .headline-stats, .cumulative-block");
     const io = new IntersectionObserver(
       (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }),
       { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
@@ -125,7 +124,7 @@ export default function RwRegionReport({ districtSlug = "" }: RwRegionReportProp
     const root = rootRef.current;
     if (!root) return;
     const slug = resolveSlug(districtSlug);
-    const d = DISTRICTS[slug] || DISTRICTS["new-zealand"] || Object.values(DISTRICTS)[0];
+    const d = DISTRICTS[slug] || DISTRICTS["dunedin"] || Object.values(DISTRICTS)[0];
     if (!d) return;
 
     root.innerHTML = `<style>${CSS}</style>` + sub(TEMPLATE, d.fields);

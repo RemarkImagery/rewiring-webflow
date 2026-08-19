@@ -105,13 +105,16 @@ export default function RwLocalStoryCard({
         .rw-story-card .rw-sc-tag { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 700; white-space: nowrap; }
         .rw-story-card .rw-sc-check { width: 16px; height: 16px; border-radius: 4px; background: #fff; border: 2px solid ${frameColor}; display: inline-flex; align-items: center; justify-content: center; flex: none; position: relative; }
         .rw-story-card .rw-sc-check::after { content: ""; position: absolute; left: 4px; top: 0.5px; width: 4px; height: 8px; border: solid ${accentColor}; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
+        /* no photo: drop the reserved photo offset and centre the content */
+        .rw-story-card.no-photo { margin-left: 0; padding: 26px 32px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .rw-story-card.no-photo .rw-sc-tags { justify-content: center; }
         @media (max-width: 720px) {
           .rw-story-card { margin-left: 0; padding: 20px 20px 18px; }
           .rw-story-card .rw-sc-photo { position: static; width: calc(100% + 8px); height: 220px; margin: -4px 0 14px -4px; transform: rotate(-0.6deg); }
         }
       `}</style>
 
-      <div className={`rw-story-card${expanded ? " expanded" : ""}`}>
+      <div className={`rw-story-card${expanded ? " expanded" : ""}${photoSrc ? "" : " no-photo"}`}>
         {photoSrc ? <img className="rw-sc-photo" src={photoSrc} alt={name} /> : null}
         <h3 className="rw-sc-title">Local story: {name}</h3>
         {meta ? <div className="rw-sc-meta">{meta}</div> : null}
