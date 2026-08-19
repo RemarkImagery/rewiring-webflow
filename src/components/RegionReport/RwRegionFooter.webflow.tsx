@@ -5,14 +5,15 @@ import { declareComponent } from "@webflow/react";
 export default declareComponent(RwRegionFooter, {
   name: "RW Region Report Footer",
   description:
-    "Download CTA + footer for the region report — the section that sits beneath the Local Stories collection list. Button prints the page to PDF, or links to a supplied PDF URL.",
+    "Download CTA + footer for the region report. The button auto-links to the hosted per-location A4 PDF for the page's slug (e.g. /regional-reports/dunedin → electrifying-dunedin.pdf); a supplied PDF URL overrides it, and it falls back to the browser print dialog.",
   group: "Region Reports",
   options: { ssr: true },
   props: {
+    districtSlug: props.Text({ name: "District slug (blank = auto from URL)", defaultValue: "", group: "Data" }),
     title: props.Text({ name: "Title", defaultValue: "Take the report with you", group: "Content" }),
     subtitle: props.Text({ name: "Subtitle", defaultValue: "Download a shareable PDF of the full electrification report — perfect for council meetings, community groups, or sharing with your neighbours.", group: "Content" }),
     buttonLabel: props.Text({ name: "Button label", defaultValue: "Download report (PDF)", group: "Content" }),
-    pdfUrl: props.Link({ name: "PDF URL (optional)", group: "Content" }),
+    pdfUrl: props.Link({ name: "PDF URL (blank = auto from page slug)", group: "Content" }),
     learnMoreLabel: props.Text({ name: "Learn-more label", defaultValue: "rewiring.nz", group: "Content" }),
     learnMoreUrl: props.Link({ name: "Learn-more URL", group: "Content" }),
     dataNote: props.Text({ name: "Data note", defaultValue: "Data from the Rewiring Aotearoa Household Electrification Model 2026", group: "Content" }),

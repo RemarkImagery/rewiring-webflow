@@ -5,6 +5,7 @@
 import React, { useEffect, useState } from "react";
 import RwRegionReport from "../../components/RegionReport/RwRegionReport";
 import RwLocalStoryCard from "../../components/RegionReport/RwLocalStoryCard";
+import RwRegionFooter from "../../components/RegionReport/RwRegionFooter";
 
 export default function RegionReportTest() {
   const [slug, setSlug] = useState("dunedin");
@@ -21,6 +22,7 @@ export default function RegionReportTest() {
       <div style={{ padding: "40px 16px", background: "#fdf7ea" }}>
         <RwLocalStoryCard />
       </div>
+      <RwRegionFooter districtSlug={slug} />
     </div>
   );
 }
