@@ -59,6 +59,10 @@ export default function RwRegionFooter({
     const slug = resolveSlug(districtSlug);
     const d = getDistrict(slug);
     setAuto({ href: PDF_BASE + slug + ".pdf", loc: d?.fields?.location || "" });
+    // the location copy can add a line after hydration — nudge the host
+    // (Webflow Designer canvas) to re-measure the component's height
+    const t = setTimeout(() => window.dispatchEvent(new Event("resize")), 50);
+    return () => clearTimeout(t);
   }, [districtSlug]);
 
   const loc = location || auto.loc;
@@ -80,13 +84,13 @@ export default function RwRegionFooter({
     <div className="rw-region-footer">
       <style>{`
         .rw-region-footer { font-family: 'Rubik', system-ui, sans-serif; color: ${inkColor}; background: ${bgColor}; }
-        .rw-region-footer .rw-rf-download { padding: 80px 24px; }
+        .rw-region-footer .rw-rf-download { padding: 64px 24px 72px; }
         .rw-region-footer .rw-rf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 960px; margin: 0 auto; align-items: stretch; }
-        .rw-region-footer .rw-rf-card { text-align: center; background: #fff; border: 2px dashed ${goldColor}; border-radius: 32px 8px 28px 8px / 8px 28px 8px 32px; padding: 52px 40px; height: 100%; display: flex; flex-direction: column; align-items: center; }
+        .rw-region-footer .rw-rf-card { text-align: center; background: #fff; border: 2px dashed ${goldColor}; border-radius: 32px 8px 28px 8px / 8px 28px 8px 32px; padding: 44px 36px 40px; height: 100%; }
         .rw-region-footer .rw-rf-title { font-size: clamp(26px, 3vw, 36px); font-weight: 700; color: ${accentColor}; margin: 0 0 12px; line-height: 1.15; letter-spacing: -0.01em; }
         .rw-region-footer .rw-rf-sub { font-size: 16px; line-height: 1.55; color: #4a6664; margin: 0 auto 28px; max-width: 540px; }
         .rw-region-footer .rw-rf-sub strong { font-weight: 700; }
-        .rw-region-footer .rw-rf-btn { display: inline-flex; align-items: center; gap: 10px; background: ${goldColor}; color: ${inkColor}; font-weight: 700; font-size: 16px; text-decoration: none; padding: 14px 26px; border-radius: 100px; border: none; cursor: pointer; transition: background-color .18s ease, transform .18s ease; font-family: inherit; margin-top: auto; }
+        .rw-region-footer .rw-rf-btn { display: inline-flex; align-items: center; gap: 10px; background: ${goldColor}; color: ${inkColor}; font-weight: 700; font-size: 16px; text-decoration: none; padding: 14px 26px; border-radius: 100px; border: none; cursor: pointer; transition: background-color .18s ease, transform .18s ease; font-family: inherit; }
         .rw-region-footer .rw-rf-btn:hover { background: #ffc94d; transform: translateY(-2px); }
         .rw-region-footer .rw-rf-btn svg { width: 18px; height: 18px; flex: none; }
         @media (max-width: 760px) { .rw-region-footer .rw-rf-grid { grid-template-columns: 1fr; } }
