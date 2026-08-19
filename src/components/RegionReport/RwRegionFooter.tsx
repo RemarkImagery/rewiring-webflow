@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { resolveSlug } from "./reportSections";
+import { resolveSlug, getDistrict } from "./reportSections";
 
 interface LinkValue {
   href: string;
@@ -12,19 +12,23 @@ interface LinkValue {
  *  pipeline (build_print.py + Ghostscript) and shipped with every preview
  *  deploy. Swap this base when the PDFs move to a client-facing host. */
 const PDF_BASE = "https://rewiring-region-reports.pages.dev/pdf/electrifying-";
+const NATIONAL_REPORT_URL = "https://pages.rewiring.nz/electric-homes-and-vehicles";
 
 export interface RwRegionFooterProps {
   /** District/region slug override; blank = auto from the page URL. */
   districtSlug?: string;
+  /** Location display name override; blank = auto from the bundled data. */
+  location?: string;
   title?: string;
   subtitle?: string;
   buttonLabel?: string;
   /** Optional explicit PDF link. If empty, the button auto-links to the hosted
    *  per-location PDF for the page's slug (falling back to the print dialog). */
   pdfUrl?: LinkValue;
-  learnMoreLabel?: string;
-  learnMoreUrl?: LinkValue;
-  dataNote?: string;
+  nationalTitle?: string;
+  nationalSubtitle?: string;
+  nationalButtonLabel?: string;
+  nationalUrl?: LinkValue;
   bgColor?: string;
   inkColor?: string;
   accentColor?: string;
@@ -33,27 +37,38 @@ export interface RwRegionFooterProps {
 
 export default function RwRegionFooter({
   districtSlug = "",
-  title = "Take the report with you",
-  subtitle = "Download a shareable PDF of the full electrification report — perfect for council meetings, community groups, or sharing with your neighbours.",
-  buttonLabel = "Download report (PDF)",
+  location = "",
+  title = "",
+  subtitle = "",
+  buttonLabel = "",
   pdfUrl,
-  learnMoreLabel = "rewiring.nz",
-  learnMoreUrl,
-  dataNote = "Data from the Rewiring Aotearoa Household Electrification Model 2026",
+  nationalTitle = "Read the full national report",
+  nationalSubtitle = "Dig into the numbers behind these figures in the Electric Homes & Vehicles Report 2026 — Rewiring Aotearoa's full analysis of the opportunity of going electric across New Zealand.",
+  nationalButtonLabel = "Electric Homes & Vehicles Report",
+  nationalUrl,
   bgColor = "#fdf7ea",
   inkColor = "#1a3c3c",
   accentColor = "#234e4c",
   goldColor = "#f5b731",
 }: RwRegionFooterProps) {
-  // Explicit prop wins; otherwise derive the hosted PDF from the page slug
-  // after mount (resolveSlug reads window.location, so SSR renders the
-  // print-dialog fallback and hydration upgrades it).
-  const [autoHref, setAutoHref] = useState("");
+  // Explicit props win; otherwise derive the slug (and its PDF + location name)
+  // after mount — resolveSlug reads window.location, so SSR renders the generic
+  // copy and hydration upgrades it to the location-specific version.
+  const [auto, setAuto] = useState<{ href: string; loc: string }>({ href: "", loc: "" });
   useEffect(() => {
-    if (!pdfUrl?.href) setAutoHref(PDF_BASE + resolveSlug(districtSlug) + ".pdf");
-  }, [pdfUrl?.href, districtSlug]);
-  const pdfHref = pdfUrl?.href || autoHref;
-  const learnHref = learnMoreUrl?.href || "https://rewiring.nz";
+    const slug = resolveSlug(districtSlug);
+    const d = getDistrict(slug);
+    setAuto({ href: PDF_BASE + slug + ".pdf", loc: d?.fields?.location || "" });
+  }, [districtSlug]);
+
+  const loc = location || auto.loc;
+  const pdfHref = pdfUrl?.href || auto.href;
+  const cardTitle = title || (loc ? `Take the ${loc} report with you` : "Take the report with you");
+  const cardSub =
+    subtitle ||
+    `Download a shareable PDF of the full ${loc ? loc + " " : ""}electrification report — perfect for council meetings, community groups, or sharing with your neighbours.`;
+  const cardBtn = buttonLabel || (loc ? `Download ${loc} report (PDF)` : "Download report (PDF)");
+  const nationalHref = nationalUrl?.href || NATIONAL_REPORT_URL;
   const onDownload = (e: React.MouseEvent) => {
     if (!pdfHref) {
       e.preventDefault();
@@ -66,40 +81,44 @@ export default function RwRegionFooter({
       <style>{`
         .rw-region-footer { font-family: 'Rubik', system-ui, sans-serif; color: ${inkColor}; background: ${bgColor}; }
         .rw-region-footer .rw-rf-download { padding: 80px 24px; }
-        .rw-region-footer .rw-rf-card { max-width: 720px; margin: 0 auto; text-align: center; background: #fff; border: 2px dashed ${goldColor}; border-radius: 24px; padding: 44px 36px; }
-        .rw-region-footer .rw-rf-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; color: ${accentColor}; margin: 0 0 12px; line-height: 1.1; }
-        .rw-region-footer .rw-rf-sub { font-size: 16px; line-height: 1.55; color: #4a6664; margin: 0 auto 26px; max-width: 540px; }
-        .rw-region-footer .rw-rf-btn { display: inline-flex; align-items: center; gap: 10px; background: ${goldColor}; color: ${inkColor}; font-weight: 700; font-size: 16px; text-decoration: none; padding: 14px 26px; border-radius: 100px; border: none; cursor: pointer; transition: background-color .18s ease, transform .18s ease; font-family: inherit; }
+        .rw-region-footer .rw-rf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 960px; margin: 0 auto; align-items: stretch; }
+        .rw-region-footer .rw-rf-card { text-align: center; background: #fff; border: 2px dashed ${goldColor}; border-radius: 32px 8px 28px 8px / 8px 28px 8px 32px; padding: 52px 40px; height: 100%; display: flex; flex-direction: column; align-items: center; }
+        .rw-region-footer .rw-rf-title { font-size: clamp(26px, 3vw, 36px); font-weight: 700; color: ${accentColor}; margin: 0 0 12px; line-height: 1.15; letter-spacing: -0.01em; }
+        .rw-region-footer .rw-rf-sub { font-size: 16px; line-height: 1.55; color: #4a6664; margin: 0 auto 28px; max-width: 540px; }
+        .rw-region-footer .rw-rf-sub strong { font-weight: 700; }
+        .rw-region-footer .rw-rf-btn { display: inline-flex; align-items: center; gap: 10px; background: ${goldColor}; color: ${inkColor}; font-weight: 700; font-size: 16px; text-decoration: none; padding: 14px 26px; border-radius: 100px; border: none; cursor: pointer; transition: background-color .18s ease, transform .18s ease; font-family: inherit; margin-top: auto; }
         .rw-region-footer .rw-rf-btn:hover { background: #ffc94d; transform: translateY(-2px); }
-        .rw-region-footer .rw-rf-btn svg { width: 20px; height: 20px; }
-        .rw-region-footer .rw-rf-foot { text-align: center; padding: 0 24px 56px; }
-        .rw-region-footer .rw-rf-foot p { margin: 0; font-size: 15px; }
-        .rw-region-footer .rw-rf-foot a { color: ${accentColor}; font-weight: 600; }
-        .rw-region-footer .rw-rf-note { margin-top: 8px !important; opacity: 0.6; font-size: 12px !important; }
+        .rw-region-footer .rw-rf-btn svg { width: 18px; height: 18px; flex: none; }
+        @media (max-width: 760px) { .rw-region-footer .rw-rf-grid { grid-template-columns: 1fr; } }
         @media print { .rw-region-footer .rw-rf-download { display: none; } }
       `}</style>
 
       <div className="rw-rf-download">
-        <div className="rw-rf-card">
-          <h2 className="rw-rf-title">{title}</h2>
-          <p className="rw-rf-sub">{subtitle}</p>
-          <a className="rw-rf-btn" href={pdfHref || "#"} onClick={onDownload} {...(pdfHref ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-              <polyline points="7 10 12 15 17 10" />
-              <line x1="12" y1="15" x2="12" y2="3" />
-            </svg>
-            {buttonLabel}
-          </a>
+        <div className="rw-rf-grid">
+          <div className="rw-rf-card">
+            <h2 className="rw-rf-title">{cardTitle}</h2>
+            <p className="rw-rf-sub">{cardSub}</p>
+            <a className="rw-rf-btn" href={pdfHref || "#"} onClick={onDownload} {...(pdfHref ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              {cardBtn}
+            </a>
+          </div>
+          <div className="rw-rf-card">
+            <h2 className="rw-rf-title">{nationalTitle}</h2>
+            <p className="rw-rf-sub">{nationalSubtitle}</p>
+            <a className="rw-rf-btn" href={nationalHref} target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+              </svg>
+              {nationalButtonLabel}
+            </a>
+          </div>
         </div>
-      </div>
-
-      <div className="rw-rf-foot">
-        <p>
-          Learn more:{" "}
-          <a href={learnHref} target="_blank" rel="noopener noreferrer">{learnMoreLabel}</a>
-        </p>
-        <p className="rw-rf-note">{dataNote}</p>
       </div>
     </div>
   );

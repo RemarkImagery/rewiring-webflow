@@ -5,18 +5,25 @@ import { declareComponent } from "@webflow/react";
 export default declareComponent(RwRegionFooter, {
   name: "RW Region Report Footer",
   description:
-    "Download CTA + footer for the region report. The button auto-links to the hosted per-location A4 PDF for the page's slug (e.g. /regional-reports/dunedin → electrifying-dunedin.pdf); a supplied PDF URL overrides it, and it falls back to the browser print dialog.",
+    "Two download cards + footer for the region report: the location PDF (auto-linked from the page slug, e.g. /regional-reports/dunedin → electrifying-dunedin.pdf) and the national Electric Homes & Vehicles Report. Blank text props auto-fill with the location name.",
   group: "Region Reports",
   options: { ssr: true },
   props: {
     districtSlug: props.Text({ name: "District slug (blank = auto from URL)", defaultValue: "", group: "Data" }),
-    title: props.Text({ name: "Title", defaultValue: "Take the report with you", group: "Content" }),
-    subtitle: props.Text({ name: "Subtitle", defaultValue: "Download a shareable PDF of the full electrification report — perfect for council meetings, community groups, or sharing with your neighbours.", group: "Content" }),
-    buttonLabel: props.Text({ name: "Button label", defaultValue: "Download report (PDF)", group: "Content" }),
-    pdfUrl: props.Link({ name: "PDF URL (blank = auto from page slug)", group: "Content" }),
-    learnMoreLabel: props.Text({ name: "Learn-more label", defaultValue: "rewiring.nz", group: "Content" }),
-    learnMoreUrl: props.Link({ name: "Learn-more URL", group: "Content" }),
-    dataNote: props.Text({ name: "Data note", defaultValue: "Data from the Rewiring Aotearoa Household Electrification Model 2026", group: "Content" }),
+    location: props.Text({ name: "Location name (blank = auto)", defaultValue: "", group: "Data" }),
+    title: props.Text({ name: "Title (blank = auto)", defaultValue: "", group: "Location card" }),
+    subtitle: props.Text({ name: "Subtitle (blank = auto)", defaultValue: "", group: "Location card" }),
+    buttonLabel: props.Text({ name: "Button label (blank = auto)", defaultValue: "", group: "Location card" }),
+    pdfUrl: props.Link({ name: "PDF URL (blank = auto from page slug)", group: "Location card" }),
+    nationalTitle: props.Text({ name: "Title", defaultValue: "Read the full national report", group: "National card" }),
+    nationalSubtitle: props.Text({
+      name: "Subtitle",
+      defaultValue:
+        "Dig into the numbers behind these figures in the Electric Homes & Vehicles Report 2026 — Rewiring Aotearoa's full analysis of the opportunity of going electric across New Zealand.",
+      group: "National card",
+    }),
+    nationalButtonLabel: props.Text({ name: "Button label", defaultValue: "Electric Homes & Vehicles Report", group: "National card" }),
+    nationalUrl: props.Link({ name: "Report URL", group: "National card" }),
     bgColor: props.Text({ name: "Background colour", defaultValue: "#fdf7ea", group: "Style" }),
     inkColor: props.Text({ name: "Text colour", defaultValue: "#1a3c3c", group: "Style" }),
     accentColor: props.Text({ name: "Accent colour", defaultValue: "#234e4c", group: "Style" }),
