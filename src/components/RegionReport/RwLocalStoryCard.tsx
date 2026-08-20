@@ -1,6 +1,18 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+/** Inject the story-card fonts once per page — N cards in a carousel would
+ *  otherwise each carry their own @import, delaying font load. */
+function ensureStoryFonts() {
+  if (typeof document === "undefined") return;
+  if (document.getElementById("rw-story-fonts")) return;
+  const link = document.createElement("link");
+  link.id = "rw-story-fonts";
+  link.rel = "stylesheet";
+  link.href = "https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Rubik:wght@400;500;600;700;800&display=swap";
+  document.head.appendChild(link);
+}
 
 // props.Image() may return a string URL or an object like { src, alt }
 function resolveImage(val: any): string | undefined {
@@ -68,6 +80,7 @@ export default function RwLocalStoryCard({
   inkColor = "#23312e",
 }: RwLocalStoryCardProps) {
   const [expanded, setExpanded] = useState(false);
+  useEffect(() => { ensureStoryFonts(); }, []);
   const tags = (technologies || "")
     .split(/[\n,]/)
     .map((s) => s.trim())
@@ -86,7 +99,6 @@ export default function RwLocalStoryCard({
   return (
     <div className="rw-story-wrap">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Rubik:wght@400;500;600;700;800&display=swap');
         .rw-story-wrap { max-width: 920px; margin: 0 auto; padding: 12px 0; font-family: 'Rubik', system-ui, sans-serif; color: ${inkColor}; }
         .rw-story-card { position: relative; margin-left: 180px; background: ${cardColor}; border: 4px solid ${frameColor}; border-radius: 20px; padding: 26px 28px 24px 60px; min-height: 220px; }
         .rw-story-card .rw-sc-photo { position: absolute; left: -180px; top: -10px; width: 212px; height: calc(100% + 20px); object-fit: cover; border: 5px solid ${frameColor}; border-radius: 16px; transform: rotate(-0.6deg); background: #ddd; display: block; }

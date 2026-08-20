@@ -8,15 +8,17 @@ import { BillTabs, buildBillTabs } from "./reportCharts";
 export interface RwReportBillsProps {
   districtSlug?: string;
   location?: string;
-  billFossil?: string;
-  billElectric?: string;
+  billSavings?: string;
+  billsNetSavings?: string;
+  billsNet15yr?: string;
 }
 
 export default function RwReportBills({
   districtSlug = "",
   location,
-  billFossil,
-  billElectric,
+  billSavings,
+  billsNetSavings,
+  billsNet15yr,
 }: RwReportBillsProps) {
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -27,8 +29,9 @@ export default function RwReportBills({
     const slug = resolveSlug(districtSlug);
     const fields = mergeFields(slug, {
       location,
-      bill_fossil: billFossil,
-      bill_electric: billElectric,
+      bill_savings: billSavings,
+      bills_net_savings: billsNetSavings,
+      bills_net_15yr: billsNet15yr,
     });
     root.innerHTML = sub(BILLS_HTML, fields);
 
@@ -45,16 +48,19 @@ export default function RwReportBills({
     const cleanupReveal = initReveal(root);
 
     return () => {
-      roots.forEach((r) => {
-        try {
-          r.unmount();
-        } catch {
-          /* node already gone */
-        }
-      });
+      // defer: unmounting synchronously during a re-render commit is a React error
+      roots.forEach((r) =>
+        setTimeout(() => {
+          try {
+            r.unmount();
+          } catch {
+            /* node already gone */
+          }
+        }, 0),
+      );
       cleanupReveal();
     };
-  }, [districtSlug, location, billFossil, billElectric]);
+  }, [districtSlug, location, billSavings, billsNetSavings, billsNet15yr]);
 
   return <div className="rw-region-report" ref={rootRef} />;
 }

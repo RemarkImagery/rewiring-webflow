@@ -9,22 +9,19 @@ export interface RwReportMachinesProps {
   districtSlug?: string;
   location?: string;
   // Solar
-  solarNetSavings?: string;
+  solarBox1Num?: string;
+  solarBox1Meta?: string;
   solarPanelLife?: string;
-  solarCost?: string;
-  solarSize?: string;
-  batteryCost?: string;
-  batterySize?: string;
-  solarBattery15yr?: string;
+  batteryLife?: string;
   solarFinanceRate?: string;
   solarEffectiveRate?: string;
   gridRate?: string;
   // EV
   evNetSavings?: string;
   carsFossil?: string;
-  evSuvSavings?: string;
   evAnnualSavings?: string;
   evUteSavings?: string;
+  evUteAnnualSavings?: string;
   drivingWeeklyKm?: string;
   // Heat pump
   heatpumpLifetime?: string;
@@ -32,12 +29,10 @@ export interface RwReportMachinesProps {
   heatpumpEnergyPct?: string;
   heatpump15yr?: string;
   heatpumpAnnual?: string;
-  heatersLpg?: string;
   // Hot water
   water15yr?: string;
   waterHeatersFossil?: string;
   waterLifetime?: string;
-  waterHeatersLpg?: string;
   waterEnergyPct?: string;
   // Induction
   cooktopSavings?: string;
@@ -55,32 +50,27 @@ export default function RwReportMachines(p: RwReportMachinesProps) {
     const slug = resolveSlug(districtSlug);
     const fields = mergeFields(slug, {
       location: p.location,
-      solar_net_savings: p.solarNetSavings,
+      solar_box1_num: p.solarBox1Num,
+      solar_box1_meta: p.solarBox1Meta,
       solar_panel_life: p.solarPanelLife,
-      solar_cost: p.solarCost,
-      solar_size: p.solarSize,
-      battery_cost: p.batteryCost,
-      battery_size: p.batterySize,
-      solar_battery_15yr_savings: p.solarBattery15yr,
+      battery_life: p.batteryLife,
       solar_finance_rate: p.solarFinanceRate,
       solar_effective_rate: p.solarEffectiveRate,
       grid_rate: p.gridRate,
       ev_net_savings: p.evNetSavings,
       cars_fossil: p.carsFossil,
-      ev_suv_savings: p.evSuvSavings,
       ev_annual_savings: p.evAnnualSavings,
       ev_ute_savings: p.evUteSavings,
+      ev_ute_annual_savings: p.evUteAnnualSavings,
       driving_weekly_km: p.drivingWeeklyKm,
       heatpump_lifetime_savings: p.heatpumpLifetime,
       heaters_fossil: p.heatersFossil,
       heatpump_energy_pct: p.heatpumpEnergyPct,
       heatpump_15yr_savings: p.heatpump15yr,
       heatpump_annual_savings: p.heatpumpAnnual,
-      heaters_lpg: p.heatersLpg,
       water_15yr_savings: p.water15yr,
       water_heaters_fossil: p.waterHeatersFossil,
       water_lifetime_savings: p.waterLifetime,
-      water_heaters_lpg: p.waterHeatersLpg,
       water_energy_pct: p.waterEnergyPct,
       cooktop_savings: p.cooktopSavings,
       cooktops_gas: p.cooktopsGas,
@@ -109,13 +99,16 @@ export default function RwReportMachines(p: RwReportMachinesProps) {
     const cleanupReveal = initReveal(root);
 
     return () => {
-      roots.forEach((r) => {
-        try {
-          r.unmount();
-        } catch {
-          /* node already gone */
-        }
-      });
+      // defer: unmounting synchronously during a re-render commit is a React error
+      roots.forEach((r) =>
+        setTimeout(() => {
+          try {
+            r.unmount();
+          } catch {
+            /* node already gone */
+          }
+        }, 0),
+      );
       cleanupReveal();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

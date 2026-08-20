@@ -28,6 +28,10 @@ interface Group {
 export interface RwCommunityGroupsProps {
   /** CSS selector of the Collection List wrapper holding the groups. */
   listSelector?: string;
+  /** Render placeholder demo groups when no Collection List is found (Designer
+   *  canvas / prototyping). OFF by default so a missing list on a published
+   *  page renders nothing rather than fabricated groups. */
+  showDemo?: boolean;
   mapboxToken?: string;
   heading?: string;
   mapHeight?: string;
@@ -47,6 +51,7 @@ const DEMO_GROUPS: Group[] = [
 
 export default function RwCommunityGroups({
   listSelector = ".locations",
+  showDemo = false,
   mapboxToken = "",
   heading = "",
   mapHeight = "420",
@@ -66,14 +71,19 @@ export default function RwCommunityGroups({
   const [mapReady, setMapReady] = useState(false);
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstance = useRef<any>(null);
-  const markersRef = useRef<Array<{ marker: any; el: HTMLDivElement }>>([]);
+  const markersRef = useRef<Record<number, { marker: any; el: HTMLDivElement }>>({});
   const trackRef = useRef<HTMLDivElement>(null);
+  const disposed = useRef(false);
+  const timers = useRef<number[]>([]);
+  const later = (fn: () => void, ms: number) => {
+    timers.current.push(window.setTimeout(() => { if (!disposed.current) fn(); }, ms));
+  };
 
   // ── Read the CMS collection list from the page DOM ──
   useEffect(() => {
     const wrap = document.querySelector(listSelector);
     if (!wrap) {
-      setGroups(DEMO_GROUPS);
+      setGroups(showDemo ? DEMO_GROUPS : []);
       return;
     }
     const items = wrap.querySelectorAll(".w-dyn-item");
@@ -91,7 +101,7 @@ export default function RwCommunityGroups({
     }).filter((g) => g.name);
     (wrap as HTMLElement).style.display = "none";
     setGroups(parsed);
-  }, [listSelector]);
+  }, [listSelector, showDemo]);
 
   const coords = groups.filter((g) => g.lat !== 0 || g.lng !== 0);
   const showMap = Boolean(token) && coords.length > 0;
@@ -105,22 +115,38 @@ export default function RwCommunityGroups({
       link.href = "https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css";
       document.head.appendChild(link);
     }
+    disposed.current = false;
     const boot = () => {
+      if (disposed.current) return;
       const gl = (window as any).mapboxgl;
       if (gl) initMap(gl);
     };
+    let scriptEl: Element | null = null;
     if ((window as any).mapboxgl) {
-      setTimeout(boot, 50);
+      later(boot, 50);
     } else {
-      const existing = document.querySelector('script[src*="mapbox-gl"]');
-      if (existing) existing.addEventListener("load", boot);
+      scriptEl = document.querySelector('script[src*="mapbox-gl"]');
+      if (scriptEl) scriptEl.addEventListener("load", boot);
       else {
-        const s = document.createElement("script");
-        s.src = "https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.js";
-        s.onload = boot;
-        document.head.appendChild(s);
+        const el = document.createElement("script");
+        el.src = "https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.js";
+        el.onload = boot;
+        document.head.appendChild(el);
+        scriptEl = el;
       }
     }
+    return () => {
+      disposed.current = true;
+      timers.current.forEach((t) => clearTimeout(t));
+      timers.current = [];
+      if (scriptEl) scriptEl.removeEventListener("load", boot);
+      if (mapInstance.current) {
+        try { mapInstance.current.remove(); } catch { /* already gone */ }
+        mapInstance.current = null;
+      }
+      markersRef.current = {};
+      setMapReady(false);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showMap]);
 
@@ -131,12 +157,13 @@ export default function RwCommunityGroups({
   }
 
   function initMap(gl: any) {
-    if (mapInstance.current || !mapRef.current) {
-      if (!mapRef.current) setTimeout(() => initMap(gl), 200);
+    if (disposed.current || mapInstance.current) return;
+    if (!mapRef.current) {
+      later(() => initMap(gl), 200);
       return;
     }
     if (!mapRef.current.offsetWidth) {
-      setTimeout(() => initMap(gl), 400);
+      later(() => initMap(gl), 400);
       return;
     }
     try {
@@ -189,8 +216,8 @@ export default function RwCommunityGroups({
     if (!mapReady || !mapInstance.current) return;
     const gl = (window as any).mapboxgl;
     if (!gl) return;
-    markersRef.current.forEach((m) => m.marker.remove());
-    markersRef.current = [];
+    Object.values(markersRef.current).forEach((m) => m.marker.remove());
+    markersRef.current = {};
     groups.forEach((g, i) => {
       if (g.lat === 0 && g.lng === 0) return;
       const el = document.createElement("div");
@@ -199,16 +226,17 @@ export default function RwCommunityGroups({
       el.style.cssText = "width:30px;height:39px;cursor:pointer;filter:drop-shadow(0 3px 6px rgba(0,0,0,0.35));transition:transform .15s ease;transform-origin:50% 100%;";
       el.addEventListener("click", (e) => { e.stopPropagation(); select(i); });
       const marker = new gl.Marker({ element: el, anchor: "bottom" }).setLngLat([g.lng, g.lat]).addTo(mapInstance.current);
-      markersRef.current.push({ marker, el });
+      markersRef.current[i] = { marker, el };
     });
     styleMarkers(active);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mapReady, groups]);
 
   function styleMarkers(idx: number) {
-    markersRef.current.forEach((m, i) => {
-      m.el.style.transform = i === idx ? "scale(1.25)" : "scale(1)";
-      m.el.style.zIndex = i === idx ? "2" : "1";
+    Object.entries(markersRef.current).forEach(([k, m]) => {
+      const isActive = Number(k) === idx;
+      m.el.style.transform = isActive ? "scale(1.25)" : "scale(1)";
+      m.el.style.zIndex = isActive ? "2" : "1";
     });
   }
 

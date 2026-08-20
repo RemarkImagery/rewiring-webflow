@@ -58,10 +58,13 @@ export function resolveSlug(override?: string, fallback = "dunedin"): string {
   const o = bundleKey(clean(override));
   if (o) return o;
   if (typeof window !== "undefined") {
-    const seg = bundleKey(clean(window.location.pathname.split("/").filter(Boolean).pop()));
-    if (seg) return seg;
+    const seg = clean(window.location.pathname.split("/").filter(Boolean).pop());
+    const match = bundleKey(seg);
+    if (match) return match;
+    // eslint-disable-next-line no-console
+    if (seg) console.warn(`[RW Region Report] no bundled data for slug "${seg}" — falling back to "${fallback}". The page will show ${fallback}'s figures.`);
   }
-  return DISTRICTS[fallback] ? fallback : "new-zealand";
+  return DISTRICTS[fallback] ? fallback : Object.keys(DISTRICTS)[0];
 }
 
 /**

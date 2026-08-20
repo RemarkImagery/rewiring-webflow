@@ -5,7 +5,7 @@ import { declareComponent } from "@webflow/react";
 export default declareComponent(RwRegionReport, {
   name: "RW Region Report",
   description:
-    "Full electrification report for one district/region (hero, jump-nav, economics, emissions & jobs, bills, solar, EV, heat pump, hot water, induction) with live charts. Data for all 88 locations is built in — pin this instance to a location with the District slug prop. Place above the Local Stories collection list.",
+    "Full electrification report for one district/region (v2 layout: banner, hero, headline stats, cumulative graph, jump-navs, economics, emissions & jobs, bills, solar, EV, heat pump, hot water, induction) with per-location charts for all 82 locations built in. Blank slug = auto from the page URL. The 'Local stories' and 'Community group' jump cards scroll to elements with id=\"stories\" and id=\"community\" — set those ids on the sections you build around this component.",
   group: "Region Reports",
   options: { ssr: false },
   props: {

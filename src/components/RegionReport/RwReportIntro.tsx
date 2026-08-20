@@ -57,13 +57,16 @@ export default function RwReportIntro({
     const cleanupReveal = initReveal(root);
 
     return () => {
-      roots.forEach((r) => {
-        try {
-          r.unmount();
-        } catch {
-          /* node already gone */
-        }
-      });
+      // defer: unmounting synchronously during a re-render commit is a React error
+      roots.forEach((r) =>
+        setTimeout(() => {
+          try {
+            r.unmount();
+          } catch {
+            /* node already gone */
+          }
+        }, 0),
+      );
       cleanupReveal();
     };
   }, [districtSlug, location, elecSavingsAnnual, machinesTotal, co2eAnnual, jobsCreated, billSavings, cumulativeSavings]);

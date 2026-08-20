@@ -2,8 +2,8 @@
 
 import React, { useEffect, useRef } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { DISTRICTS, type District } from "./districtData";
-import { resolveSlug } from "./reportSections";
+import { type District } from "./districtData";
+import { resolveSlug, getDistrict, sub } from "./reportSections";
 import { CSS, TEMPLATE } from "./reportContent";
 import {
   TabbedCharts,
@@ -20,10 +20,6 @@ import {
 export interface RwRegionReportProps {
   /** District/region slug, e.g. "dunedin", "queenstown-lakes-district", "waikato-region" */
   districtSlug?: string;
-}
-
-function sub(tpl: string, fields: Record<string, string>): string {
-  return tpl.replace(/\{\{\s*(\w+)\s*\}\}/g, (_m, k) => (k in fields ? fields[k] : ""));
 }
 
 function mountCharts(root: HTMLElement, d: District): Root[] {
@@ -83,9 +79,11 @@ function initInteractions(root: HTMLElement): () => void {
       byId[id] = c;
       sections.push(sec);
     }
-    // smooth in-page scroll (html scroll-behavior can't be scoped)
+    // smooth in-page scroll (html scroll-behavior can't be scoped). Targets may
+    // live OUTSIDE this component — e.g. the Stories/Community sections a
+    // designer builds around it (give them id="stories" / id="community").
     const onClick = (ev: Event) => {
-      const t = id ? root.querySelector("#" + id) : null;
+      const t = id ? root.querySelector("#" + id) || document.getElementById(id) : null;
       if (t) { ev.preventDefault(); t.scrollIntoView({ behavior: "smooth", block: "start" }); }
     };
     c.addEventListener("click", onClick);
@@ -124,7 +122,7 @@ export default function RwRegionReport({ districtSlug = "" }: RwRegionReportProp
     const root = rootRef.current;
     if (!root) return;
     const slug = resolveSlug(districtSlug);
-    const d = DISTRICTS[slug] || DISTRICTS["dunedin"] || Object.values(DISTRICTS)[0];
+    const d = getDistrict(slug);
     if (!d) return;
 
     root.innerHTML = `<style>${CSS}</style>` + sub(TEMPLATE, d.fields);
@@ -132,7 +130,8 @@ export default function RwRegionReport({ districtSlug = "" }: RwRegionReportProp
     const cleanupInteractions = initInteractions(root);
 
     return () => {
-      roots.forEach((r) => { try { r.unmount(); } catch { /* node already gone */ } });
+      // defer: unmounting synchronously during a re-render commit is a React error
+      roots.forEach((r) => setTimeout(() => { try { r.unmount(); } catch { /* node already gone */ } }, 0));
       cleanupInteractions();
     };
   }, [districtSlug]);

@@ -10,6 +10,7 @@ export default declareComponent(RwCommunityGroups, {
   options: { ssr: false },
   props: {
     listSelector: props.Text({ name: "Collection list selector", defaultValue: ".locations", group: "Data" }),
+    showDemo: props.Boolean({ name: "Show demo groups when list missing", defaultValue: false, group: "Data" }),
     mapboxToken: props.Text({ name: "Mapbox token", defaultValue: "", group: "Map" }),
     mapHeight: props.Text({ name: "Map height (px)", defaultValue: "420", group: "Map" }),
     heading: props.Text({ name: "Heading (optional)", defaultValue: "", group: "Content" }),
