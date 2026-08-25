@@ -65,6 +65,7 @@ const DEMO_GROUPS: Group[] = [
 // One shared source of truth with the print pipeline — deployed from the
 // rewiring-district-pages repo (preview/communities.json, CORS-enabled).
 const DEFAULT_DATA_URL = "https://rewiring-region-reports.pages.dev/communities.json";
+const GL_CSS = "https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css";
 
 export default function RwCommunityGroups({
   listSelector = ".locations",
@@ -208,12 +209,16 @@ export default function RwCommunityGroups({
   const showMap = Boolean(token) && coords.length > 0;
 
   // ── Load Mapbox GL JS (CDN, QEA technique) ──
+  // NB the stylesheet must ALSO be linked inside the component (see the render):
+  // Webflow renders code components in a shadow root, where document-level CSS
+  // never applies — without it markers lose position:absolute and drift below
+  // the canvas (live-site bug, 2026-08-25).
   useEffect(() => {
     if (!showMap || typeof window === "undefined") return;
     if (!document.querySelector('link[href*="mapbox-gl"]')) {
       const link = document.createElement("link");
       link.rel = "stylesheet";
-      link.href = "https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css";
+      link.href = GL_CSS;
       document.head.appendChild(link);
     }
     disposed.current = false;
@@ -282,6 +287,15 @@ export default function RwCommunityGroups({
         recolor(map);
         setMapReady(true);
       });
+      // the grid can stretch the container after init (late-loading images
+      // elsewhere in the row) — re-measure and re-fit once things settle
+      const refit = () => {
+        if (disposed.current || mapInstance.current !== map) return;
+        map.resize();
+        map.fitBounds(bounds(gl), { padding: 56, maxZoom: 12, duration: 0 });
+      };
+      later(refit, 1200);
+      later(refit, 3500);
     } catch {
       /* map stays hidden */
     }
@@ -406,6 +420,9 @@ export default function RwCommunityGroups({
         {/* mini map */}
         {showMap ? (
           <div className={c("map-wrap")}>
+            {/* mapbox CSS must live INSIDE the shadow root — document-level
+                styles don't cross the boundary and markers lose positioning */}
+            <link rel="stylesheet" href={GL_CSS} />
             <div ref={mapRef} className={c("map")} />
           </div>
         ) : null}
