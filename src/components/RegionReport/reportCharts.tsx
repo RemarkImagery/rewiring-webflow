@@ -15,7 +15,6 @@ import {
   LabelList,
   Tooltip,
   ComposedChart,
-  Area,
   Line,
   Legend,
 } from "recharts";
@@ -443,10 +442,10 @@ export function CumulativeChart({ cfg }: { cfg: CumulativeCfg }) {
           <Tooltip content={<CumulTip />} cursor={{ stroke: "#c9c9c2", strokeWidth: 1 }} />
           {!cfg.single && <Legend wrapperStyle={{ fontFamily: "Rubik", fontSize: 13, color: "#1a3c3c" }} formatter={(v) => <span style={{ color: "#1a3c3c" }}>{v}</span>} />}
           {cfg.single ? (
-            <Area type="monotone" dataKey="bills" name="Cumulative savings" stroke="#93c47d" strokeWidth={2} fill="#93c47d" fillOpacity={0.3} dot={false} activeDot={{ r: 5 }} isAnimationActive={false} label={endLabel(cfg.billsEnd)} />
+            <Line type="monotone" dataKey="bills" name="Cumulative savings" stroke="#93c47d" strokeWidth={2} dot={false} activeDot={{ r: 5 }} isAnimationActive={false} label={endLabel(cfg.billsEnd)} />
           ) : (
             <React.Fragment>
-              <Area type="monotone" dataKey="net" name="Net savings (after upfront costs)" stroke="#93c47d" strokeWidth={2} fill="#93c47d" fillOpacity={0.3} dot={false} activeDot={{ r: 5 }} isAnimationActive={false} label={endLabel(cfg.netEnd)} />
+              <Line type="monotone" dataKey="net" name="Net savings (after upfront costs)" stroke="#93c47d" strokeWidth={2} dot={false} activeDot={{ r: 5 }} isAnimationActive={false} label={endLabel(cfg.netEnd)} />
               <Line type="monotone" dataKey="bills" name="Energy bill savings" stroke="#3c78d8" strokeWidth={2} dot={false} activeDot={{ r: 5 }} isAnimationActive={false} label={endLabel(cfg.billsEnd)} />
             </React.Fragment>
           )}
