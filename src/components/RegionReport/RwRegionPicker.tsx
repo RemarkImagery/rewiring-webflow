@@ -20,6 +20,7 @@ export interface RwRegionPickerProps {
   inkColor?: string;
   goldColor?: string;
   bgColor?: string;
+  labelColor?: string;
 }
 
 export default function RwRegionPicker({
@@ -29,7 +30,8 @@ export default function RwRegionPicker({
   goLabel = "View report",
   inkColor = "#1a3c3c",
   goldColor = "#f5b731",
-  bgColor = "transparent",
+  bgColor = "#234e4c",
+  labelColor = "#fdf7ea",
 }: RwRegionPickerProps) {
   const groups = useMemo(() => {
     const g: Record<string, typeof META> = {};
@@ -75,8 +77,8 @@ export default function RwRegionPicker({
     <div className="rw-region-picker">
       <style>{`
         .rw-region-picker, .rw-region-picker * { box-sizing: border-box; }
-        .rw-region-picker { font-family: 'Rubik', system-ui, sans-serif; color: ${inkColor}; background: ${bgColor}; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-        .rw-region-picker label { font-size: 15px; font-weight: 600; }
+        .rw-region-picker { font-family: 'Rubik', system-ui, sans-serif; color: ${inkColor}; background: ${bgColor}; display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; padding: 32px 24px; }
+        .rw-region-picker label { font-size: 15px; font-weight: 600; color: ${labelColor}; }
         .rw-region-picker select { font-family: 'Rubik', sans-serif; font-size: 15px; font-weight: 600; color: ${inkColor}; background: #fff; border: 2px solid ${goldColor}; border-radius: 10px; padding: 8px 14px; min-width: 210px; cursor: pointer; }
         .rw-region-picker select:focus-visible { outline: 2px solid ${goldColor}; outline-offset: 2px; }
         .rw-region-picker .rw-rp-go { font-family: inherit; font-size: 15px; font-weight: 700; color: ${inkColor}; background: ${goldColor}; border: none; border-radius: 100px; padding: 10px 22px; cursor: pointer; transition: background-color .15s ease, transform .15s ease; }

@@ -15,6 +15,7 @@ export default declareComponent(RwRegionPicker, {
     label: props.Text({ name: "Label", defaultValue: "See the report for another location", group: "Content" }),
     inkColor: props.Text({ name: "Text colour", defaultValue: "#1a3c3c", group: "Style" }),
     goldColor: props.Text({ name: "Gold / border colour", defaultValue: "#f5b731", group: "Style" }),
-    bgColor: props.Text({ name: "Background colour", defaultValue: "transparent", group: "Style" }),
+    bgColor: props.Text({ name: "Background colour", defaultValue: "#234e4c", group: "Style" }),
+    labelColor: props.Text({ name: "Label colour", defaultValue: "#fdf7ea", group: "Style" }),
   },
 });
