@@ -99,6 +99,7 @@ export default function RwLocalStoryCard({
   return (
     <div className="rw-story-wrap">
       <style>{`
+        .rw-story-wrap, .rw-story-wrap * { box-sizing: border-box; }
         .rw-story-wrap { max-width: 920px; margin: 0 auto; padding: 12px 0; font-family: 'Rubik', system-ui, sans-serif; color: ${inkColor}; }
         .rw-story-card { position: relative; margin-left: 180px; background: ${cardColor}; border: 4px solid ${frameColor}; border-radius: 20px; padding: 26px 28px 24px 60px; min-height: 220px; }
         .rw-story-card .rw-sc-photo { position: absolute; left: -180px; top: -10px; width: 212px; height: calc(100% + 20px); object-fit: cover; border: 5px solid ${frameColor}; border-radius: 16px; transform: rotate(-0.6deg); background: #ddd; display: block; }

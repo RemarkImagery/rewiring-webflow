@@ -111,6 +111,7 @@ export default function RwCommunityCard({
       </div>
 
       <style>{`
+        .${c("root")}, .${c("root")} * { box-sizing: border-box; }
         .${c("root")} { font-family: 'Rubik', system-ui, sans-serif; color: ${inkColor}; background: #fff; border: 3px solid ${inkColor}; border-radius: 28px 8px 24px 8px / 8px 24px 8px 28px; overflow: hidden; display: flex; flex-direction: column; height: 100%; }
         .${c("media")} { position: relative; height: 148px; background: linear-gradient(135deg, ${accentColor}, ${inkColor}); }
         .${c("bg")} { width: 100%; height: 100%; object-fit: cover; display: block; }

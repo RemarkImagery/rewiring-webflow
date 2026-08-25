@@ -312,6 +312,7 @@ export default function RwCommunityGroups({
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap');
+        .${c("root")}, .${c("root")} * { box-sizing: border-box; }
         .${c("root")} { font-family: 'Rubik', system-ui, sans-serif; color: ${inkColor}; max-width: 1080px; margin: 0 auto; padding: 0 24px; }
         .${c("heading")} { font-size: clamp(26px, 3vw, 36px); font-weight: 700; margin: 0 0 18px; color: ${accentColor}; }
         .${c("bar")} { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }

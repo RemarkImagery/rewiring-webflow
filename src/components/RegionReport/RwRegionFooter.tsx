@@ -90,11 +90,12 @@ export default function RwRegionFooter({
   return (
     <div className="rw-region-footer">
       <style>{`
+        .rw-region-footer, .rw-region-footer * { box-sizing: border-box; }
         .rw-region-footer { font-family: 'Rubik', system-ui, sans-serif; color: ${inkColor}; background: ${bgColor}; }
         /* spacing mirrors the preview site: .section 96px/56px, .download-card 52px 40px */
         .rw-region-footer .rw-rf-download { padding: 96px 24px; }
         .rw-region-footer .rw-rf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 960px; margin: 0 auto; align-items: stretch; }
-        .rw-region-footer .rw-rf-card { text-align: center; background: #fff; border: 2px dashed ${goldColor}; border-radius: 32px 8px 28px 8px / 8px 28px 8px 32px; padding: 52px 40px; height: 100%; }
+        .rw-region-footer .rw-rf-card { text-align: center; background: #fff; border: 2px dashed ${goldColor}; border-radius: 32px 8px 28px 8px / 8px 28px 8px 32px; padding: 52px 40px; }
         @media (max-width: 780px) { .rw-region-footer .rw-rf-download { padding: 56px 20px; } .rw-region-footer .rw-rf-card { padding: 36px 24px; } }
         .rw-region-footer .rw-rf-title { font-size: clamp(26px, 3vw, 36px); font-weight: 700; color: ${accentColor}; margin: 0 0 12px; line-height: 1.15; letter-spacing: -0.01em; }
         .rw-region-footer .rw-rf-sub { font-size: 16px; line-height: 1.55; color: #4a6664; margin: 0 auto 28px; max-width: 540px; }
