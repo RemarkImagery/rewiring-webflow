@@ -11,7 +11,10 @@ export default declareComponent(RwCommunityGroups, {
   props: {
     listSelector: props.Text({ name: "Collection list selector", defaultValue: ".locations", group: "Data" }),
     showDemo: props.Boolean({ name: "Show demo groups when list missing", defaultValue: false, group: "Data" }),
-    mapboxToken: props.Text({ name: "Mapbox token", defaultValue: "", group: "Map" }),
+    // Leave blank to use the built-in default (the same public token the QEA
+    // site uses, Oliver's Mapbox account) — see DEFAULT_MAPBOX_TOKEN in the
+    // component. Paste a different pk. token here to override.
+    mapboxToken: props.Text({ name: "Mapbox token (blank = QEA default)", defaultValue: "", group: "Map" }),
     mapHeight: props.Text({ name: "Map height (px)", defaultValue: "420", group: "Map" }),
     heading: props.Text({ name: "Heading (optional)", defaultValue: "", group: "Content" }),
     landColor: props.Text({ name: "Map land colour", defaultValue: "#2d5c5a", group: "Map" }),
