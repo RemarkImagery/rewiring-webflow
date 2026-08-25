@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 /** Inject the story-card fonts once per page — N cards in a carousel would
  *  otherwise each carry their own @import, delaying font load. */
@@ -80,7 +80,44 @@ export default function RwLocalStoryCard({
   inkColor = "#23312e",
 }: RwLocalStoryCardProps) {
   const [expanded, setExpanded] = useState(false);
+  const wrapRef = useRef<HTMLDivElement>(null);
   useEffect(() => { ensureStoryFonts(); }, []);
+
+  // Cards are usually placed inside a Webflow slider whose mask has a FIXED
+  // height with overflow:hidden — taller cards get clipped (live-site bug,
+  // 2026-08-25). The Designer can't know the tallest card, so each card grows
+  // the mask to fit itself (grow-only: every card converges on the tallest).
+  // Climbs out of the component's shadow root to reach the page DOM.
+  const fitMask = () => {
+    const w = wrapRef.current;
+    if (!w) return;
+    let el: Element | null = w;
+    let mask: HTMLElement | null = null;
+    while (el && !mask) {
+      const parent: Element | null =
+        el.parentElement || ((el.getRootNode() as ShadowRoot).host ?? null);
+      if (parent && parent.classList && parent.classList.contains("w-slider-mask")) mask = parent as HTMLElement;
+      el = parent;
+    }
+    if (!mask) return;
+    const need = w.offsetHeight;
+    if (need > mask.getBoundingClientRect().height + 1) mask.style.height = need + "px";
+  };
+  useEffect(() => {
+    fitMask();
+    const timers = [800, 2500].map((ms) => window.setTimeout(fitMask, ms));
+    window.addEventListener("resize", fitMask);
+    return () => {
+      timers.forEach((t) => clearTimeout(t));
+      window.removeEventListener("resize", fitMask);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
+    const t = window.setTimeout(fitMask, 350); // after the quote transition
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [expanded]);
   const tags = (technologies || "")
     .split(/[\n,]/)
     .map((s) => s.trim())
@@ -97,7 +134,7 @@ export default function RwLocalStoryCard({
   const hasMore = Boolean(longQuote && longQuote !== shortQuote);
 
   return (
-    <div className="rw-story-wrap">
+    <div className="rw-story-wrap" ref={wrapRef}>
       <style>{`
         .rw-story-wrap, .rw-story-wrap * { box-sizing: border-box; }
         .rw-story-wrap { max-width: 920px; margin: 0 auto; padding: 12px 0; font-family: 'Rubik', system-ui, sans-serif; color: ${inkColor}; }
