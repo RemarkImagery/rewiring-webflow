@@ -64,13 +64,17 @@ export default function RwCommunityCard({
   const fb = facebookUrl?.href || "";
 
   return (
-    <div className={c("root")}>
+    <div className={`${c("root")}${logoSrc ? " " + c("has-logo") : ""}`}>
       <div className={c("media")}>
         {bgSrc ? <img className={c("bg")} src={bgSrc} alt="" /> : <div className={c("bg-ph")} />}
-        {logoSrc ? <img className={c("logo")} src={logoSrc} alt={title} /> : null}
+        <h3 className={c("title")}>{title}</h3>
+        {logoSrc ? (
+          <div className={c("logo-box")}>
+            <img className={c("logo")} src={logoSrc} alt={title} />
+          </div>
+        ) : null}
       </div>
       <div className={c("body")}>
-        <h3 className={c("title")}>{title}</h3>
         {subtitle ? <p className={c("subtitle")}>{subtitle}</p> : null}
         {location ? (
           <p className={c("location")}>
@@ -112,14 +116,19 @@ export default function RwCommunityCard({
 
       <style>{`
         .${c("root")}, .${c("root")} * { box-sizing: border-box; }
-        .${c("root")} { font-family: 'Rubik', system-ui, sans-serif; color: ${inkColor}; background: #fff; border: 3px solid ${inkColor}; border-radius: 28px 8px 24px 8px / 8px 24px 8px 28px; overflow: hidden; display: flex; flex-direction: column; height: 100%; }
-        .${c("media")} { position: relative; height: 148px; background: linear-gradient(135deg, ${accentColor}, ${inkColor}); }
+        /* Jay's 2026-08-25 design: white card, dashed frame, banner photo with
+           overlaid title + gold logo box at right */
+        .${c("root")} { font-family: 'Rubik', system-ui, sans-serif; color: ${inkColor}; background: #fff; border: 3px dashed #131a18; border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; height: 100%; }
+        .${c("media")} { position: relative; height: 190px; background: linear-gradient(135deg, ${accentColor}, ${inkColor}); }
         .${c("bg")} { width: 100%; height: 100%; object-fit: cover; display: block; }
         .${c("bg-ph")} { width: 100%; height: 100%; background: linear-gradient(135deg, ${accentColor}, ${inkColor}); }
-        .${c("logo")} { position: absolute; left: 18px; bottom: -26px; width: 64px; height: 64px; object-fit: contain; background: #fff; border-radius: 14px; border: 2px solid ${inkColor}; padding: 6px; }
-        .${c("body")} { padding: 34px 22px 22px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-        .${c("title")} { font-size: 21px; font-weight: 700; line-height: 1.15; margin: 0; color: ${inkColor}; }
-        .${c("subtitle")} { font-size: 15px; color: ${accentColor}; font-weight: 600; margin: 0; }
+        .${c("media")}::after { content: ""; position: absolute; inset: 40% 0 0 0; background: linear-gradient(transparent, rgba(0,0,0,0.55)); pointer-events: none; }
+        .${c("title")} { position: absolute; left: 22px; bottom: 14px; margin: 0; z-index: 1; font-size: clamp(24px, 2.6vw, 34px); font-weight: 800; line-height: 1.1; color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,0.55); }
+        .${c("logo-box")} { position: absolute; right: 18px; bottom: -34px; z-index: 2; width: 132px; height: 118px; background: ${goldColor}; border-radius: 16px; display: flex; align-items: center; justify-content: center; padding: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.18); }
+        .${c("logo")} { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+        .${c("body")} { padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+        .${c("has-logo")} .${c("body")} > :first-child { max-width: calc(100% - 150px); }
+        .${c("subtitle")} { font-size: 15.5px; color: ${inkColor}; font-weight: 700; margin: 0; }
         .${c("location")} { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: #5c7a78; margin: 0; }
         .${c("info")} { font-size: 15px; line-height: 1.55; color: #4a6664; margin: 4px 0 0; }
         .${c("meetups")} { font-size: 14px; color: #4a6664; margin: 0; }

@@ -89,6 +89,10 @@ export default function RwCommunityGroups({
   const [groups, setGroups] = useState<Group[]>([]);
   const [active, setActive] = useState(0);
   const [mapReady, setMapReady] = useState(false);
+  // No groups anywhere (CMS + hosted JSON both empty) → national default copy (Jay 2026-08-25)
+  const [showDefault, setShowDefault] = useState(false);
+  const groupsRef = useRef<Group[]>([]);
+  useEffect(() => { groupsRef.current = groups; if (groups.length) setShowDefault(false); }, [groups]);
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstance = useRef<any>(null);
   const markersRef = useRef<Record<number, { marker: any; el: HTMLDivElement }>>({});
@@ -170,6 +174,10 @@ export default function RwCommunityGroups({
       });
       if (showDemo) setGroups(DEMO_GROUPS);
       else setGroups([]);
+      // still empty once CMS retries + JSON fetch have had their chance → default copy
+      retryTimers.push(window.setTimeout(() => {
+        if (!cancelled && !groupsRef.current.length) setShowDefault(true);
+      }, 4500));
 
       // Hosted-JSON fallback: one shared data file with the print pipeline.
       // CMS data (if it ever appears) wins over the fetched groups.
@@ -377,10 +385,34 @@ export default function RwCommunityGroups({
     }
   }
 
-  if (!groups.length) return <div className={c("root")} ref={rootRef} />;
+  if (!groups.length) {
+    // No groups for this region → national default (Jay 2026-08-25), once the
+    // CMS retries + hosted-JSON fetch have both come up empty.
+    return (
+      <div className={c("root")} id="community" ref={rootRef}>
+        {showDefault ? (
+          <>
+            <style>{`
+              .${c("root")} { font-family: 'Rubik', system-ui, sans-serif; color: ${inkColor}; max-width: 780px; margin: 0 auto; padding: 0 24px; text-align: center; }
+              .${c("default")} { font-size: 17px; line-height: 1.6; }
+              .${c("default")} a { color: ${inkColor}; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+            `}</style>
+            {heading ? <h2 className={c("heading")}>{heading}</h2> : null}
+            <p className={c("default")}>
+              Electric community groups across the country are helping locals go electric. These groups share honest
+              advice, run home tours and events, and can help households make the switch.{" "}
+              <a href="https://rewiring.nz/communities" target="_blank" rel="noopener noreferrer">
+                Find or start a local community group.
+              </a>
+            </p>
+          </>
+        ) : null}
+      </div>
+    );
+  }
 
   return (
-    <div className={c("root")} ref={rootRef}>
+    <div className={c("root")} id="community" ref={rootRef}>
       {heading ? <h2 className={c("heading")}>{heading}</h2> : null}
 
       {/* selector bar: every group, active highlighted */}
@@ -433,7 +465,8 @@ export default function RwCommunityGroups({
         .${c("root")}, .${c("root")} * { box-sizing: border-box; }
         .${c("root")} { font-family: 'Rubik', system-ui, sans-serif; color: ${inkColor}; max-width: 1080px; margin: 0 auto; padding: 0 24px; }
         .${c("heading")} { font-size: clamp(26px, 3vw, 36px); font-weight: 700; margin: 0 0 18px; color: ${accentColor}; }
-        .${c("bar")} { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+        .${c("bar")} { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 18px; }
+        .${c("heading")} { text-align: center; }
         .${c("tab")} { font-family: inherit; font-size: 14px; font-weight: 600; color: ${inkColor}; background: #fff; border: 2px solid ${inkColor}; border-radius: 100px; padding: 8px 16px; cursor: pointer; transition: background-color .15s ease, transform .15s ease; }
         .${c("tab")}:hover { transform: translateY(-1px); }
         .${c("tab-active")} { background: ${goldColor}; border-color: ${goldColor}; }

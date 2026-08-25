@@ -122,6 +122,17 @@ export default function RwLocalStoryCard({
     .split(/[\n,]/)
     .map((s) => s.trim())
     .filter(Boolean);
+  // Jay 2026-08-25: always show all six machines as checkboxes, ticking the
+  // ones this story has (matched against the CMS Electric technologies tags).
+  const MACHINES: Array<{ label: string; test: RegExp }> = [
+    { label: "Solar", test: /solar/i },
+    { label: "Batteries", test: /batter/i },
+    { label: "Electric heating", test: /^heat ?pump$|heating/i },
+    { label: "Electric hot water", test: /hot ?water/i },
+    { label: "Electric cooking", test: /induction|cook/i },
+    { label: "Electric vehicle", test: /^ev\b|vehicle/i },
+  ];
+  const machines = MACHINES.map((m) => ({ label: m.label, on: tags.some((t) => m.test.test(t)) }));
   const photoSrc = resolveImage(photo);
   const meta = [location, entitySize].filter(Boolean).join(" · ");
   const stats = [
@@ -137,71 +148,74 @@ export default function RwLocalStoryCard({
     <div className="rw-story-wrap" ref={wrapRef}>
       <style>{`
         .rw-story-wrap, .rw-story-wrap * { box-sizing: border-box; }
-        .rw-story-wrap { max-width: 920px; margin: 0 auto; padding: 12px 0; font-family: 'Rubik', system-ui, sans-serif; color: ${inkColor}; }
-        .rw-story-card { position: relative; margin-left: 180px; background: ${cardColor}; border: 4px solid ${frameColor}; border-radius: 20px; padding: 26px 28px 24px 60px; min-height: 220px; }
-        .rw-story-card .rw-sc-photo { position: absolute; left: -180px; top: -10px; width: 212px; height: calc(100% + 20px); object-fit: cover; border: 5px solid ${frameColor}; border-radius: 16px; transform: rotate(-0.6deg); background: #ddd; display: block; }
-        .rw-story-card .rw-sc-title { font-family: 'Permanent Marker', cursive; font-weight: 400; font-size: 24px; letter-spacing: 0.03em; text-transform: uppercase; margin: 0 0 4px; color: ${frameColor}; }
-        .rw-story-card .rw-sc-meta { font-size: 14px; font-weight: 500; margin-bottom: 12px; }
-        .rw-story-card .rw-sc-stats { font-size: 15px; line-height: 1.7; margin-bottom: 8px; }
+        .rw-story-wrap { max-width: 960px; margin: 0 auto; padding: 12px 0; font-family: 'Rubik', system-ui, sans-serif; color: ${inkColor}; }
+        /* Jay's 2026-08-25 design: white card, black dashed frame, photo inset left */
+        .rw-story-card { display: grid; grid-template-columns: 300px 1fr; background: #fff; border: 3px dashed ${frameColor}; border-radius: 24px; overflow: hidden; }
+        .rw-story-card .rw-sc-photo { width: 100%; height: 100%; min-height: 280px; object-fit: cover; display: block; background: #ddd; }
+        .rw-story-card .rw-sc-body { padding: 26px 32px 24px; }
+        .rw-story-card .rw-sc-title { font-family: inherit; font-weight: 800; font-size: clamp(22px, 2.4vw, 28px); line-height: 1.15; margin: 0 0 2px; color: ${frameColor}; }
+        .rw-story-card .rw-sc-meta { font-size: 15px; font-weight: 500; margin-bottom: 14px; }
+        .rw-story-card .rw-sc-stats { font-size: 15.5px; line-height: 1.65; margin-bottom: 2px; display: grid; grid-template-columns: max-content auto; column-gap: 18px; }
         .rw-story-card .rw-sc-stats strong { font-weight: 700; }
-        .rw-story-card .rw-sc-arrow { color: ${accentColor}; font-weight: 800; }
-        .rw-story-card .rw-sc-saved { font-size: 18px; font-weight: 800; margin-bottom: 12px; }
-        .rw-story-card .rw-sc-quote { font-size: 14.5px; line-height: 1.55; margin: 0 0 8px; }
+        .rw-story-card .rw-sc-saved { font-size: 14.5px; font-weight: 800; margin-bottom: 14px; }
+        .rw-story-card .rw-sc-quote { font-size: 16px; line-height: 1.55; margin: 0 0 10px; }
         .rw-story-card .rw-sc-quote-more { max-height: 0; overflow: hidden; opacity: 0; transition: max-height .3s ease, opacity .3s ease, margin .3s ease; margin: 0; }
-        .rw-story-card.expanded .rw-sc-quote-more { max-height: 400px; opacity: 1; margin-bottom: 8px; }
+        .rw-story-card.expanded .rw-sc-quote-more { max-height: 400px; opacity: 1; margin-bottom: 10px; }
         .rw-story-card.expanded .rw-sc-quote-short { display: none; }
-        .rw-story-card .rw-sc-readmore { background: none; border: none; color: ${frameColor}; font-weight: 700; font-size: 14px; cursor: pointer; padding: 0; margin-bottom: 14px; text-decoration: underline; font-family: inherit; }
-        .rw-story-card .rw-sc-tags { display: flex; flex-wrap: wrap; gap: 6px 18px; }
-        .rw-story-card .rw-sc-tag { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 700; white-space: nowrap; }
-        .rw-story-card .rw-sc-check { width: 16px; height: 16px; border-radius: 4px; background: #fff; border: 2px solid ${frameColor}; display: inline-flex; align-items: center; justify-content: center; flex: none; position: relative; }
-        .rw-story-card .rw-sc-check::after { content: ""; position: absolute; left: 4px; top: 0.5px; width: 4px; height: 8px; border: solid ${accentColor}; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
-        /* no photo: drop the reserved photo offset and centre the content */
-        .rw-story-card.no-photo { margin-left: 0; padding: 26px 32px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; }
-        .rw-story-card.no-photo .rw-sc-tags { justify-content: center; }
+        .rw-story-card .rw-sc-readmore { background: none; border: none; color: ${frameColor}; font-weight: 700; font-size: 14px; cursor: pointer; padding: 0; margin-bottom: 12px; text-decoration: underline; font-family: inherit; }
+        .rw-story-card .rw-sc-tags { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 4px; }
+        .rw-story-card .rw-sc-tag { display: inline-flex; align-items: center; gap: 7px; font-size: 15px; font-weight: 700; white-space: nowrap; }
+        .rw-story-card .rw-sc-tag.off { opacity: 0.45; font-weight: 600; }
+        .rw-story-card .rw-sc-check { width: 17px; height: 17px; border-radius: 4px; background: #fff; border: 2px solid ${frameColor}; display: inline-flex; align-items: center; justify-content: center; flex: none; position: relative; }
+        .rw-story-card .rw-sc-check.on::after { content: ""; position: absolute; left: 4px; top: 0.5px; width: 4px; height: 8px; border: solid ${accentColor}; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
+        /* no photo: single column */
+        .rw-story-card.no-photo { grid-template-columns: 1fr; }
         @media (max-width: 720px) {
-          .rw-story-card { margin-left: 0; padding: 20px 20px 18px; }
-          .rw-story-card .rw-sc-photo { position: static; width: calc(100% + 8px); height: 220px; margin: -4px 0 14px -4px; transform: rotate(-0.6deg); }
+          .rw-story-card { grid-template-columns: 1fr; }
+          .rw-story-card .rw-sc-photo { min-height: 0; height: 220px; }
+          .rw-story-card .rw-sc-body { padding: 20px 20px 18px; }
         }
       `}</style>
 
       <div className={`rw-story-card${expanded ? " expanded" : ""}${photoSrc ? "" : " no-photo"}`}>
         {photoSrc ? <img className="rw-sc-photo" src={photoSrc} alt={name} /> : null}
-        <h3 className="rw-sc-title">Local story: {name}</h3>
-        {meta ? <div className="rw-sc-meta">{meta}</div> : null}
-        {stats.length > 0 && (
-          <div className="rw-sc-stats">
-            {stats.map((s, i) => (
-              <div key={i}>
-                <strong>{s.label}:</strong> {s.before}
-                {s.before && s.after ? <span className="rw-sc-arrow"> → </span> : null}
-                {s.after}
-              </div>
-            ))}
-          </div>
-        )}
-        {headlineStat ? (
-          <div className="rw-sc-saved">
-            {headlineStat}
-            {headlineStatLabel ? ` ${headlineStatLabel}` : ""}
-          </div>
-        ) : null}
-        {shortQuote ? <p className="rw-sc-quote rw-sc-quote-short">“{shortQuote}”</p> : null}
-        {hasMore ? <p className="rw-sc-quote rw-sc-quote-more">“{longQuote}”</p> : null}
-        {hasMore && (
-          <button className="rw-sc-readmore" onClick={() => setExpanded((v) => !v)}>
-            {expanded ? "Read less" : "Read more"}
-          </button>
-        )}
-        {tags.length > 0 && (
+        <div className="rw-sc-body">
+          <h3 className="rw-sc-title">Local story: {name}</h3>
+          {meta ? <div className="rw-sc-meta">{meta}</div> : null}
+          {stats.length > 0 && (
+            <div className="rw-sc-stats">
+              {stats.map((s, i) => (
+                <React.Fragment key={i}>
+                  <strong>{/bill/i.test(s.label || "") ? "Bills" : s.label} before:</strong>
+                  <span>{s.before}</span>
+                  <strong>{/bill/i.test(s.label || "") ? "Bills" : s.label} after:</strong>
+                  <span>{s.after}</span>
+                </React.Fragment>
+              ))}
+            </div>
+          )}
+          {headlineStat ? (
+            <div className="rw-sc-saved">
+              That&rsquo;s {headlineStat}
+              {headlineStatLabel ? ` ${headlineStatLabel}` : ""}!
+            </div>
+          ) : null}
+          {shortQuote ? <p className="rw-sc-quote rw-sc-quote-short">“{shortQuote}”</p> : null}
+          {hasMore ? <p className="rw-sc-quote rw-sc-quote-more">“{longQuote}”</p> : null}
+          {hasMore && (
+            <button className="rw-sc-readmore" onClick={() => setExpanded((v) => !v)}>
+              {expanded ? "Read less" : "Read more"}
+            </button>
+          )}
           <div className="rw-sc-tags">
-            {tags.map((t, i) => (
-              <span className="rw-sc-tag" key={i}>
-                <span className="rw-sc-check" />
-                {t}
+            {machines.map((m, i) => (
+              <span className={`rw-sc-tag${m.on ? "" : " off"}`} key={i}>
+                <span className={`rw-sc-check${m.on ? " on" : ""}`} />
+                {m.label}
               </span>
             ))}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
