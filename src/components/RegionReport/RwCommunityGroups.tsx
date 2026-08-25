@@ -32,6 +32,11 @@ export interface RwCommunityGroupsProps {
    *  canvas / prototyping). OFF by default so a missing list on a published
    *  page renders nothing rather than fabricated groups. */
   showDemo?: boolean;
+  /** Location slug for the hosted-JSON data source; blank = auto from the URL. */
+  districtSlug?: string;
+  /** Hosted groups JSON ({ "<slug>": { "groups": [...] } }). Used when the page
+   *  has no parseable CMS data. Blank disables the fetch. */
+  dataUrl?: string;
   mapboxToken?: string;
   heading?: string;
   mapHeight?: string;
@@ -57,9 +62,15 @@ const DEMO_GROUPS: Group[] = [
   { name: "Mosgiel Solar Collective", blurb: "Bulk-buy solar for Taieri households.", url: "", image: "", lat: -45.8753, lng: 170.3487 },
 ];
 
+// One shared source of truth with the print pipeline — deployed from the
+// rewiring-district-pages repo (preview/communities.json, CORS-enabled).
+const DEFAULT_DATA_URL = "https://rewiring-region-reports.pages.dev/communities.json";
+
 export default function RwCommunityGroups({
   listSelector = ".locations",
   showDemo = false,
+  districtSlug = "",
+  dataUrl = DEFAULT_DATA_URL,
   mapboxToken = "",
   heading = "",
   mapHeight = "420",
@@ -150,19 +161,48 @@ export default function RwCommunityGroups({
       return true;
     };
 
-    if (!attempt()) {
+    let domFound = attempt();
+    if (!domFound) {
       // CMS lists / neighbouring islands can hydrate after us — retry briefly
       [300, 1000, 3000].forEach((ms) => {
-        retryTimers.push(window.setTimeout(() => { if (!cancelled) attempt(); }, ms));
+        retryTimers.push(window.setTimeout(() => { if (!cancelled && !domFound) domFound = attempt(); }, ms));
       });
       if (showDemo) setGroups(DEMO_GROUPS);
       else setGroups([]);
+
+      // Hosted-JSON fallback: one shared data file with the print pipeline.
+      // CMS data (if it ever appears) wins over the fetched groups.
+      const url = (dataUrl || "").trim();
+      if (url) {
+        const slug =
+          (districtSlug || "").trim().toLowerCase() ||
+          window.location.pathname.split("/").filter(Boolean).pop()?.toLowerCase() ||
+          "";
+        fetch(url)
+          .then((r) => (r.ok ? r.json() : null))
+          .then((j) => {
+            if (cancelled || domFound || !j) return;
+            const raw = (j[slug] && j[slug].groups) || [];
+            const parsed: Group[] = raw
+              .map((g: any) => ({
+                name: String(g.name || ""),
+                blurb: String(g.blurb || ""),
+                url: String(g.url || ""),
+                image: String(g.image || ""),
+                lat: Number(g.lat) || 0,
+                lng: Number(g.lng) || 0,
+              }))
+              .filter((g: Group) => g.name);
+            if (parsed.length) setGroups(parsed);
+          })
+          .catch(() => { /* stay on demo/empty */ });
+      }
     }
     return () => {
       cancelled = true;
       retryTimers.forEach((t) => clearTimeout(t));
     };
-  }, [listSelector, showDemo]);
+  }, [listSelector, showDemo, districtSlug, dataUrl]);
 
   const coords = groups.filter((g) => g.lat !== 0 || g.lng !== 0);
   const showMap = Boolean(token) && coords.length > 0;
