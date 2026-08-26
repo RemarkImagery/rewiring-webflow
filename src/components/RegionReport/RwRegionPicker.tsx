@@ -36,6 +36,7 @@ export default function RwRegionPicker({
   const groups = useMemo(() => {
     const g: Record<string, typeof META> = {};
     META.forEach((m) => {
+      if (m.type === "Country") return; // NZ lives on its own standalone page
       (g[m.type] = g[m.type] || []).push(m);
     });
     Object.values(g).forEach((list) => list.sort((a, b) => a.location.localeCompare(b.location)));
