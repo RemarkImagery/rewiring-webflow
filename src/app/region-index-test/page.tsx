@@ -42,7 +42,6 @@ export default function RegionIndexTest() {
         showSearch={false}
         showCta={false}
         heroTitle="Electrifying your region"
-        stat3Value=""
       />
     </div>
   );

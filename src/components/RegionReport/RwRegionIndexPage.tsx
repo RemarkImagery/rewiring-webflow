@@ -41,12 +41,6 @@ export interface RwRegionIndexPageProps {
   heroTitle?: string;
   heroSubtitle?: string;
   heroImage?: ImageValue;
-  stat1Value?: string;
-  stat1Label?: string;
-  stat2Value?: string;
-  stat2Label?: string;
-  stat3Value?: string;
-  stat3Label?: string;
   /* Search */
   showSearch?: boolean;
   searchPlaceholder?: string;
@@ -86,12 +80,6 @@ export default function RwRegionIndexPage({
   heroTitle = "Electrifying Aotearoa, one place at a time",
   heroSubtitle = "Every city, district and region in New Zealand has its own electrification story. Find yours to see what households, the local economy and emissions stand to gain from going electric.",
   heroImage,
-  stat1Value = "82",
-  stat1Label = "locations covered",
-  stat2Value = "6",
-  stat2Label = "machines to swap",
-  stat3Value = "2026",
-  stat3Label = "electrification model",
   showSearch = true,
   searchPlaceholder = "Search for your city, district or region…",
   countTemplate = "{n} locations",
@@ -151,11 +139,6 @@ export default function RwRegionIndexPage({
   const shown = types.reduce((n, t) => n + groups[t].length, 0);
   const nzLink = linkHref(nzUrl);
   const ctaLink = linkHref(ctaUrl);
-  const stats = [
-    { v: stat1Value, l: stat1Label },
-    { v: stat2Value, l: stat2Label },
-    { v: stat3Value, l: stat3Label },
-  ].filter((s) => (s.v || "").trim());
 
   return (
     <div className={c("root")}>
@@ -185,13 +168,6 @@ export default function RwRegionIndexPage({
         .${c("search")}:focus-visible { outline: 3px solid ${goldColor}; outline-offset: 2px; }
         .${c("searchIcon")} { position: absolute; left: 20px; top: 27px; transform: translateY(-50%); width: 18px; height: 18px; color: ${accentColor}; pointer-events: none; }
         .${c("count")} { margin: 14px 0 0; font-size: 14px; font-weight: 600; letter-spacing: 0.02em; opacity: 0.75; }
-
-        /* ---- hero stats ---- */
-        .${c("stats")} { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin: 38px 0 0; }
-        .${c("heroInner")}.${c("hasImg")} .${c("stats")} { justify-content: flex-start; }
-        .${c("stat")} { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 100px; padding: 10px 22px; display: flex; align-items: baseline; gap: 9px; }
-        .${c("statV")} { font-size: 22px; font-weight: 700; color: ${goldColor}; line-height: 1; }
-        .${c("statL")} { font-size: 14px; font-weight: 500; opacity: 0.88; }
 
         /* ---- New Zealand feature ---- */
         .${c("nzWrap")} { max-width: 1080px; margin: 0 auto; padding: 56px 24px 0; }
@@ -230,7 +206,6 @@ export default function RwRegionIndexPage({
           .${c("heroInner")}.${c("hasImg")} { grid-template-columns: 1fr; justify-items: center; }
           .${c("heroInner")}.${c("hasImg")} .${c("heroText")} { text-align: center; }
           .${c("heroInner")}.${c("hasImg")} .${c("sub")}, .${c("heroInner")}.${c("hasImg")} .${c("searchWrap")} { margin-left: auto; margin-right: auto; }
-          .${c("heroInner")}.${c("hasImg")} .${c("stats")} { justify-content: center; }
           .${c("heroImg")} { max-width: 260px; order: -1; }
         }
         @media (max-width: 860px) {
@@ -279,22 +254,11 @@ export default function RwRegionIndexPage({
                   placeholder={searchPlaceholder}
                   aria-label={searchPlaceholder || "Search locations"}
                 />
-                {/* Only while filtering — an always-on "82 locations" just
-                    repeats the stat chip below it. */}
+                {/* Only while filtering — a standing "82 locations" line
+                    adds nothing to the directory sitting right below it. */}
                 {countTemplate && query.trim() ? (
                   <p className={c("count")}>{countTemplate.replace("{n}", String(shown))}</p>
                 ) : null}
-              </div>
-            ) : null}
-
-            {stats.length ? (
-              <div className={c("stats")}>
-                {stats.map((s, i) => (
-                  <div className={c("stat")} key={i}>
-                    <span className={c("statV")}>{s.v}</span>
-                    {s.l ? <span className={c("statL")}>{s.l}</span> : null}
-                  </div>
-                ))}
               </div>
             ) : null}
           </div>

@@ -5,7 +5,7 @@ import { declareComponent } from "@webflow/react";
 export default declareComponent(RwRegionIndexPage, {
   name: "RW Region Index Page",
   description:
-    "The whole rewiring.nz/regional-reports landing page in one component: dark-green hero (eyebrow, headline, intro, optional image, live search and up to three stat chips), an optional feature link to the national New Zealand report, the searchable directory of every location report grouped into City councils / District councils / Regions, and a closing CTA band. Every piece of text is editable here — leave a field blank to hide that bit. Use 'RW Region Index' instead if you only want the directory columns.",
+    "The whole rewiring.nz/regional-reports landing page in one component: dark-green hero (eyebrow, headline, intro, optional image and live search), an optional feature link to the national New Zealand report, the searchable directory of every location report grouped into City councils / District councils / Regions, and a closing CTA band. Every piece of text is editable here — leave a field blank to hide that bit. Use 'RW Region Index' instead if you only want the directory columns.",
   group: "Region Reports",
   options: { ssr: true },
   props: {
@@ -23,12 +23,6 @@ export default declareComponent(RwRegionIndexPage, {
       group: "Hero",
     }),
     heroImage: props.Image({ name: "Hero image (blank = centred hero)", group: "Hero" }),
-    stat1Value: props.Text({ name: "Stat 1 number", defaultValue: "82", group: "Hero" }),
-    stat1Label: props.Text({ name: "Stat 1 label", defaultValue: "locations covered", group: "Hero" }),
-    stat2Value: props.Text({ name: "Stat 2 number", defaultValue: "6", group: "Hero" }),
-    stat2Label: props.Text({ name: "Stat 2 label", defaultValue: "machines to swap", group: "Hero" }),
-    stat3Value: props.Text({ name: "Stat 3 number", defaultValue: "2026", group: "Hero" }),
-    stat3Label: props.Text({ name: "Stat 3 label", defaultValue: "electrification model", group: "Hero" }),
 
     /* ---- Search ---- */
     showSearch: props.Boolean({ name: "Show search box", defaultValue: true, group: "Search" }),
