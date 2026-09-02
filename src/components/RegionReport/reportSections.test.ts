@@ -149,3 +149,9 @@ describe("installAnchorNav()", () => {
     expect(scrollToAnchor("bills")).toBe(true);
   });
 });
+
+describe("editable copy keys", () => {
+  it("keys and defaults are a reviewed snapshot - a shifted key would silently re-attach a designer's override", () => {
+    expect(EDITABLE_TEXT.map((e) => [e.key, e.def])).toMatchSnapshot();
+  });
+});
