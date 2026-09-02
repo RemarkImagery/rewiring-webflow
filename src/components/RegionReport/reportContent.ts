@@ -184,19 +184,19 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
         </div>
         <div class="jump-group-title">Explore by benefit</div>
         <nav class="jumpnav jumpnav--benefit" aria-label="Jump to a benefit">
-          <a class="jump-card" href="#economics"><img src="https://rewiring-region-reports.pages.dev/electrifying-dunedin-images/economics.png" alt="" /><span>Economics</span></a>
-          <a class="jump-card" href="#emissions"><img src="https://rewiring-region-reports.pages.dev/electrifying-dunedin-images/jobs.png" alt="" /><span>Emissions &amp; jobs</span></a>
-          <a class="jump-card" href="#bills"><img src="https://rewiring-region-reports.pages.dev/electrifying-dunedin-images/bills.png" alt="" /><span>Bills</span></a>
-          <a class="jump-card" href="#stories"><img src="https://rewiring-region-reports.pages.dev/electrifying-dunedin-images/stories.png" alt="" /><span>Local stories</span></a>
-          <a class="jump-card" href="#community"><img src="https://rewiring-region-reports.pages.dev/electrifying-dunedin-images/community.png" alt="" /><span>Community group</span></a>
+          <a class="jump-card" href="#economics"><img src="https://regional-reports.pages.dev/electrifying-dunedin-images/economics.png" alt="" /><span>Economics</span></a>
+          <a class="jump-card" href="#emissions"><img src="https://regional-reports.pages.dev/electrifying-dunedin-images/jobs.png" alt="" /><span>Emissions &amp; jobs</span></a>
+          <a class="jump-card" href="#bills"><img src="https://regional-reports.pages.dev/electrifying-dunedin-images/bills.png" alt="" /><span>Bills</span></a>
+          <a class="jump-card" href="#stories"><img src="https://regional-reports.pages.dev/electrifying-dunedin-images/stories.png" alt="" /><span>Local stories</span></a>
+          <a class="jump-card" href="#community"><img src="https://regional-reports.pages.dev/electrifying-dunedin-images/community.png" alt="" /><span>Community group</span></a>
         </nav>
         <div class="jump-group-title">Explore by machine</div>
         <nav class="jumpnav jumpnav--machine" aria-label="Jump to a machine">
-          <a class="jump-card" href="#solar"><img src="https://rewiring-region-reports.pages.dev/electrifying-dunedin-images/solar-battery.png" alt="" /><span>Solar &amp; batteries</span></a>
-          <a class="jump-card" href="#ev"><img src="https://rewiring-region-reports.pages.dev/electrifying-dunedin-images/ev-section.png" alt="" /><span>Electric vehicle</span></a>
-          <a class="jump-card" href="#heat-pump"><img src="https://rewiring-region-reports.pages.dev/electrifying-dunedin-images/heat-pump.png" alt="" /><span>Heat pump</span></a>
-          <a class="jump-card" href="#hot-water"><img src="https://rewiring-region-reports.pages.dev/electrifying-dunedin-images/hot-water.png" alt="" /><span>Hot water</span></a>
-          <a class="jump-card" href="#induction"><img src="https://rewiring-region-reports.pages.dev/electrifying-dunedin-images/induction.png" alt="" /><span>Induction cooktop</span></a>
+          <a class="jump-card" href="#solar"><img src="https://regional-reports.pages.dev/electrifying-dunedin-images/solar-battery.png" alt="" /><span>Solar &amp; batteries</span></a>
+          <a class="jump-card" href="#ev"><img src="https://regional-reports.pages.dev/electrifying-dunedin-images/ev-section.png" alt="" /><span>Electric vehicle</span></a>
+          <a class="jump-card" href="#heat-pump"><img src="https://regional-reports.pages.dev/electrifying-dunedin-images/heat-pump.png" alt="" /><span>Heat pump</span></a>
+          <a class="jump-card" href="#hot-water"><img src="https://regional-reports.pages.dev/electrifying-dunedin-images/hot-water.png" alt="" /><span>Hot water</span></a>
+          <a class="jump-card" href="#induction"><img src="https://regional-reports.pages.dev/electrifying-dunedin-images/induction.png" alt="" /><span>Induction cooktop</span></a>
         </nav>
       </div>
     </div>
@@ -205,7 +205,7 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
     <div class="section" style="padding-top:56px;">
       <div class="container">
         <div class="section-head" style="margin-bottom:24px;" id="economics">
-          <img class="section-illo" src="https://rewiring-region-reports.pages.dev/electrifying-dunedin-images/economics.png" alt="Illustration of New Zealand cash and coins with a rising savings arrow" />
+          <img class="section-illo" src="https://regional-reports.pages.dev/electrifying-dunedin-images/economics.png" alt="Illustration of New Zealand cash and coins with a rising savings arrow" />
           <h2><span class="squiggle-under">Economics</span></h2>
         </div>
         <div class="two-col" style="margin-bottom:32px;">
@@ -231,7 +231,7 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
     <div class="section theme-green">
       <div class="container">
         <div class="section-head" id="emissions">
-          <img class="section-illo" src="https://rewiring-region-reports.pages.dev/electrifying-dunedin-images/jobs.png" alt="Illustration of an electrician's tools" />
+          <img class="section-illo" src="https://regional-reports.pages.dev/electrifying-dunedin-images/jobs.png" alt="Illustration of an electrician's tools" />
           <h2><span class="squiggle-under">Emissions and jobs</span></h2>
         </div>
         <div class="two-col">
@@ -257,7 +257,7 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
     <div class="section">
       <div class="container">
         <div class="section-head" id="bills">
-          <img class="section-illo" src="https://rewiring-region-reports.pages.dev/electrifying-dunedin-images/bills.png" alt="Illustration of a power bill with a falling-cost arrow" />
+          <img class="section-illo" src="https://regional-reports.pages.dev/electrifying-dunedin-images/bills.png" alt="Illustration of a power bill with a falling-cost arrow" />
           <h2><span class="squiggle-under">Bills</span></h2>
         </div>
         <div class="bills-intro">
@@ -280,7 +280,7 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
     <div class="section theme-yellow">
       <div class="container">
         <div class="section-head" id="solar">
-          <img class="section-illo" src="https://rewiring-region-reports.pages.dev/electrifying-dunedin-images/solar-battery.png" alt="Illustration of a solar panel and home battery" />
+          <img class="section-illo" src="https://regional-reports.pages.dev/electrifying-dunedin-images/solar-battery.png" alt="Illustration of a solar panel and home battery" />
           <h2><span class="squiggle-under">Solar and batteries</span></h2>
         </div>
         <div class="two-col" style="margin-bottom:32px;">
@@ -314,7 +314,7 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
     <div class="section theme-green">
       <div class="container">
         <div class="section-head" id="ev">
-          <img class="section-illo" src="https://rewiring-region-reports.pages.dev/electrifying-dunedin-images/ev-section.png" alt="Illustration of an electric car on charge" />
+          <img class="section-illo" src="https://regional-reports.pages.dev/electrifying-dunedin-images/ev-section.png" alt="Illustration of an electric car on charge" />
           <h2><span class="squiggle-under">Electric vehicle</span></h2>
         </div>
         <div class="two-col" style="margin-bottom:32px;">
@@ -342,7 +342,7 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
     <div class="section">
       <div class="container">
         <div class="section-head" id="heat-pump">
-          <img class="section-illo" src="https://rewiring-region-reports.pages.dev/electrifying-dunedin-images/heat-pump.png" alt="Illustration of a wall-mounted heat pump" />
+          <img class="section-illo" src="https://regional-reports.pages.dev/electrifying-dunedin-images/heat-pump.png" alt="Illustration of a wall-mounted heat pump" />
           <h2><span class="squiggle-under">Heat pump</span></h2>
         </div>
         <div class="two-col" style="margin-bottom:32px;">
@@ -371,7 +371,7 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
     <div class="section theme-green">
       <div class="container">
         <div class="section-head" id="hot-water">
-          <img class="section-illo" src="https://rewiring-region-reports.pages.dev/electrifying-dunedin-images/hot-water.png" alt="Illustration of a hot water heat pump cylinder" />
+          <img class="section-illo" src="https://regional-reports.pages.dev/electrifying-dunedin-images/hot-water.png" alt="Illustration of a hot water heat pump cylinder" />
           <h2><span class="squiggle-under">Hot water heat pump</span></h2>
         </div>
         <div class="two-col" style="margin-bottom:32px;">
@@ -399,7 +399,7 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
     <div class="section">
       <div class="container">
         <div class="section-head" id="induction">
-          <img class="section-illo" src="https://rewiring-region-reports.pages.dev/electrifying-dunedin-images/induction.png" alt="Illustration of an induction cooktop with a pot" />
+          <img class="section-illo" src="https://regional-reports.pages.dev/electrifying-dunedin-images/induction.png" alt="Illustration of an induction cooktop with a pot" />
           <h2><span class="squiggle-under">Induction cooktop</span></h2>
         </div>
         <div class="two-col" style="margin-bottom:32px;">

@@ -1,7 +1,7 @@
 "use client";
 
 // v2 chart runtime for the Region Report components — TSX port of the live
-// preview's chart script (rewiring-region-reports.pages.dev, 2026-08-19).
+// preview's chart script (regional-reports.pages.dev, 2026-08-19).
 // Per-location configs come from District.billTabs / District.machineTabs;
 // the national fallbacks in reportTabs.ts fill any missing tab.
 import React, { useEffect, useState } from "react";

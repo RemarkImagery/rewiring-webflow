@@ -14,7 +14,7 @@ export default declareComponent(RwCommunityGroups, {
     districtSlug: props.Text({ name: "Location slug (blank = auto from URL)", defaultValue: "", group: "Data" }),
     dataUrl: props.Text({
       name: "Hosted groups JSON URL",
-      defaultValue: "https://rewiring-region-reports.pages.dev/communities.json",
+      defaultValue: "https://regional-reports.pages.dev/communities.json",
       group: "Data",
     }),
     // Leave blank to use the built-in default (the same public token the QEA

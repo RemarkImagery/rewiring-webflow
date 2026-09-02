@@ -64,7 +64,7 @@ const DEMO_GROUPS: Group[] = [
 
 // One shared source of truth with the print pipeline — deployed from the
 // rewiring-district-pages repo (preview/communities.json, CORS-enabled).
-const DEFAULT_DATA_URL = "https://rewiring-region-reports.pages.dev/communities.json";
+const DEFAULT_DATA_URL = "https://regional-reports.pages.dev/communities.json";
 const GL_CSS = "https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css";
 
 export default function RwCommunityGroups({
