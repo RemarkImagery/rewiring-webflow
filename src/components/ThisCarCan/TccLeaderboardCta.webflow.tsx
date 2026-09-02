@@ -49,7 +49,7 @@ export default declareComponent(TccLeaderboardCta, {
     }),
     region1Share: props.Text({
       name: "1st Share",
-      defaultValue: "12.1%",
+      defaultValue: "12.8%",
       group: "Top 3",
     }),
     region2Name: props.Text({
@@ -59,17 +59,17 @@ export default declareComponent(TccLeaderboardCta, {
     }),
     region2Share: props.Text({
       name: "2nd Share",
-      defaultValue: "8.6%",
+      defaultValue: "9.2%",
       group: "Top 3",
     }),
     region3Name: props.Text({
       name: "3rd Region",
-      defaultValue: "Auckland",
+      defaultValue: "Tasman",
       group: "Top 3",
     }),
     region3Share: props.Text({
       name: "3rd Share",
-      defaultValue: "8.2%",
+      defaultValue: "8.9%",
       group: "Top 3",
     }),
     bgColor: props.Text({
