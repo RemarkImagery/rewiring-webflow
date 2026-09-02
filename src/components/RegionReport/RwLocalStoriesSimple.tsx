@@ -7,6 +7,10 @@
 import React from "react";
 import SimpleSection from "./simpleSection";
 
+// Jay named this in Slack (25 Aug) as the destination for regions with no case
+// studies: rewiring.nz/story. Verified live.
+const STORIES_URL = "https://www.rewiring.nz/story";
+
 interface LinkValue {
   href: string;
   target?: string;
@@ -34,7 +38,7 @@ export interface RwLocalStoriesSimpleProps {
 export default function RwLocalStoriesSimple({
   heading = "Local stories",
   body = "Households around the motu have already made the switch — solar and batteries, EVs, heat pumps and induction cooking. Read what they changed, what it cost, and what they're saving now.",
-  buttonLabel = "Read local stories",
+  buttonLabel = "Explore case studies",
   storiesUrl,
   anchorId = "stories",
   bgColor = "transparent",
@@ -43,15 +47,12 @@ export default function RwLocalStoriesSimple({
   accentColor = "#234e4c",
   goldColor = "#f5b731",
 }: RwLocalStoriesSimpleProps) {
-  // No default: there's no live stories index on rewiring.nz yet, and a button
-  // pointing nowhere is worse than no button — so it only renders once the
-  // Designer sets the URL.
   return (
     <SimpleSection
       heading={heading}
       body={body}
       buttonLabel={buttonLabel}
-      href={linkHref(storiesUrl)}
+      href={linkHref(storiesUrl) || STORIES_URL}
       icon="arrow"
       anchorId={anchorId}
       bgColor={bgColor}
