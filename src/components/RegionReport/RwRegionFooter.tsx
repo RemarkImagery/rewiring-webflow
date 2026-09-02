@@ -51,7 +51,7 @@ export default function RwRegionFooter({
   buttonLabel = "",
   pdfUrl,
   nationalTitle = "Read the full national report",
-  nationalSubtitle = "Dig into the numbers behind these figures in the Electric Homes & Vehicles Report 2026 — Rewiring Aotearoa's full analysis of the opportunity of going electric across New Zealand.",
+  nationalSubtitle = "Unless otherwise stated, data in this report is drawn from Rewiring Aotearoa's independent, peer reviewed modelling. Dig into the numbers behind these figures in the Electric Homes & Vehicles Report 2026 — Rewiring Aotearoa's full analysis of the opportunity of going electric across New Zealand.",
   nationalButtonLabel = "Electric Homes & Vehicles Report",
   nationalUrl,
   bgColor = "#fdf7ea",

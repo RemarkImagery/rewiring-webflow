@@ -9,14 +9,14 @@ export default declareComponent(RwCommunitySimple, {
   group: "Region Reports",
   options: { ssr: true },
   props: {
-    heading: props.Text({ name: "Heading", defaultValue: "Electric community", group: "Content" }),
+    heading: props.Text({ name: "Heading", defaultValue: "Your local community groups", group: "Content" }),
     body: props.Text({
       name: "Body text",
       defaultValue:
-        "Electric community groups across the country are helping locals go electric. These groups share honest advice, run home tours and events, and can help households make the switch.",
+        "Volunteer-run community groups driven by locals for locals are making it easier for people across the region to electrify their lives. Running regular events, leading local advocacy and providing advice to households, these electric communities are your local guide to lower energy bills, lower emissions and greater resilience by going electric.",
       group: "Content",
     }),
-    buttonLabel: props.Text({ name: "Button label", defaultValue: "Find a community group", group: "Content" }),
+    buttonLabel: props.Text({ name: "Button label", defaultValue: "Find your nearest group", group: "Content" }),
     communitiesUrl: props.Link({ name: "Button URL (blank = rewiring.nz/communities)", group: "Content" }),
     anchorId: props.Text({ name: "Anchor id", defaultValue: "community", group: "Content" }),
     bgColor: props.Text({ name: "Section background", defaultValue: "transparent", group: "Style" }),

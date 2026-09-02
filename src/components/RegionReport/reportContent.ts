@@ -134,7 +134,8 @@ export const CSS = `.rw-region-report{
       @media (max-width: 640px) {.rw-region-report .chart-inner{ min-width: 0; height: 360px; }.rw-region-report .horiz-chart-inner{ min-width: 0; }.rw-region-report .chart-wrap{ padding: 16px 12px; }.rw-region-report .tabs-card{ padding: 16px 10px; }.rw-region-report .cumulative-block{ margin-left: -12px; margin-right: -12px; max-width: none; }.rw-region-report #cumulative-chart:not(.cumulative-ph){ padding: 16px 8px 12px; }.rw-region-report .story-card{ grid-template-columns: 1fr; gap: 18px; }.rw-region-report .story-photo, .rw-region-report .story-photo-ph{ min-height: 240px; }.rw-region-report .story-body{ padding: 0; }
       }.rw-region-report .download-grid{ display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 960px; margin: 0 auto; align-items: stretch; }.rw-region-report .download-grid .download-card{ height: 100%; }
       @media (max-width: 760px) {.rw-region-report .download-grid{ grid-template-columns: 1fr; } }.rw-region-report .backtotop{ position: fixed; right: 22px; bottom: 22px; z-index: 60; width: 48px; height: 48px; border-radius: 50%; border: none; background: #234e4c; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transform: translateY(10px); transition: opacity .25s ease, transform .25s ease, visibility .25s; box-shadow: 0 6px 18px rgba(0,0,0,0.22); }.rw-region-report .backtotop.show{ opacity: 1; visibility: visible; transform: translateY(0); }.rw-region-report .backtotop:hover{ background: #2d5c5a; }.rw-region-report .backtotop svg{ width: 22px; height: 22px; }
-      @media print {.rw-region-report .backtotop{ display: none !important; } }.rw-region-report .headline-stats{ display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin: 8px 0 16px; }.rw-region-report .hl-footnote{ text-align: center; font-size: 13px; color: var(--mid); margin: 0 0 6px; }.rw-region-report .hl-calc-link{ text-align: center; font-size: 15px; font-weight: 700; margin: 0 0 40px; }.rw-region-report .hl-calc-link a{ color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }.rw-region-report .hl-calc-link a:hover{ color: #27ae60; }
+      @media print {.rw-region-report .backtotop{ display: none !important; } }.rw-region-report .headline-stats{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 8px 0 16px; }.rw-region-report \\g<1>
+    .cumulative-copy{ max-width: 720px; margin: 14px auto 0; text-align: center; font-size: 17px; line-height: 1.55; color: var(--mid); }.rw-region-report .bills-lead{ max-width: 780px; margin: 0 auto 28px; text-align: center; }.rw-region-report .fine{ display: block; margin-top: 6px; font-size: 13px; line-height: 1.4; color: var(--mid); }.rw-region-report .sources{ max-width: 780px; margin: 36px auto 0; font-size: 13px; color: var(--mid); line-height: 1.5; }.rw-region-report .sources-title{ font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; margin-bottom: 6px; }.rw-region-report .sources ol{ margin: 0; padding-left: 20px; }.rw-region-report .prose sup{ font-size: 0.7em; line-height: 0; }.rw-region-report .hl-calc-link{ text-align: center; font-size: 15px; font-weight: 700; margin: 0 0 40px; }.rw-region-report .hl-calc-link a{ color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }.rw-region-report .hl-calc-link a:hover{ color: #27ae60; }
       @media (max-width: 1024px) {.rw-region-report .headline-stats{ grid-template-columns: repeat(3, 1fr); } }.rw-region-report .hl-card{ background: #fff; border: 2px dashed var(--gold); border-radius: var(--squiggle); padding: 28px 22px; text-align: center; display: flex; flex-direction: column; justify-content: center; }.rw-region-report .hl-num{ font-size: clamp(30px, 3.4vw, 46px); font-weight: 700; line-height: 1.02; letter-spacing: -0.015em; margin-bottom: 8px; }.rw-region-report .hl-green{ color: #27ae60; }.rw-region-report .hl-teal{ color: #234e4c; }.rw-region-report .hl-label{ font-size: 14px; color: var(--mid); font-weight: 500; line-height: 1.3; }
       @media (max-width: 860px) {.rw-region-report .headline-stats{ grid-template-columns: repeat(2, 1fr); }.rw-region-report .hl-num{ font-size: clamp(34px, 9vw, 44px); }.rw-region-report .hl-label{ font-size: 15px; }
       }
@@ -171,15 +172,17 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
         </div>
         <div class="headline-stats">
           <div class="hl-card"><div class="hl-num hl-green">{{elec_savings_annual}}</div><div class="hl-label">bill savings every year by electrifying {{location}} households and vehicles*</div></div>
-          <div class="hl-card"><div class="hl-num hl-teal">{{machines_total}}</div><div class="hl-label">fossil fuel machines (cars, water heaters, space heaters and cooktops) in {{location}} homes ready to electrify</div></div>
+          <div class="hl-card"><div class="hl-num hl-green">{{bills_net_savings}}</div><div class="hl-label">net savings per household, every year, including upfront costs</div></div>
+          <div class="hl-card"><div class="hl-num hl-green">{{bill_savings}}</div><div class="hl-label">energy bill savings per household, every year</div></div>
+          <div class="hl-card"><div class="hl-num hl-teal">{{machines_total}}</div><div class="hl-label">fossil fuel machines (cars, heaters and cooktops) in {{location}} homes</div></div>
           <div class="hl-card"><div class="hl-num hl-teal">{{co2e_annual}} tonnes</div><div class="hl-label">CO₂e avoided every year</div></div>
           <div class="hl-card"><div class="hl-num hl-teal">{{jobs_created}}</div><div class="hl-label">new local jobs created</div></div>
-          <div class="hl-card"><div class="hl-num hl-green">{{bill_savings}}</div><div class="hl-label">energy bill savings per household, every year</div></div>
         </div>
-        <p class="hl-footnote">*upgrading appliances to electric and adding solar and batteries to 80% of homes</p>
+        <p class="hl-footnote">*Community savings assume upgrading home appliances to electric and adding solar and batteries to 80% of homes. Net savings include upfront costs and interest.</p>
         <p class="hl-calc-link"><a href="#bills">See what my household could save &rarr;</a></p>
         <div class="cumulative-block">
           <h2 class="cumulative-title"><span class="squiggle-under">{{location}} homes could cumulatively save a net {{cumulative_savings}} between 2026 and 2040</span></h2>
+          <p class="cumulative-copy">As more homes electrify, the savings add up. By 2040, {{location}} households could collectively save <strong>{{cumulative_bills}} on energy bills</strong>, or <strong>{{cumulative_savings}} net</strong> including upfront costs. And the earlier homes make the switch, the more savings they'll see.</p>
           <div id="cumulative-chart" class="cumulative-ph"><span>Cumulative savings graph — awaiting the year-by-year data</span></div>
         </div>
         <div class="jump-group-title">Explore by benefit</div>
@@ -210,23 +213,22 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
         </div>
         <div class="two-col" style="margin-bottom:32px;">
           <div class="stat-card">
-            <div class="big" style="color:#c0392b;">{{fossil_spend_daily}} spent</div>
-            <div class="label">on fossil fuels every day</div>
-            <div class="prose" style="margin-top:16px; text-align:left;">
-              <p>That's <strong>{{fossil_spend_annual}} spent each year</strong> on fossil fuels by just households in {{location}}. Most of these fossil fuels are imported, meaning this money leaves the local economy. Plus, history shows fossil fuel costs are volatile, with <strong>prices rising faster than the rate of inflation</strong>.</p>
-            </div>
-          </div>
-          <div class="stat-card">
             <div class="big" style="color:#27ae60;">{{elec_savings_annual}} saved</div>
             <div class="label">every year</div>
             <div class="prose" style="margin-top:16px; text-align:left;">
-              <p>If every {{location}} home were to electrify all appliances and vehicles, with 80% also adopting rooftop solar and home batteries, household energy costs would drop significantly. That's <strong>{{elec_savings_daily}} saved per day</strong>, and meaningful cost of living relief for {{location}} households.</p>
+              <p>Electrifying home appliances and vehicles, with 80% adopting rooftop solar and batteries, would cut {{location}} household energy costs by <strong>{{elec_savings_annual}} every year</strong>. That's <strong>{{elec_savings_daily}} saved every day</strong>, and meaningful cost of living relief for {{location}} households.</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="big" style="color:#c0392b;">{{fossil_spend_annual}} spent</div>
+            <div class="label">on fossil fuels every year</div>
+            <div class="prose" style="margin-top:16px; text-align:left;">
+              <p>That's <strong>{{fossil_spend_daily}} every day</strong> on fossil fuels by just households in {{location}}. Most of these fossil fuels are imported, meaning this money leaves the local economy. Plus, history shows fossil fuel costs are volatile, with <strong>prices rising faster than the rate of inflation</strong>.</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-
     <!-- Emissions & Jobs -->
     <div class="section theme-green">
       <div class="container">
@@ -244,7 +246,7 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
           </div>
           <div class="impact-card" style="text-align:center;">
             <div class="big">{{jobs_created}} local jobs</div>
-            <div class="label">created</div>
+            <div class="label">created in {{location}}</div>
             <div class="prose" style="margin-top:12px; text-align:center;">
               <p><strong>New local jobs</strong>, driven by additional installation labour and the savings flowing through the community.</p>
             </div>
@@ -260,14 +262,17 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
           <img class="section-illo" src="https://regional-reports.pages.dev/electrifying-dunedin-images/bills.png" alt="Illustration of a power bill with a falling-cost arrow" />
           <h2><span class="squiggle-under">Bills</span></h2>
         </div>
+        <div class="prose bills-lead">
+          <p>In a fossil fuel home, energy spending is spread across multiple fuels, each with its own bill, its own price fluctuations, and its own supplier. When a {{location}} home electrifies (using electric heating and cooking, driving two EVs, plus solar and batteries), they consolidate their energy into a single source &mdash; electricity &mdash; meaning <strong>lower bills and far greater control</strong>.</p>
+        </div>
         <div class="bills-intro">
           <div class="bills-intro-stats">
-            <div class="savings-stat"><div class="stat-num num-save">{{bill_savings}}</div><div class="meta">bill savings every year</div></div>
-            <div class="savings-stat"><div class="stat-num num-save">{{bills_net_savings}}</div><div class="meta">net savings every year</div></div>
+            <div class="savings-stat"><div class="stat-num num-save">{{bill_savings}}</div><div class="meta">a year lost by a fossil fuel home in {{location}}</div></div>
+            <div class="savings-stat"><div class="stat-num num-save">{{bills_net_savings}}</div><div class="meta">net better off every year, even with upfront costs</div></div>
           </div>
           <div class="prose">
-            <p>An average {{location}} home using gas appliances and petrol vehicles is losing out on around <strong>{{bill_savings}} in savings</strong> on its energy bills every year compared to a home with electrified appliances and vehicles plus a solar and battery system. Plus energy spending is spread across multiple fuels, each with its own bill, its own price fluctuations, and its own supplier.</p>
-            <p>With upfront costs and loan repayments included, an all-electric {{location}} home is still <strong>{{bills_net_savings}} net better off per year</strong>, and a net <strong>{{bills_net_15yr}} better off over 15 years</strong>. An electric home consolidates their energy into a single source &mdash; electricity &mdash; meaning <strong>lower bills and far greater control</strong>.</p>
+            <p>An average {{location}} home using gas appliances and petrol vehicles is missing out on around <strong>{{bill_savings}} in savings</strong> on its energy bills every year compared to a home with electrified appliances and vehicles plus a solar and battery system. <span class="fine">Excludes upfront costs. Based on 2026 energy prices.</span></p>
+            <p>With upfront costs and loan repayments included, an all-electric {{location}} home is still <strong>{{bills_net_savings}} net better off per year</strong>, and a net <strong>{{bills_net_15yr}} better off over 15 years</strong>. <span class="fine">Includes upfront costs and interest at 5.5% p.a. Based on 15 year average forward energy prices annualised and in 2026 dollars.</span></p>
           </div>
         </div>
         <div class="tabs-title">Annual savings</div>
@@ -290,18 +295,18 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
               <div class="meta">{{solar_box1_meta}}</div>
             </div>
             <div class="savings-stat">
-              <div class="stat-num num-save">{{solar_panel_life}} <span class="stat-word">years</span></div>
-              <div class="meta">panel lifetime &amp; warranty</div>
+              <div class="stat-num num-save">{{battery_life}} <span class="stat-word">years</span></div>
+              <div class="meta">expected battery lifetime, ~10 year warranty</div>
             </div>
             <div class="savings-stat">
-              <div class="stat-num num-save">{{battery_life}} <span class="stat-word">years</span></div>
-              <div class="meta">expected battery lifetime, with 10 year warranties</div>
+              <div class="stat-num num-save">{{solar_panel_life}} <span class="stat-word">years</span></div>
+              <div class="meta">panel lifetime and warranty</div>
             </div>
           </div>
           <div class="prose">
             <p>Solar offers strong payback for {{location}} homes, even in shaded areas, while improving energy independence.</p>
             <p>With solar, the household is paying an <strong>effective electricity price of {{solar_effective_rate}}</strong> (financed at {{solar_finance_rate}}), compared to the grid rate of <strong>{{grid_rate}}</strong> (excludes fixed cost).</p>
-            <p>Solar panels are expected to <strong>last {{solar_panel_life}} years</strong>, with warranties of a similar length, meaning the system well outlasts any loan used to finance it. And a battery adds resilience, <strong>keeping essential appliances running during outages</strong>.</p>
+            <p>Solar panels are expected to <strong>last {{solar_panel_life}} years</strong>, with warranties of a similar length, meaning the system well outlasts any loan used to finance it. Plus a battery locks in lower energy costs into the future and increases household resilience, <strong>keeping essential appliances running during outages</strong>.</p>
           </div>
         </div>
         <div class="guide-btn-row"><a class="guide-btn" href="https://www.rewiring.nz/electrification-guides/solar" target="_blank" rel="noopener noreferrer">Explore rooftop solar guide</a><a class="guide-btn" href="https://www.rewiring.nz/electrification-guides/home-batteries" target="_blank" rel="noopener noreferrer">Explore home batteries guide</a></div>
@@ -325,12 +330,14 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
             </div>
             <div class="savings-stat">
               <div class="stat-num num-fossil">{{cars_fossil}}</div>
-              <div class="meta">fossil fuel cars in {{location}}</div>
+              <div class="meta">petrol and diesel cars in {{location}}</div>
             </div>
           </div>
           <div class="prose">
-            <p>EVs are <strong>far cheaper to run</strong>, require little maintenance and aren't exposed to volatile global fuel prices. Plus they're quiet, comfortable and fun to drive! Switching from a petrol to an electric medium SUV <strong>saves around {{ev_annual_savings}} every year</strong>, including road user charges. Diesel ute drivers save even more at <strong>{{ev_ute_savings}} net over 15 years</strong>, or {{ev_ute_annual_savings}} every year. Households in {{location}} currently spend <strong>{{pump_spend_daily}} at the pump every day</strong>.</p>
-            <p>{{location}} drivers cover an average of <strong>{{driving_weekly_km}} per week</strong>: well within the range of a modern EV. And charging is easy. 80% of EV owners do more than half their charging at home. 60% trickle charge using a standard three-pin plug. Charging at home using grid electricity costs <strong>effectively half what you'd spend on petrol or diesel</strong>, and for those with rooftop solar, the savings are even greater. And for when you do need to charge on the go, public chargers are available at least every 75km on 97% of New Zealand highways. Savings assume a driving distance of {{driving_annual_km}} per year &mdash; for drivers exceeding this, the savings will be greater.</p>
+            <p>Households in {{location}} currently spend <strong>{{pump_spend_daily}} at the pump every day</strong>. Yet EVs are <strong>far cheaper to run</strong>, require little maintenance and aren't exposed to volatile global fuel prices. Plus they're quiet, comfortable and fun to drive!</p>
+            <p>{{location}} drivers cover an average of <strong>{{driving_weekly_km}} per week</strong>: well within the range of a modern EV. Switching from a petrol to an electric medium SUV <strong>saves around {{ev_annual_savings}} every year</strong>, including road user charges. Diesel ute drivers save even more at <strong>{{ev_ute_savings}} net over 15 years</strong>, or {{ev_ute_annual_savings}} every year. Those who need to drive more will save more from switching to electric.</p>
+            <p>And charging is easy. 80% of EV owners do more than half their charging at home<sup>1</sup>. 60% trickle charge using a standard three-pin plug<sup>2</sup>. Charging at home using grid electricity costs <strong>effectively half what you'd spend on petrol or diesel</strong>, and for those with rooftop solar, the savings are even greater. For when you do need to charge on the go, public chargers are available at least every 75km on 97% of New Zealand highways<sup>3</sup>.</p>
+            <p>EVs also eliminate tailpipe emissions. Vehicle air pollution costs New Zealand an estimated <strong>$10.5 billion every year</strong> in health and productivity costs, plus 2,200+ premature deaths and 9,000+ hospitalisations every year<sup>4</sup>.</p>
           </div>
         </div>
         <div id="ev-tabs"></div>
@@ -353,11 +360,13 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
             </div>
             <div class="savings-stat">
               <div class="stat-num num-fossil">{{heaters_fossil}}</div>
-              <div class="meta">fossil fuel heaters in {{location}}</div>
+              <div class="meta">{{heater_count_label}}</div>
             </div>
           </div>
           <div class="prose">
-            <p>Heat pumps use around <strong>{{heatpump_energy_pct}} less energy</strong> than gas heaters to deliver the same warmth, and, unlike gas, they cool in summer too. Switching from {{heatpump_switch_from}} to a heat pump <strong>saves {{heatpump_15yr_savings}} on bills over 15 years</strong> (around {{heatpump_annual_savings}} every year) and {{heatpump_lifetime_savings}} over the lifetime including upfront costs. {{heater_breakdown}} Whatever the fuel type, going electric brings significant savings, and the comfort upgrade is immediate.</p>
+            <p>Heat pumps use around <strong>{{heatpump_energy_pct}} less energy</strong> than gas heaters to deliver the same warmth, and, unlike gas, they cool in summer too. Heat pumps also tend to have lower upfront costs compared to their fossil fuel equivalents.</p>
+            <p>Switching from {{heatpump_switch_from}} to a heat pump <strong>saves {{heatpump_15yr_savings}} on bills over 15 years</strong> (around {{heatpump_annual_savings}} every year) and {{heatpump_lifetime_savings}} over the lifetime including upfront costs. {{heater_breakdown}}</p>
+            <p>Whatever the fuel type, going electric brings significant savings, and the comfort upgrade is immediate.</p>
           </div>
         </div>
         <div id="heating-tabs"></div>
@@ -382,12 +391,12 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
             </div>
             <div class="savings-stat">
               <div class="stat-num num-fossil">{{water_heaters_fossil}}</div>
-              <div class="meta">fossil fuel water heaters in {{location}}</div>
+              <div class="meta">{{water_count_label}}</div>
             </div>
           </div>
           <div class="prose">
-            <p>Hot water heat pumps have a higher upfront cost, but <strong>deliver the lowest ongoing energy bills</strong> of any water heating option. In {{location}}, switching from {{water_switch_from}} to a hot water heat pump <strong>saves {{water_15yr_savings}} on bills over 15 years</strong>, or {{water_lifetime_savings}} over the lifetime including upfront costs. {{water_breakdown}}</p>
-            <p>Water heating makes up around <strong>{{water_energy_pct}} of an average home's energy load</strong> &mdash; making it one of the highest-impact switches a household can make. Hot water heat pumps can also act as a 'thermal battery' where you time it to heat water when electricity is cheapest, or when your solar panels are generating.</p>
+            <p>Hot water heat pumps have a higher upfront cost, but <strong>deliver the lowest ongoing energy bills</strong> of any water heating option. In {{location}}, switching from {{water_switch_from}} to a hot water heat pump <strong>saves {{water_15yr_savings}} on bills over 15 years</strong>, or {{water_lifetime_savings}} including upfront costs. {{water_breakdown}}</p>
+            <p>Water heating makes up around <strong>{{water_energy_pct}} of an average home's energy load</strong>, making it one of the highest-impact switches a household can make. Hot water heat pumps can also act as a 'thermal battery' where you time it to heat water when electricity is cheapest, or when your solar panels are generating.</p>
           </div>
         </div>
         <div id="water-tabs"></div>
@@ -416,11 +425,21 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
           </div>
           <div class="prose">
             <p>Cooking doesn't use a lot of energy but electric cooking is <strong>lower cost (and much lower emissions)</strong> than cooking with gas. Induction is more expensive upfront than resistive electric cooking, but offers lower ongoing bills. {{cooktop_breakdown}}</p>
-            <p>But the most compelling case for induction might be <strong>health</strong>. Gas cooking releases nitrogen dioxide and other pollutants into the home, linked nationally to <strong>200+ premature deaths, 3,200+ child asthma cases, and $3.3 billion</strong> in productivity and health costs every year.</p>
+            <p>But the most compelling case for electric might be <strong>health</strong>. Gas cooking releases nitrogen dioxide and other pollutants into the home, linked nationally to <strong>200+ premature deaths, 3,200+ child asthma cases, and $3.3 billion</strong> in health and productivity costs every year<sup>4</sup>. That's $9,100 per stovetop in New Zealand<sup>5</sup>.</p>
           </div>
         </div>
         <div id="cooktop-tabs"></div>
         <div class="guide-btn-row"><a class="guide-btn" href="https://www.rewiring.nz/electrification-guides/cooktops" target="_blank" rel="noopener noreferrer">Explore induction cooktop guide</a></div>
+        <div class="sources">
+          <div class="sources-title">Sources</div>
+          <ol>
+            <li>Consumer NZ, <em>New Zealand electric car myths debunked</em>, 2025</li>
+            <li>Powerswitch, <em>The best power plans for charging your EV</em></li>
+            <li>Ministry of Transport, <em>Charging Our Future: National electric vehicle charging strategy for Aotearoa New Zealand 2023–2035</em>, 2023</li>
+            <li>Ministry for the Environment, <em>Our Air 2024</em>, 2024</li>
+            <li>EECA, <em>Indoor combustion in New Zealand homes: health effects and costs</em>, 2025</li>
+          </ol>
+        </div>
       </div>
     </div>
 

@@ -33,7 +33,7 @@ export interface RwRegionFooterSimpleProps {
 
 export default function RwRegionFooterSimple({
   heading = "Read the full national report",
-  body = "Dig into the numbers behind these figures in the Electric Homes & Vehicles Report 2026 — Rewiring Aotearoa's full analysis of the opportunity of going electric across New Zealand.",
+  body = "Unless otherwise stated, data in this report is drawn from Rewiring Aotearoa's independent, peer reviewed modelling. Dig into the numbers behind these figures in the Electric Homes & Vehicles Report 2026 — Rewiring Aotearoa's full analysis of the opportunity of going electric across New Zealand.",
   buttonLabel = "Electric Homes & Vehicles Report",
   reportUrl,
   bgColor = "#fdf7ea",

@@ -33,9 +33,9 @@ export interface RwCommunitySimpleProps {
 }
 
 export default function RwCommunitySimple({
-  heading = "Electric community",
-  body = "Electric community groups across the country are helping locals go electric. These groups share honest advice, run home tours and events, and can help households make the switch.",
-  buttonLabel = "Find a community group",
+  heading = "Your local community groups",
+  body = "Volunteer-run community groups driven by locals for locals are making it easier for people across the region to electrify their lives. Running regular events, leading local advocacy and providing advice to households, these electric communities are your local guide to lower energy bills, lower emissions and greater resilience by going electric.",
+  buttonLabel = "Find your nearest group",
   communitiesUrl,
   anchorId = "community",
   bgColor = "transparent",

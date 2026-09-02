@@ -13,7 +13,7 @@ export default declareComponent(RwRegionFooterSimple, {
     body: props.Text({
       name: "Body text",
       defaultValue:
-        "Dig into the numbers behind these figures in the Electric Homes & Vehicles Report 2026 — Rewiring Aotearoa's full analysis of the opportunity of going electric across New Zealand.",
+        "Unless otherwise stated, data in this report is drawn from Rewiring Aotearoa's independent, peer reviewed modelling. Dig into the numbers behind these figures in the Electric Homes & Vehicles Report 2026 — Rewiring Aotearoa's full analysis of the opportunity of going electric across New Zealand.",
       group: "Content",
     }),
     buttonLabel: props.Text({ name: "Button label", defaultValue: "Electric Homes & Vehicles Report", group: "Content" }),

@@ -19,7 +19,7 @@ export default declareComponent(RwRegionFooter, {
     nationalSubtitle: props.Text({
       name: "Subtitle",
       defaultValue:
-        "Dig into the numbers behind these figures in the Electric Homes & Vehicles Report 2026 — Rewiring Aotearoa's full analysis of the opportunity of going electric across New Zealand.",
+        "Unless otherwise stated, data in this report is drawn from Rewiring Aotearoa's independent, peer reviewed modelling. Dig into the numbers behind these figures in the Electric Homes & Vehicles Report 2026 — Rewiring Aotearoa's full analysis of the opportunity of going electric across New Zealand.",
       group: "National card",
     }),
     nationalButtonLabel: props.Text({ name: "Button label", defaultValue: "Electric Homes & Vehicles Report", group: "National card" }),
