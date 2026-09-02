@@ -6,6 +6,7 @@
 // bind the per-location numbers to CMS fields. Charts still read the bundled
 // per-location arrays (they can't live in CMS fields) via the record's slug.
 import { CSS, TEMPLATE } from "./reportContent";
+import { EDITABLE_TEXT } from "./reportEditable";
 import { DISTRICTS, type District } from "./districtData";
 
 // Split the monolithic template at its section-comment boundaries. Matching on
@@ -223,4 +224,31 @@ export function installAnchorNav(): () => void {
     timers.forEach((t) => window.clearTimeout(t));
     anchorNavInstalled = false;
   };
+}
+
+/**
+ * Swap in copy edited from Webflow's properties panel.
+ *
+ * Runs on the raw template BEFORE sub(), so an edited sentence keeps working
+ * with its {{tokens}}: a designer can rewrite the wording and each location's
+ * own figures still fill in. Values matching the default (or blank) are
+ * skipped, and a string that isn't in this chunk is simply not found - the
+ * same overrides object can be handed to every chunk.
+ */
+export function applyTextOverrides(html: string, overrides: Record<string, unknown>): string {
+  if (!overrides) return html;
+  let out = html;
+  for (const item of EDITABLE_TEXT) {
+    const raw = overrides[item.key];
+    if (typeof raw !== "string") continue;
+    const val = raw.trim();
+    if (!val || val === item.def) continue;
+    const from = item.wrap ? '<span class="squiggle-under">' + item.def + "</span>" : item.def;
+    const to = item.wrap ? '<span class="squiggle-under">' + val + "</span>" : val;
+    if (out.indexOf(from) < 0) continue;
+    // function form: a literal "$&" in the new copy must not be treated as a
+    // replacement pattern
+    out = out.replace(from, () => to);
+  }
+  return out;
 }

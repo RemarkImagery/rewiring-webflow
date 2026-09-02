@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { type District } from "./districtData";
-import { resolveSlug, getDistrict, sub, installAnchorNav } from "./reportSections";
+import { resolveSlug, getDistrict, sub, installAnchorNav, applyTextOverrides } from "./reportSections";
 import { CSS, TEMPLATE } from "./reportContent";
 import {
   TabbedCharts,
@@ -20,6 +20,8 @@ import {
 export interface RwRegionReportProps {
   /** District/region slug, e.g. "dunedin", "queenstown-lakes-district", "waikato-region" */
   districtSlug?: string;
+  /** Copy edited in Webflow's properties panel - see reportEditable.ts. */
+  [key: string]: string | undefined;
 }
 
 function mountCharts(root: HTMLElement, d: District): Root[] {
@@ -115,7 +117,8 @@ function initInteractions(root: HTMLElement): () => void {
   };
 }
 
-export default function RwRegionReport({ districtSlug = "" }: RwRegionReportProps) {
+export default function RwRegionReport(allProps: RwRegionReportProps) {
+  const { districtSlug = "" } = allProps;
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -125,7 +128,7 @@ export default function RwRegionReport({ districtSlug = "" }: RwRegionReportProp
     const d = getDistrict(slug);
     if (!d) return;
 
-    root.innerHTML = `<style>${CSS}</style>` + sub(TEMPLATE, d.fields);
+    root.innerHTML = `<style>${CSS}</style>` + sub(applyTextOverrides(TEMPLATE, allProps), d.fields);
     const roots = mountCharts(root, d);
     const cleanupInteractions = initInteractions(root);
     // fallback for anchors this component doesn't own — e.g. #community, which
@@ -138,7 +141,7 @@ export default function RwRegionReport({ districtSlug = "" }: RwRegionReportProp
       cleanupInteractions();
       cleanupAnchors();
     };
-  }, [districtSlug]);
+  }, [districtSlug, JSON.stringify(allProps)]);
 
   return <div className="rw-region-report" ref={rootRef} />;
 }

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { BILLS_HTML, sub, mergeFields, getDistrict, ensureReportCss, initReveal, resolveSlug } from "./reportSections";
+import { BILLS_HTML, sub, mergeFields, getDistrict, ensureReportCss, initReveal, resolveSlug, applyTextOverrides } from "./reportSections";
 import { BillTabs, buildBillTabs } from "./reportCharts";
 
 export interface RwReportBillsProps {
@@ -11,15 +11,18 @@ export interface RwReportBillsProps {
   billSavings?: string;
   billsNetSavings?: string;
   billsNet15yr?: string;
+  /** Copy edited in Webflow's properties panel - see reportEditable.ts. */
+  [key: string]: string | undefined;
 }
 
-export default function RwReportBills({
+export default function RwReportBills(allProps: RwReportBillsProps) {
+  const {
   districtSlug = "",
   location,
   billSavings,
   billsNetSavings,
   billsNet15yr,
-}: RwReportBillsProps) {
+  } = allProps;
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -33,7 +36,7 @@ export default function RwReportBills({
       bills_net_savings: billsNetSavings,
       bills_net_15yr: billsNet15yr,
     });
-    root.innerHTML = sub(BILLS_HTML, fields);
+    root.innerHTML = sub(applyTextOverrides(BILLS_HTML, allProps), fields);
 
     // Bill charts read the bundled per-location configs (not a CMS field).
     const roots: Root[] = [];
@@ -60,7 +63,7 @@ export default function RwReportBills({
       );
       cleanupReveal();
     };
-  }, [districtSlug, location, billSavings, billsNetSavings, billsNet15yr]);
+  }, [districtSlug, location, billSavings, billsNetSavings, billsNet15yr, JSON.stringify(allProps)]);
 
   return <div className="rw-region-report" ref={rootRef} />;
 }

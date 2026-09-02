@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { INTRO_HTML, sub, mergeFields, getDistrict, ensureReportCss, initReveal, resolveSlug, installAnchorNav } from "./reportSections";
+import { INTRO_HTML, sub, mergeFields, getDistrict, ensureReportCss, initReveal, resolveSlug, installAnchorNav, applyTextOverrides } from "./reportSections";
 import { CumulativeChart } from "./reportCharts";
 
 export interface RwReportIntroProps {
@@ -14,9 +14,12 @@ export interface RwReportIntroProps {
   jobsCreated?: string;
   billSavings?: string;
   cumulativeSavings?: string;
+  /** Copy edited in Webflow's properties panel - see reportEditable.ts. */
+  [key: string]: string | undefined;
 }
 
-export default function RwReportIntro({
+export default function RwReportIntro(allProps: RwReportIntroProps) {
+  const {
   districtSlug = "",
   location,
   elecSavingsAnnual,
@@ -25,7 +28,7 @@ export default function RwReportIntro({
   jobsCreated,
   billSavings,
   cumulativeSavings,
-}: RwReportIntroProps) {
+  } = allProps;
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -42,7 +45,7 @@ export default function RwReportIntro({
       bill_savings: billSavings,
       cumulative_savings: cumulativeSavings,
     });
-    root.innerHTML = sub(INTRO_HTML, fields);
+    root.innerHTML = sub(applyTextOverrides(INTRO_HTML, allProps), fields);
 
     // Mount the cumulative savings chart into its placeholder (per-location data).
     const roots: Root[] = [];
@@ -73,7 +76,7 @@ export default function RwReportIntro({
       cleanupReveal();
       cleanupAnchors();
     };
-  }, [districtSlug, location, elecSavingsAnnual, machinesTotal, co2eAnnual, jobsCreated, billSavings, cumulativeSavings]);
+  }, [districtSlug, location, elecSavingsAnnual, machinesTotal, co2eAnnual, jobsCreated, billSavings, cumulativeSavings, JSON.stringify(allProps)]);
 
   return <div className="rw-region-report" ref={rootRef} />;
 }
