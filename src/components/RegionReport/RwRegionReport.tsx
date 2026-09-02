@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { type District } from "./districtData";
-import { resolveSlug, getDistrict, sub, installAnchorNav, applyTextOverrides } from "./reportSections";
+import { resolveSlug, getDistrict, sub, installAnchorNav, applyTextOverrides, unmatchedLiveSlug, noDataHtml } from "./reportSections";
 import { CSS, TEMPLATE } from "./reportContent";
 import {
   TabbedCharts,
@@ -124,6 +124,11 @@ export default function RwRegionReport(allProps: RwRegionReportProps) {
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
+    const unmatched = unmatchedLiveSlug(districtSlug);
+    if (unmatched) {
+      root.innerHTML = noDataHtml(unmatched);
+      return;
+    }
     const slug = resolveSlug(districtSlug);
     const d = getDistrict(slug);
     if (!d) return;

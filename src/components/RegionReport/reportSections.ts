@@ -82,13 +82,60 @@ export function mergeFields(slug: string | undefined, overrides: Record<string, 
 }
 
 /** Inject the shared, fully-scoped report stylesheet once per page. */
-export function ensureReportCss(): void {
+/**
+ * Put the report CSS where this component can actually see it.
+ *
+ * Webflow renders each code component inside its own shadow root, and a
+ * stylesheet in document.head never crosses that boundary - so the chunk
+ * components were unstyled the moment they were placed on a live page. Given
+ * the component's root element, the CSS is injected into ITS shadow root (once
+ * per root); on a plain page it falls back to document.head as before.
+ */
+export function ensureReportCss(root?: Element | null): void {
   if (typeof document === "undefined") return;
-  if (document.getElementById("rw-report-css")) return;
+  const scope = root ? root.getRootNode() : document;
+  const inShadow = typeof ShadowRoot !== "undefined" && scope instanceof ShadowRoot;
+  const host: ParentNode = inShadow ? (scope as ShadowRoot) : document.head;
+  if (host.querySelector('style[data-rw-report-css]')) return;
   const style = document.createElement("style");
-  style.id = "rw-report-css";
+  style.setAttribute("data-rw-report-css", "");
   style.textContent = CSS;
-  document.head.appendChild(style);
+  host.appendChild(style);
+}
+
+/**
+ * H4: a page whose slug matches nothing must say so, not show Dunedin.
+ *
+ * Returns the offending slug when either (a) the districtSlug prop names a
+ * location that isn't bundled, or (b) the page URL sits under
+ * /regional-reports/<slug> and <slug> isn't bundled - the Collection Page
+ * case, where Webflow's slugger ("hawkes-bay") can disagree with ours
+ * ("hawke-s-bay"). Anywhere else (Designer canvas, harness pages, the site
+ * root) the Dunedin default still applies so designers see a populated page.
+ */
+export function unmatchedLiveSlug(override?: string): string | null {
+  const clean = (s?: string | null) => (s ?? "").trim().toLowerCase();
+  const o = clean(override);
+  if (o) return bundleKey(o) ? null : o;
+  if (typeof window === "undefined") return null;
+  const parts = window.location.pathname.split("/").filter(Boolean);
+  const i = parts.indexOf("regional-reports");
+  if (i < 0 || i === parts.length - 1) return null;
+  const seg = clean(parts[i + 1]);
+  return bundleKey(seg) ? null : seg;
+}
+
+/** The visible notice rendered in place of a report when the slug matches nothing. */
+export function noDataHtml(slug: string): string {
+  const safe = slug.replace(/[<>&"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c] as string));
+  return (
+    '<div data-rw-no-data style="font-family:Rubik,system-ui,sans-serif;max-width:720px;margin:48px auto;padding:24px 28px;' +
+    'border:2px dashed #c0392b;border-radius:12px;color:#1a3c3c;background:#fff8f6;">' +
+    "<strong>No report data for &ldquo;" + safe + "&rdquo;.</strong> " +
+    "The page slug must match a location in the report bundle (for example <code>hawke-s-bay</code>, not <code>hawkes-bay</code>). " +
+    "Set the District slug property on this component, or rename the page slug." +
+    "</div>"
+  );
 }
 
 /**
@@ -170,7 +217,8 @@ export function scrollToAnchor(id: string): boolean {
   return true;
 }
 
-let anchorNavInstalled = false;
+let anchorNavRefs = 0;
+let anchorNavTeardown: (() => void) | null = null;
 
 /**
  * Intercept same-page anchor clicks anywhere on the page (including inside
@@ -180,8 +228,17 @@ let anchorNavInstalled = false;
  * Webflow's own "#" tab/slider links and any real navigation are left alone.
  */
 export function installAnchorNav(): () => void {
-  if (typeof document === "undefined" || anchorNavInstalled) return () => {};
-  anchorNavInstalled = true;
+  if (typeof document === "undefined") return () => {};
+  // Reference-counted: several islands call this; the listener lives as long
+  // as ANY of them is mounted, so unmounting one island doesn't kill the jump
+  // links for the others.
+  anchorNavRefs += 1;
+  if (anchorNavRefs > 1) {
+    return () => {
+      anchorNavRefs -= 1;
+      if (anchorNavRefs === 0 && anchorNavTeardown) anchorNavTeardown();
+    };
+  }
 
   const onClick = (e: Event) => {
     const path = (e as MouseEvent).composedPath ? (e as MouseEvent).composedPath() : [];
@@ -215,14 +272,22 @@ export function installAnchorNav(): () => void {
   const timers: number[] = [];
   if (hash) {
     [0, 400, 1200, 2500].forEach((ms) => {
-      timers.push(window.setTimeout(() => scrollToAnchor(hash), ms));
+      timers.push(window.setTimeout(() => {
+        // stop retrying once it has worked, so a reader who has started
+        // scrolling isn't yanked back
+        if (scrollToAnchor(hash)) timers.forEach((t) => window.clearTimeout(t));
+      }, ms));
     });
   }
 
-  return () => {
+  anchorNavTeardown = () => {
     document.removeEventListener("click", onClick, true);
     timers.forEach((t) => window.clearTimeout(t));
-    anchorNavInstalled = false;
+    anchorNavTeardown = null;
+  };
+  return () => {
+    anchorNavRefs -= 1;
+    if (anchorNavRefs === 0 && anchorNavTeardown) anchorNavTeardown();
   };
 }
 

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { BILLS_HTML, sub, mergeFields, getDistrict, ensureReportCss, initReveal, resolveSlug, applyTextOverrides } from "./reportSections";
+import { BILLS_HTML, sub, mergeFields, getDistrict, ensureReportCss, initReveal, resolveSlug, applyTextOverrides, unmatchedLiveSlug, noDataHtml } from "./reportSections";
 import { BillTabs, buildBillTabs } from "./reportCharts";
 
 export interface RwReportBillsProps {
@@ -28,7 +28,12 @@ export default function RwReportBills(allProps: RwReportBillsProps) {
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    ensureReportCss();
+    const unmatched = unmatchedLiveSlug(districtSlug);
+    if (unmatched) {
+      root.innerHTML = noDataHtml(unmatched);
+      return;
+    }
+    ensureReportCss(root);
     const slug = resolveSlug(districtSlug);
     const fields = mergeFields(slug, {
       location,

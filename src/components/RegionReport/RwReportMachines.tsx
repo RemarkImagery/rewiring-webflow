@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { MACHINES_HTML, sub, mergeFields, getDistrict, ensureReportCss, initReveal, resolveSlug, applyTextOverrides } from "./reportSections";
+import { MACHINES_HTML, sub, mergeFields, getDistrict, ensureReportCss, initReveal, resolveSlug, applyTextOverrides, unmatchedLiveSlug, noDataHtml } from "./reportSections";
 import { TabbedCharts, mergeTabs, EV_TABS, HEATING_TABS, WATER_TABS, COOKTOP_TABS } from "./reportCharts";
 
 export interface RwReportMachinesProps {
@@ -48,7 +48,12 @@ export default function RwReportMachines(p: RwReportMachinesProps) {
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    ensureReportCss();
+    const unmatched = unmatchedLiveSlug(districtSlug);
+    if (unmatched) {
+      root.innerHTML = noDataHtml(unmatched);
+      return;
+    }
+    ensureReportCss(root);
     const slug = resolveSlug(districtSlug);
     const fields = mergeFields(slug, {
       location: p.location,

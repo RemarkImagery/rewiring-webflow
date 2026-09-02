@@ -78,3 +78,74 @@ describe("anchors across shadow roots", () => {
     expect(scrollToAnchor("missing")).toBe(false);
   });
 });
+
+describe("ensureReportCss()", () => {
+  it("injects the report CSS into the component's own shadow root", async () => {
+    const { ensureReportCss } = await import("./reportSections");
+    document.body.innerHTML = "";
+    const host = document.createElement("div");
+    document.body.appendChild(host);
+    const shadow = host.attachShadow({ mode: "open" });
+    const root = document.createElement("div");
+    shadow.appendChild(root);
+    ensureReportCss(root);
+    ensureReportCss(root); // idempotent per root
+    expect(shadow.querySelectorAll("style[data-rw-report-css]").length).toBe(1);
+    expect(shadow.querySelector("style")!.textContent).toContain(".rw-region-report");
+    expect(document.head.querySelector("style[data-rw-report-css]")).toBeNull();
+  });
+
+  it("falls back to document.head on a plain page", async () => {
+    const { ensureReportCss } = await import("./reportSections");
+    document.head.querySelectorAll("style[data-rw-report-css]").forEach((s) => s.remove());
+    const root = document.createElement("div");
+    document.body.appendChild(root);
+    ensureReportCss(root);
+    expect(document.head.querySelectorAll("style[data-rw-report-css]").length).toBe(1);
+  });
+});
+
+describe("unmatchedLiveSlug()", () => {
+  const go = (path: string) => window.history.replaceState({}, "", path);
+
+  it("flags a Collection Page whose slug is not in the bundle", async () => {
+    const { unmatchedLiveSlug } = await import("./reportSections");
+    go("/regional-reports/hawkes-bay");
+    expect(unmatchedLiveSlug()).toBe("hawkes-bay");
+  });
+
+  it("is quiet for a bundled slug, the index page, and the Designer canvas", async () => {
+    const { unmatchedLiveSlug } = await import("./reportSections");
+    go("/regional-reports/dunedin");
+    expect(unmatchedLiveSlug()).toBeNull();
+    go("/regional-reports");
+    expect(unmatchedLiveSlug()).toBeNull();
+    go("/some-designer-canvas-path");
+    expect(unmatchedLiveSlug()).toBeNull();
+  });
+
+  it("a wrong District slug prop is flagged wherever the page is", async () => {
+    const { unmatchedLiveSlug } = await import("./reportSections");
+    go("/");
+    expect(unmatchedLiveSlug("nowhere")).toBe("nowhere");
+    expect(unmatchedLiveSlug("dunedin")).toBeNull();
+  });
+});
+
+describe("installAnchorNav()", () => {
+  it("keeps the listener alive until the last island unmounts", async () => {
+    const { installAnchorNav, scrollToAnchor } = await import("./reportSections");
+    document.body.innerHTML = '<a id="l" href="#bills">Bills</a><section id="bills"></section>';
+    const scrollTo = vi.fn();
+    Object.defineProperty(window, "scrollTo", { value: scrollTo, writable: true });
+    const offA = installAnchorNav();
+    const offB = installAnchorNav();
+    offA(); // first island unmounts - links must still work for the second
+    document.getElementById("l")!.click();
+    expect(scrollTo).toHaveBeenCalledTimes(1);
+    offB();
+    document.getElementById("l")!.click();
+    expect(scrollTo).toHaveBeenCalledTimes(1); // torn down once nobody is mounted
+    expect(scrollToAnchor("bills")).toBe(true);
+  });
+});
