@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { type District } from "./districtData";
-import { resolveSlug, getDistrict, sub } from "./reportSections";
+import { resolveSlug, getDistrict, sub, installAnchorNav } from "./reportSections";
 import { CSS, TEMPLATE } from "./reportContent";
 import {
   TabbedCharts,
@@ -128,11 +128,15 @@ export default function RwRegionReport({ districtSlug = "" }: RwRegionReportProp
     root.innerHTML = `<style>${CSS}</style>` + sub(TEMPLATE, d.fields);
     const roots = mountCharts(root, d);
     const cleanupInteractions = initInteractions(root);
+    // fallback for anchors this component doesn't own — e.g. #community, which
+    // lives in the separate RwCommunityGroups island's shadow root
+    const cleanupAnchors = installAnchorNav();
 
     return () => {
       // defer: unmounting synchronously during a re-render commit is a React error
       roots.forEach((r) => setTimeout(() => { try { r.unmount(); } catch { /* node already gone */ } }, 0));
       cleanupInteractions();
+      cleanupAnchors();
     };
   }, [districtSlug]);
 

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { INTRO_HTML, sub, mergeFields, getDistrict, ensureReportCss, initReveal, resolveSlug } from "./reportSections";
+import { INTRO_HTML, sub, mergeFields, getDistrict, ensureReportCss, initReveal, resolveSlug, installAnchorNav } from "./reportSections";
 import { CumulativeChart } from "./reportCharts";
 
 export interface RwReportIntroProps {
@@ -55,6 +55,9 @@ export default function RwReportIntro({
       roots.push(r);
     }
     const cleanupReveal = initReveal(root);
+    // jump cards point at ids inside other components' shadow roots — native
+    // fragment navigation can't reach them, so handle it ourselves
+    const cleanupAnchors = installAnchorNav();
 
     return () => {
       // defer: unmounting synchronously during a re-render commit is a React error
@@ -68,6 +71,7 @@ export default function RwReportIntro({
         }, 0),
       );
       cleanupReveal();
+      cleanupAnchors();
     };
   }, [districtSlug, location, elecSavingsAnnual, machinesTotal, co2eAnnual, jobsCreated, billSavings, cumulativeSavings]);
 
