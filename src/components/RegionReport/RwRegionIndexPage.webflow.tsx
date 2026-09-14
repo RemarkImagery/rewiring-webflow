@@ -5,7 +5,7 @@ import { declareComponent } from "@webflow/react";
 export default declareComponent(RwRegionIndexPage, {
   name: "RW Region Index Page",
   description:
-    "The whole rewiring.nz/regional-reports landing page in one component: dark-green hero (eyebrow, headline, intro, optional image and live search), an optional feature link to the national New Zealand report, the searchable directory of every location report grouped into City councils / District councils / Regions, and a closing CTA band. Every piece of text is editable here — leave a field blank to hide that bit. Use 'RW Region Index' instead if you only want the directory columns.",
+    "The whole rewiring.nz/regional-reports landing page in one component: dark-green hero (eyebrow, headline, intro, optional image), an optional feature link to the national New Zealand report, the directory of every location report grouped into City councils / District councils / Regions, and a closing CTA band. Every piece of text is editable here — leave a field blank to hide that bit. Use 'RW Region Index' instead if you only want the directory columns.",
   group: "Region Reports",
   options: { ssr: true },
   props: {
@@ -23,24 +23,6 @@ export default declareComponent(RwRegionIndexPage, {
       group: "Hero",
     }),
     heroImage: props.Image({ name: "Hero image (blank = centred hero)", group: "Hero" }),
-
-    /* ---- Search ---- */
-    showSearch: props.Boolean({ name: "Show search box", defaultValue: true, group: "Search" }),
-    searchPlaceholder: props.Text({
-      name: "Search placeholder",
-      defaultValue: "Search for your city, district or region…",
-      group: "Search",
-    }),
-    countTemplate: props.Text({
-      name: "Result count ({n} = number shown)",
-      defaultValue: "{n} locations",
-      group: "Search",
-    }),
-    noResultsText: props.Text({
-      name: "No-results message",
-      defaultValue: "No locations match that search. Try a shorter word, or browse the full list below.",
-      group: "Search",
-    }),
 
     /* ---- New Zealand feature link ---- */
     nzUrl: props.Link({ name: "New Zealand page URL (blank = hidden)", group: "New Zealand" }),

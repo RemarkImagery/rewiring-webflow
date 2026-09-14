@@ -36,10 +36,9 @@ export default function RegionIndexTest() {
         <RwRegionIndexPage nzUrl={nz} ctaUrl={cta} />
       </ShadowMount>
 
-      <div style={bar}>Hero image variant, no search, no CTA, no NZ link</div>
+      <div style={bar}>Hero image variant, no CTA, no NZ link</div>
       <RwRegionIndexPage
         heroImage={{ src: "/neighbourhood-effect-hero.png", alt: "Sample cover" }}
-        showSearch={false}
         showCta={false}
         heroTitle="Electrifying your region"
       />
