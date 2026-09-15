@@ -10,7 +10,7 @@
 // *.webflow.tsx) — the three thin wrappers around it are.
 import React, { useId } from "react";
 
-export type SimpleIcon = "arrow" | "book" | "people" | "none";
+export type SimpleIcon = "arrow" | "book" | "people" | "download" | "none";
 
 export interface SimpleSectionProps {
   heading?: string;
@@ -19,6 +19,10 @@ export interface SimpleSectionProps {
   /** Resolved href. Blank renders the card with no button rather than a dead link. */
   href?: string;
   icon?: SimpleIcon;
+  /** Optional second button (the region footer's per-location PDF). Blank label or href = no button. */
+  secondaryLabel?: string;
+  secondaryHref?: string;
+  secondaryIcon?: SimpleIcon;
   /** Anchor id so the report's jump cards still land here (#stories, #community). */
   anchorId?: string;
   /** Section background; "transparent" sits on whatever the page already has. */
@@ -48,6 +52,14 @@ function Icon({ kind }: { kind: SimpleIcon }) {
         <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
       </svg>
     );
+  if (kind === "download")
+    return (
+      <svg {...common}>
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+        <polyline points="7 10 12 15 17 10" />
+        <line x1="12" y1="15" x2="12" y2="3" />
+      </svg>
+    );
   if (kind === "people")
     return (
       <svg {...common}>
@@ -71,6 +83,9 @@ export default function SimpleSection({
   buttonLabel = "",
   href = "",
   icon = "arrow",
+  secondaryLabel = "",
+  secondaryHref = "",
+  secondaryIcon = "download",
   anchorId = "",
   bgColor = "transparent",
   cardColor = "#ffffff",
@@ -82,6 +97,8 @@ export default function SimpleSection({
   const c = (n: string) => `rw-ss-${n}-${uid}`;
   const link = (href || "").trim();
   const external = isExternal(link);
+  const link2 = (secondaryHref || "").trim();
+  const external2 = isExternal(link2);
 
   return (
     <div className={c("root")} {...(anchorId ? { id: anchorId } : {})}>
@@ -92,7 +109,8 @@ export default function SimpleSection({
         .${c("title")} { font-size: clamp(26px, 3vw, 36px); font-weight: 700; color: ${accentColor}; margin: 0 0 12px; line-height: 1.15; letter-spacing: -0.01em; }
         .${c("body")} { font-size: 16px; line-height: 1.55; color: #4a6664; margin: 0 auto; max-width: 540px; }
         .${c("body")}:last-child { margin-bottom: 0; }
-        .${c("btn")} { display: inline-flex; align-items: center; gap: 10px; margin-top: 28px; background: ${goldColor}; color: ${inkColor}; font-weight: 700; font-size: 16px; text-decoration: none; padding: 14px 26px; border-radius: 100px; border: none; cursor: pointer; transition: background-color .18s ease, transform .18s ease; font-family: inherit; }
+        .${c("btns")} { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 28px; }
+        .${c("btn")} { display: inline-flex; align-items: center; gap: 10px; background: ${goldColor}; color: ${inkColor}; font-weight: 700; font-size: 16px; text-decoration: none; padding: 14px 26px; border-radius: 100px; border: none; cursor: pointer; transition: background-color .18s ease, transform .18s ease; font-family: inherit; }
         .${c("btn")}:hover { background: #ffc94d; transform: translateY(-2px); }
         .${c("btn")} svg { width: 18px; height: 18px; flex: none; }
         @media (max-width: 780px) { .${c("root")} { padding: 56px 20px; } .${c("card")} { padding: 36px 24px; } }
@@ -101,11 +119,21 @@ export default function SimpleSection({
       <div className={c("card")}>
         {heading ? <h2 className={c("title")}>{heading}</h2> : null}
         {body ? <p className={c("body")}>{body}</p> : null}
-        {link && buttonLabel ? (
-          <a className={c("btn")} href={link} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
-            <Icon kind={icon} />
-            {buttonLabel}
-          </a>
+        {(link && buttonLabel) || (link2 && secondaryLabel) ? (
+          <div className={c("btns")}>
+            {link && buttonLabel ? (
+              <a className={c("btn")} href={link} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+                <Icon kind={icon} />
+                {buttonLabel}
+              </a>
+            ) : null}
+            {link2 && secondaryLabel ? (
+              <a className={c("btn")} href={link2} {...(external2 ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+                <Icon kind={secondaryIcon} />
+                {secondaryLabel}
+              </a>
+            ) : null}
+          </div>
         ) : null}
       </div>
     </div>

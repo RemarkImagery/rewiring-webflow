@@ -25,7 +25,7 @@ components in `src/components/RegionReport/`, from data bundled at build time.
 |---|---|---|
 | `RwRegionReport` | The whole report in one component. Inlines its own `<style>`. | **Live** on rewiring.nz (verified 3 Sep 2026: one island, stylesheet inside its shadow root) |
 | `RwReportIntro` / `RwReportBills` / `RwReportMachines` | The same report as three CMS-bindable chunks, so a story collection can slot between Bills and Machines. | Built and tested; not currently placed on the live site |
-| `RwLocalStoriesSimple` / `RwCommunitySimple` / `RwRegionFooterSimple` | Plain link-out sections used while the CMS-bound versions are finished. | **Live** |
+| `RwLocalStoriesSimple` / `RwCommunitySimple` / `RwRegionFooterSimple` | Plain link-out sections used while the CMS-bound versions are finished. The Simple footer carries the per-location PDF button (auto-linked from the page URL, hidden when no PDF is hosted). | **Live** |
 | `RwLocalStoryCard`, `RwCommunityCard`, `RwCommunityGroups` | CMS-bound story card, community card, and the groups carousel + map. | Available; groups map needs the CMS embed described in its description |
 | `RwRegionFooter` | Two-card footer with the per-location PDF link. | Available (the Simple footer is live) |
 | `RwRegionPicker`, `RwRegionIndex`, `RwRegionIndexPage` | Type→location dropdown, directory columns, and the whole `/regional-reports` landing page. | **Live** (index page) |

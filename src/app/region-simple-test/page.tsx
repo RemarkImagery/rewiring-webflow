@@ -42,6 +42,10 @@ export default function RegionSimpleTest() {
         </>
       </ShadowMount>
 
+      <div style={bar}>Footer with an explicit slug (PDF button for Auckland) and with a slug that has no hosted PDF (national button only)</div>
+      <RwRegionFooterSimple districtSlug="auckland" />
+      <RwRegionFooterSimple districtSlug="chatham-islands" />
+
       <div style={bar}>Story button with no URL set (button should be absent)</div>
       <RwLocalStoriesSimple />
     </div>
