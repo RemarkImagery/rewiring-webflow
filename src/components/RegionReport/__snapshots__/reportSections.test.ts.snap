@@ -124,7 +124,7 @@ exports[`editable copy keys > keys and defaults are a reviewed snapshot - a shif
   ],
   [
     "heatPumpPara2",
-    "{{heater_breakdown}}Switching from {{heatpump_switch_from}} to a heat pump <strong>saves {{heatpump_15yr_bill_savings}} on bills over 15 years</strong>, or {{heatpump_15yr_net_savings}} including upfront costs.{{heater_going_electric_one_fuel_type}}",
+    "{{heater_breakdown}}Switching from {{heatpump_switch_from}} to a heat pump <strong>saves {{heatpump_15yr_bill_savings}} on bills over 15 years</strong>, or {{heatpump_15yr_net_savings}} including upfront costs.{{heater_secondary_savings}}{{heater_going_electric_one_fuel_type}}",
   ],
   [
     "heatPumpPara3",

@@ -365,7 +365,7 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
           </div>
           <div class="prose">
             <p>Heat pumps use around <strong>75% less energy</strong> than gas heaters to deliver the same warmth, and, unlike gas, they cool in summer too. Heat pumps also tend to have lower upfront costs compared to their fossil fuel equivalents.</p>
-            <p>{{heater_breakdown}}Switching from {{heatpump_switch_from}} to a heat pump <strong>saves {{heatpump_15yr_bill_savings}} on bills over 15 years</strong>, or {{heatpump_15yr_net_savings}} including upfront costs.{{heater_going_electric_one_fuel_type}}</p>
+            <p>{{heater_breakdown}}Switching from {{heatpump_switch_from}} to a heat pump <strong>saves {{heatpump_15yr_bill_savings}} on bills over 15 years</strong>, or {{heatpump_15yr_net_savings}} including upfront costs.{{heater_secondary_savings}}{{heater_going_electric_one_fuel_type}}</p>
             <p>{{heater_going_electric_multiple_fuel_types}}</p>
           </div>
         </div>
