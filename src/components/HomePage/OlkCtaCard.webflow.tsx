@@ -32,6 +32,18 @@ export default declareComponent(OlkCtaCard, {
       group: "Advanced",
     }),
     raisedSuffix: props.Text({ name: "Raised suffix", defaultValue: "raised so far", group: "Advanced" }),
+    showThermometer: props.Boolean({
+      name: "Show thermometer bar",
+      defaultValue: true,
+      group: "Advanced",
+    }),
+    // Must match the campaign-page thermometer's tiers, or the two bars show
+    // different fills for the same total.
+    milestones: props.Text({
+      name: "Milestones (comma separated)",
+      defaultValue: "25000,50000,100000,250000",
+      group: "Advanced",
+    }),
     bgColor: props.Text({ name: "Background colour", defaultValue: "#143a1e", group: "Colours" }),
     accentColor: props.Text({ name: "Neon accent colour", defaultValue: "#4bf03c", group: "Colours" }),
     buttonColor: props.Text({ name: "Button colour", defaultValue: "#f5b731", group: "Colours" }),
