@@ -216,7 +216,7 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
             <div class="big" style="color:#27ae60;">{{elec_savings_annual}} saved</div>
             <div class="label">every year</div>
             <div class="prose" style="margin-top:16px; text-align:left;">
-              <p>Electrifying home appliances and vehicles, with 80% adopting rooftop solar and batteries, would cut {{location}} household energy costs by <strong>{{elec_savings_annual}} every year</strong>. That's <strong>{{elec_savings_daily}} saved every day</strong>, and meaningful cost of living relief for {{location}} households.</p>
+              <p>Electrifying home appliances and vehicles, with 80% adopting rooftop solar and batteries, would cut total household energy-related bills <strong>from {{bills_annual_2040_no_elec}} to {{bills_annual_2040_electrified}} every year</strong>. That's <strong>{{elec_savings_daily}} saved every day</strong>, and meaningful cost of living relief for {{location}} households.</p>
             </div>
           </div>
           <div class="stat-card">
@@ -248,7 +248,7 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
             <div class="big">{{jobs_created}} local jobs</div>
             <div class="label">created in {{location}}</div>
             <div class="prose" style="margin-top:12px; text-align:center;">
-              <p><strong>New local jobs</strong>, driven by additional installation labour and the savings flowing through the community.</p>
+              <p><strong>New local jobs</strong>, driven by additional installation labour and the savings flowing through the community.{{jobs_per_resident_line}}</p>
             </div>
           </div>
         </div>
@@ -355,7 +355,7 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
         <div class="two-col" style="margin-bottom:32px;">
           <div class="savings-box">
             <div class="savings-stat">
-              <div class="stat-num num-save">{{heatpump_lifetime_savings}} <span class="stat-word">savings</span></div>
+              <div class="stat-num num-save">{{heatpump_15yr_net_savings}} <span class="stat-word">savings</span></div>
               <div class="meta">over 15 year lifetime including upfront costs, compared to {{heatpump_switch_short}}</div>
             </div>
             <div class="savings-stat">
@@ -364,9 +364,9 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
             </div>
           </div>
           <div class="prose">
-            <p>Heat pumps use around <strong>{{heatpump_energy_pct}} less energy</strong> than gas heaters to deliver the same warmth, and, unlike gas, they cool in summer too. Heat pumps also tend to have lower upfront costs compared to their fossil fuel equivalents.</p>
-            <p>Switching from {{heatpump_switch_from}} to a heat pump <strong>saves {{heatpump_15yr_savings}} on bills over 15 years</strong> (around {{heatpump_annual_savings}} every year) and {{heatpump_lifetime_savings}} over the lifetime including upfront costs. {{heater_breakdown}}</p>
-            <p>Whatever the fuel type, going electric brings significant savings, and the comfort upgrade is immediate.</p>
+            <p>Heat pumps use around <strong>75% less energy</strong> than gas heaters to deliver the same warmth, and, unlike gas, they cool in summer too. Heat pumps also tend to have lower upfront costs compared to their fossil fuel equivalents.</p>
+            <p>{{heater_breakdown}}Switching from {{heatpump_switch_from}} to a heat pump <strong>saves {{heatpump_15yr_bill_savings}} on bills over 15 years</strong>, or {{heatpump_15yr_net_savings}} including upfront costs.{{heater_going_electric_one_fuel_type}}</p>
+            <p>{{heater_going_electric_multiple_fuel_types}}</p>
           </div>
         </div>
         <div id="heating-tabs"></div>
@@ -386,16 +386,17 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
         <div class="two-col" style="margin-bottom:32px;">
           <div class="savings-box">
             <div class="savings-stat">
-              <div class="stat-num num-save">{{water_lifetime_savings}} <span class="stat-word">savings</span></div>
+              <div class="stat-num num-save">{{water_15yr_net_savings}} <span class="stat-word">savings</span></div>
               <div class="meta">over 15 year lifetime including upfront costs, compared to {{water_switch_short}}</div>
             </div>
             <div class="savings-stat">
-              <div class="stat-num num-fossil">{{water_heaters_fossil}}</div>
+              <div class="stat-num num-fossil">{{water_heaters_count_fossil}}</div>
               <div class="meta">{{water_count_label}}</div>
             </div>
           </div>
           <div class="prose">
-            <p>Hot water heat pumps have a higher upfront cost, but <strong>deliver the lowest ongoing energy bills</strong> of any water heating option. In {{location}}, switching from {{water_switch_from}} to a hot water heat pump <strong>saves {{water_15yr_savings}} on bills over 15 years</strong>, or {{water_lifetime_savings}} including upfront costs. {{water_breakdown}}</p>
+            <p>Hot water heat pumps have a higher upfront cost, but <strong>deliver the lowest ongoing energy bills</strong> of any water heating option. In {{location}}, switching from {{water_switch_from}} to a hot water heat pump <strong>saves {{water_15yr_bill_savings}} on bills over 15 years</strong>, or {{water_15yr_net_savings}} including upfront costs. {{water_secondary_savings}}</p>
+            <p>{{water_breakdown}}</p>
             <p>Water heating makes up around <strong>{{water_energy_pct}} of an average home's energy load</strong>, making it one of the highest-impact switches a household can make. Hot water heat pumps can also act as a 'thermal battery' where you time it to heat water when electricity is cheapest, or when your solar panels are generating.</p>
           </div>
         </div>
@@ -414,17 +415,17 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
         <div class="two-col" style="margin-bottom:32px;">
           <div class="savings-box">
             <div class="savings-stat">
-              <div class="stat-num num-save">{{cooktop_savings}} <span class="stat-word">savings</span></div>
-              <div class="meta">bill savings over 15 years, LPG to induction</div>
+              <div class="stat-num num-save">{{cooktop_15yr_bill_savings}} <span class="stat-word">savings</span></div>
+              <div class="meta">bill savings over 15 years, {{cooktop_switch_from}} to induction</div>
             </div>
             {{cooktop_gas_stat}}
             <div class="savings-stat">
-              <div class="stat-num num-fossil">{{cooktops_gas}}</div>
+              <div class="stat-num num-fossil">{{cooktop_count_gas}}</div>
               <div class="meta">{{cooktop_count_label}}</div>
             </div>
           </div>
           <div class="prose">
-            <p>Cooking doesn't use a lot of energy but electric cooking is <strong>lower cost (and much lower emissions)</strong> than cooking with gas. Induction is more expensive upfront than resistive electric cooking, but offers lower ongoing bills. {{cooktop_breakdown}}</p>
+            <p>Cooking doesn't use a lot of energy but electric cooking is <strong>lower cost (and much lower emissions)</strong> than cooking with gas. Induction is more expensive upfront than resistive electric cooking, but offers lower ongoing bills. {{cooktop_breakdown}}Switching from {{cooktop_switch_from}} to induction saves around {{cooktop_15yr_bill_savings}} on energy bills. {{cooktop_secondary_savings}}</p>
             <p>But the most compelling case for electric might be <strong>health</strong>. Gas cooking releases nitrogen dioxide and other pollutants into the home, linked nationally to <strong>200+ premature deaths, 3,200+ child asthma cases, and $3.3 billion</strong> in health and productivity costs every year<sup>4</sup>. That's $9,100 per stovetop in New Zealand<sup>5</sup>.</p>
           </div>
         </div>
