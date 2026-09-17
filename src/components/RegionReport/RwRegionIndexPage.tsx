@@ -1,14 +1,14 @@
 "use client";
 
 // Full landing page for rewiring.nz/regional-reports: hero, optional feature
-// link to the national New Zealand report, the searchable directory of every
-// location report, and a closing CTA band. Everything a copywriter would want
+// link to the national New Zealand report, the directory of every location
+// report, and a closing CTA band. Everything a copywriter would want
 // to change is a prop, so the page can be placed once and edited entirely from
 // the Webflow properties panel.
 //
 // The directory is the same data + grouping as RwRegionIndex (kept as the
 // standalone section component); this one wraps it in the whole page.
-import React, { useId, useMemo, useState } from "react";
+import React, { useId, useMemo } from "react";
 import { META } from "./districtData";
 
 interface ImageValue {
@@ -41,12 +41,6 @@ export interface RwRegionIndexPageProps {
   heroTitle?: string;
   heroSubtitle?: string;
   heroImage?: ImageValue;
-  /* Search */
-  showSearch?: boolean;
-  searchPlaceholder?: string;
-  /** "{n}" is replaced with the number of locations currently shown. */
-  countTemplate?: string;
-  noResultsText?: string;
   /* New Zealand feature link */
   nzUrl?: LinkValue;
   nzLabel?: string;
@@ -80,10 +74,6 @@ export default function RwRegionIndexPage({
   heroTitle = "Electrifying Aotearoa, one place at a time",
   heroSubtitle = "Every city, district and region in New Zealand has its own electrification story. Find yours to see what households, the local economy and emissions stand to gain from going electric.",
   heroImage,
-  showSearch = true,
-  searchPlaceholder = "Search for your city, district or region…",
-  countTemplate = "{n} locations",
-  noResultsText = "No locations match that search. Try a shorter word, or browse the full list below.",
   nzUrl,
   nzLabel = "See the report for all of New Zealand",
   nzBlurb = "The national picture — every household, vehicle and machine, added up.",
@@ -108,7 +98,6 @@ export default function RwRegionIndexPage({
 }: RwRegionIndexPageProps) {
   const uid = useId().replace(/[^a-zA-Z0-9]/g, "");
   const c = (n: string) => `rw-rip-${n}-${uid}`;
-  const [query, setQuery] = useState("");
 
   const base = basePath.endsWith("/") ? basePath : basePath + "/";
   const headings: Record<string, string> = {
@@ -120,23 +109,20 @@ export default function RwRegionIndexPage({
   // Country (New Zealand) is a standalone page — it gets the feature link, not
   // a column entry.
   const groups = useMemo(() => {
-    const q = query.trim().toLowerCase();
     const g: Record<string, typeof META> = {};
     META.forEach((m) => {
       if (m.type === "Country") return;
-      if (q && !m.location.toLowerCase().includes(q)) return;
       (g[m.type] = g[m.type] || []).push(m);
     });
     Object.values(g).forEach((list) => list.sort((a, b) => a.location.localeCompare(b.location)));
     return g;
-  }, [query]);
+  }, []);
 
   const types = GROUP_ORDER.filter((t) => groups[t]).concat(
     Object.keys(groups)
       .filter((t) => !GROUP_ORDER.includes(t))
       .sort(),
   );
-  const shown = types.reduce((n, t) => n + groups[t].length, 0);
   const nzLink = linkHref(nzUrl);
   const ctaLink = linkHref(ctaUrl);
 
@@ -160,14 +146,6 @@ export default function RwRegionIndexPage({
         .${c("heroInner")}.${c("hasImg")} .${c("sub")} { margin: 0; }
         .${c("heroImg")} img { width: 100%; height: auto; display: block; transform: rotate(-3deg); border-radius: 12px; }
 
-        /* ---- search ---- */
-        .${c("searchWrap")} { position: relative; max-width: 520px; margin: 34px auto 0; }
-        .${c("heroInner")}.${c("hasImg")} .${c("searchWrap")} { margin-left: 0; }
-        .${c("search")} { width: 100%; font-family: inherit; font-size: 16px; font-weight: 500; color: ${inkColor}; background: #fff; border: 2px solid ${goldColor}; border-radius: 100px; padding: 15px 22px 15px 50px; }
-        .${c("search")}::placeholder { color: #6d8382; font-weight: 400; }
-        .${c("search")}:focus-visible { outline: 3px solid ${goldColor}; outline-offset: 2px; }
-        .${c("searchIcon")} { position: absolute; left: 20px; top: 27px; transform: translateY(-50%); width: 18px; height: 18px; color: ${accentColor}; pointer-events: none; }
-        .${c("count")} { margin: 14px 0 0; font-size: 14px; font-weight: 600; letter-spacing: 0.02em; opacity: 0.75; }
 
         /* ---- New Zealand feature ---- */
         .${c("nzWrap")} { max-width: 1080px; margin: 0 auto; padding: 56px 24px 0; }
@@ -191,7 +169,6 @@ export default function RwRegionIndexPage({
         .${c("list")} { list-style: none; margin: 0; padding: 0; }
         .${c("list")} a { display: block; padding: 7px 4px; font-size: 15.5px; font-weight: 500; color: ${inkColor}; text-decoration: none; border-radius: 8px; transition: background-color .12s ease, color .12s ease; }
         .${c("list")} a:hover { background: #fff; color: ${accentColor}; font-weight: 600; }
-        .${c("empty")} { text-align: center; font-size: 16.5px; color: #4a6664; background: #fff; border: 2px dashed ${goldColor}; border-radius: 32px 8px 28px 8px / 8px 28px 8px 32px; padding: 40px 32px; margin: 0; }
 
         /* ---- closing CTA ---- */
         .${c("cta")} { position: relative; overflow: hidden; background: linear-gradient(160deg, #1f4d4b 0%, #122c2c 100%); color: ${onDarkColor}; padding: 84px 24px; text-align: center; }
@@ -205,7 +182,7 @@ export default function RwRegionIndexPage({
         @media (max-width: 980px) {
           .${c("heroInner")}.${c("hasImg")} { grid-template-columns: 1fr; justify-items: center; }
           .${c("heroInner")}.${c("hasImg")} .${c("heroText")} { text-align: center; }
-          .${c("heroInner")}.${c("hasImg")} .${c("sub")}, .${c("heroInner")}.${c("hasImg")} .${c("searchWrap")} { margin-left: auto; margin-right: auto; }
+          .${c("heroInner")}.${c("hasImg")} .${c("sub")} { margin-left: auto; margin-right: auto; }
           .${c("heroImg")} { max-width: 260px; order: -1; }
         }
         @media (max-width: 860px) {
@@ -218,8 +195,6 @@ export default function RwRegionIndexPage({
           .${c("cols")} { grid-template-columns: 1fr; gap: 24px; }
           .${c("wide")} { grid-column: auto; }
           .${c("wide")} .${c("list")} { column-count: 1; }
-          .${c("search")} { font-size: 15px; padding-left: 44px; }
-          .${c("searchIcon")} { left: 17px; }
           .${c("cta")} { padding: 60px 22px; }
         }
       `}</style>
@@ -232,35 +207,6 @@ export default function RwRegionIndexPage({
             {heroTitle ? <h1 className={c("h1")}>{heroTitle}</h1> : null}
             {heroSubtitle ? <p className={c("sub")}>{heroSubtitle}</p> : null}
 
-            {showSearch ? (
-              <div className={c("searchWrap")}>
-                <svg
-                  className={c("searchIcon")}
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.4"
-                  strokeLinecap="round"
-                  aria-hidden="true"
-                >
-                  <circle cx="11" cy="11" r="7" />
-                  <line x1="16.2" y1="16.2" x2="21" y2="21" />
-                </svg>
-                <input
-                  className={c("search")}
-                  type="search"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder={searchPlaceholder}
-                  aria-label={searchPlaceholder || "Search locations"}
-                />
-                {/* Only while filtering — a standing "82 locations" line
-                    adds nothing to the directory sitting right below it. */}
-                {countTemplate && query.trim() ? (
-                  <p className={c("count")}>{countTemplate.replace("{n}", String(shown))}</p>
-                ) : null}
-              </div>
-            ) : null}
           </div>
 
           {heroImage?.src ? (
@@ -295,24 +241,20 @@ export default function RwRegionIndexPage({
         {directoryTitle ? <h2 className={c("dirTitle")}>{directoryTitle}</h2> : null}
         {directoryIntro ? <p className={c("dirIntro")}>{directoryIntro}</p> : null}
 
-        {shown === 0 ? (
-          <p className={c("empty")}>{noResultsText}</p>
-        ) : (
-          <div className={c("cols")}>
-            {types.map((t) => (
-              <div key={t} className={groups[t].length > 28 ? c("wide") : undefined}>
-                <h3 className={c("colH")}>{headings[t] || t}</h3>
-                <ul className={c("list")}>
-                  {groups[t].map((m) => (
-                    <li key={m.slug}>
-                      <a href={base + m.slug}>{m.location}</a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        )}
+        <div className={c("cols")}>
+          {types.map((t) => (
+            <div key={t} className={groups[t].length > 28 ? c("wide") : undefined}>
+              <h3 className={c("colH")}>{headings[t] || t}</h3>
+              <ul className={c("list")}>
+                {groups[t].map((m) => (
+                  <li key={m.slug}>
+                    <a href={base + m.slug}>{m.location}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* Closing CTA */}
