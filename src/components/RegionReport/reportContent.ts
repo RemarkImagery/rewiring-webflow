@@ -267,8 +267,8 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
         </div>
         <div class="bills-intro">
           <div class="bills-intro-stats">
-            <div class="savings-stat"><div class="stat-num num-save">{{bill_savings}}</div><div class="meta">a year lost by a fossil fuel home in {{location}}</div></div>
-            <div class="savings-stat"><div class="stat-num num-save">{{bills_net_savings}}</div><div class="meta">net better off every year, even with upfront costs</div></div>
+            <div class="savings-stat"><div class="stat-num num-save">{{bill_savings}}</div><div class="meta">energy bill savings per household, every year</div></div>
+            <div class="savings-stat"><div class="stat-num num-save">{{bills_net_savings}}</div><div class="meta">net savings per household, every year, including upfront costs</div></div>
           </div>
           <div class="prose">
             <p>An average {{location}} home using gas appliances and petrol vehicles is missing out on around <strong>{{bill_savings}} in savings</strong> on its energy bills every year compared to a home with electrified appliances and vehicles plus a solar and battery system. <span class="fine">Excludes upfront costs. Based on 2026 energy prices.</span></p>
@@ -425,7 +425,7 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
             </div>
           </div>
           <div class="prose">
-            <p>Cooking doesn't use a lot of energy but electric cooking is <strong>lower cost (and much lower emissions)</strong> than cooking with gas. Induction is more expensive upfront than resistive electric cooking, but offers lower ongoing bills. {{cooktop_breakdown}}Switching from {{cooktop_switch_from}} to induction saves around {{cooktop_15yr_bill_savings}} on energy bills. {{cooktop_secondary_savings}}</p>
+            <p>Cooking doesn't use a lot of energy but electric cooking is <strong>lower cost (and much lower emissions)</strong> than cooking with gas. Induction is more expensive upfront than resistive electric cooking, but offers lower ongoing bills. {{cooktop_breakdown}}Switching from {{cooktop_switch_from}} to induction saves around {{cooktop_15yr_bill_savings}} on energy bills over 15 years. {{cooktop_secondary_savings}}</p>
             <p>But the most compelling case for electric might be <strong>health</strong>. Gas cooking releases nitrogen dioxide and other pollutants into the home, linked nationally to <strong>200+ premature deaths, 3,200+ child asthma cases, and $3.3 billion</strong> in health and productivity costs every year<sup>4</sup>. That's $9,100 per stovetop in New Zealand<sup>5</sup>.</p>
           </div>
         </div>
