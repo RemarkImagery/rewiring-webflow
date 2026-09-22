@@ -152,7 +152,7 @@ exports[`editable copy keys > keys and defaults are a reviewed snapshot - a shif
   ],
   [
     "inductionCooktopPara1",
-    "Cooking doesn't use a lot of energy but electric cooking is <strong>lower cost (and much lower emissions)</strong> than cooking with gas. Induction is more expensive upfront than resistive electric cooking, but offers lower ongoing bills. {{cooktop_breakdown}}Switching from {{cooktop_switch_from}} to induction saves around {{cooktop_15yr_bill_savings}} on energy bills. {{cooktop_secondary_savings}}",
+    "Cooking doesn't use a lot of energy but electric cooking is <strong>lower cost (and much lower emissions)</strong> than cooking with gas. Induction is more expensive upfront than resistive electric cooking, but offers lower ongoing bills. {{cooktop_breakdown}}Switching from {{cooktop_switch_from}} to induction saves around {{cooktop_15yr_bill_savings}} on energy bills over 15 years. {{cooktop_secondary_savings}}",
   ],
   [
     "inductionCooktopPara2",
