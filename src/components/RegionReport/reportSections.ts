@@ -220,6 +220,45 @@ export function scrollToAnchor(id: string): boolean {
 let anchorNavRefs = 0;
 let anchorNavTeardown: (() => void) | null = null;
 
+export const BACK_TO_TOP_ID = "rw-backtotop";
+
+/**
+ * The preview's round "back to top" button, for the live pages (Jay, 23 Sep).
+ * Appended to document.body - NOT inside a component's shadow root - so it
+ * stays fixed to the viewport whichever island is on screen. Inline styles
+ * because no stylesheet reaches the light DOM from here. Called once per page
+ * by installAnchorNav's ref-counting.
+ */
+function installBackToTop(): () => void {
+  if (document.getElementById(BACK_TO_TOP_ID)) return () => {};
+  const b = document.createElement("button");
+  b.id = BACK_TO_TOP_ID;
+  b.type = "button";
+  b.setAttribute("aria-label", "Back to top");
+  b.innerHTML =
+    '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>';
+  b.style.cssText =
+    "position:fixed;right:22px;bottom:22px;z-index:60;width:48px;height:48px;border-radius:50%;border:none;" +
+    "background:#234e4c;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;" +
+    "box-shadow:0 6px 18px rgba(0,0,0,0.22);opacity:0;visibility:hidden;transform:translateY(10px);" +
+    "transition:opacity .25s ease,transform .25s ease,visibility .25s;";
+  const reduce = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  b.addEventListener("click", () => window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }));
+  const onScroll = () => {
+    const show = window.scrollY > 600;
+    b.style.opacity = show ? "1" : "0";
+    b.style.visibility = show ? "visible" : "hidden";
+    b.style.transform = show ? "translateY(0)" : "translateY(10px)";
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  document.body.appendChild(b);
+  onScroll();
+  return () => {
+    window.removeEventListener("scroll", onScroll);
+    b.remove();
+  };
+}
+
 /**
  * Intercept same-page anchor clicks anywhere on the page (including inside
  * other components' shadow roots) and scroll to the target ourselves.
@@ -280,9 +319,12 @@ export function installAnchorNav(): () => void {
     });
   }
 
+  const removeBackToTop = installBackToTop();
+
   anchorNavTeardown = () => {
     document.removeEventListener("click", onClick, true);
     timers.forEach((t) => window.clearTimeout(t));
+    removeBackToTop();
     anchorNavTeardown = null;
   };
   return () => {
