@@ -148,6 +148,22 @@ describe("installAnchorNav()", () => {
     expect(scrollTo).toHaveBeenCalledTimes(1); // torn down once nobody is mounted
     expect(scrollToAnchor("bills")).toBe(true);
   });
+
+  it("adds ONE back-to-top button to the light DOM and removes it with the last island", async () => {
+    const { installAnchorNav, BACK_TO_TOP_ID } = await import("./reportSections");
+    document.body.innerHTML = "";
+    const scrollTo = vi.fn();
+    Object.defineProperty(window, "scrollTo", { value: scrollTo, writable: true });
+    const offA = installAnchorNav();
+    const offB = installAnchorNav();
+    expect(document.querySelectorAll("#" + BACK_TO_TOP_ID)).toHaveLength(1);
+    (document.getElementById(BACK_TO_TOP_ID) as HTMLButtonElement).click();
+    expect(scrollTo).toHaveBeenCalledWith(expect.objectContaining({ top: 0 }));
+    offA();
+    expect(document.getElementById(BACK_TO_TOP_ID)).not.toBeNull();
+    offB();
+    expect(document.getElementById(BACK_TO_TOP_ID)).toBeNull();
+  });
 });
 
 describe("editable copy keys", () => {

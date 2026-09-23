@@ -10,6 +10,7 @@ import { createRoot } from "react-dom/client";
 import RwLocalStoriesSimple from "../../components/RegionReport/RwLocalStoriesSimple";
 import RwCommunitySimple from "../../components/RegionReport/RwCommunitySimple";
 import RwRegionFooterSimple from "../../components/RegionReport/RwRegionFooterSimple";
+import RwStoriesCommunitySimple from "../../components/RegionReport/RwStoriesCommunitySimple";
 
 function ShadowMount({ children }: { children: React.ReactNode }) {
   const host = useRef<HTMLDivElement>(null);
@@ -45,6 +46,11 @@ export default function RegionSimpleTest() {
       <div style={bar}>Footer with an explicit slug (PDF button for Auckland) and with a slug that has no hosted PDF (national button only)</div>
       <RwRegionFooterSimple districtSlug="auckland" />
       <RwRegionFooterSimple districtSlug="chatham-islands" />
+
+      <div style={bar}>Stories + community side by side, inside a shadow root (stacks under 860px)</div>
+      <ShadowMount>
+        <RwStoriesCommunitySimple />
+      </ShadowMount>
 
       <div style={bar}>Story button with no URL set (button should be absent)</div>
       <RwLocalStoriesSimple />
