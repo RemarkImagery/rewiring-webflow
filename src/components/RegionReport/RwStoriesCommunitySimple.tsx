@@ -8,6 +8,7 @@
 // Stacks to one column on phones.
 import React, { useId } from "react";
 import SimpleSection from "./simpleSection";
+import { COMMUNITY_PHOTO, imageSrc } from "./RwCommunitySimple";
 
 const STORIES_URL = "https://www.rewiring.nz/story";
 const COMMUNITIES_URL = "https://www.rewiring.nz/communities";
@@ -32,6 +33,10 @@ export interface RwStoriesCommunitySimpleProps {
   communityBody?: string;
   communityButtonLabel?: string;
   communitiesUrl?: LinkValue;
+  /** Community card banner photo; blank = the PDF's volunteers photo. */
+  communityImage?: any;
+  /** "off" hides the photo and renders the plain card. */
+  showCommunityImage?: string;
   bgColor?: string;
   cardColor?: string;
   inkColor?: string;
@@ -48,6 +53,8 @@ export default function RwStoriesCommunitySimple({
   communityBody = "Volunteer-run community groups driven by locals for locals are making it easier for people across the region to electrify their lives. Running regular events, leading local advocacy and providing advice to households, these electric communities are your local guide to lower energy bills, lower emissions and greater resilience by going electric.",
   communityButtonLabel = "Find your nearest group",
   communitiesUrl,
+  communityImage,
+  showCommunityImage = "on",
   bgColor = "transparent",
   cardColor = "#ffffff",
   inkColor = "#1a3c3c",
@@ -82,6 +89,8 @@ export default function RwStoriesCommunitySimple({
         buttonLabel={communityButtonLabel}
         href={linkHref(communitiesUrl) || COMMUNITIES_URL}
         icon="people"
+        imageUrl={showCommunityImage === "off" ? "" : imageSrc(communityImage) || COMMUNITY_PHOTO}
+        imageAlt={communityImage?.alt || "Electric community volunteers"}
         anchorId="community"
         {...style}
       />

@@ -19,11 +19,25 @@ function linkHref(v?: LinkValue): string {
 
 const COMMUNITIES_URL = "https://www.rewiring.nz/communities";
 
+/** Webflow Image props arrive as { src, alt } (or a bare string in the harness). */
+export function imageSrc(v: any): string {
+  if (!v) return "";
+  if (typeof v === "string") return v.trim();
+  return typeof v === "object" && v.src ? String(v.src).trim() : "";
+}
+
+/** The volunteers photo from the PDF's community card (Jay, 25 Sep). Hosted beside the PDFs. */
+export const COMMUNITY_PHOTO = "https://regional-reports.pages.dev/img/community-volunteers.jpg";
+
 export interface RwCommunitySimpleProps {
   heading?: string;
   body?: string;
   buttonLabel?: string;
   communitiesUrl?: LinkValue;
+  /** Banner photo; blank = the PDF's volunteers photo. */
+  image?: any;
+  /** "off" hides the photo and renders the plain card. */
+  showImage?: string;
   anchorId?: string;
   bgColor?: string;
   cardColor?: string;
@@ -37,6 +51,8 @@ export default function RwCommunitySimple({
   body = "Volunteer-run community groups driven by locals for locals are making it easier for people across the region to electrify their lives. Running regular events, leading local advocacy and providing advice to households, these electric communities are your local guide to lower energy bills, lower emissions and greater resilience by going electric.",
   buttonLabel = "Find your nearest group",
   communitiesUrl,
+  image,
+  showImage = "on",
   anchorId = "community",
   bgColor = "transparent",
   cardColor = "#ffffff",
@@ -51,6 +67,8 @@ export default function RwCommunitySimple({
       buttonLabel={buttonLabel}
       href={linkHref(communitiesUrl) || COMMUNITIES_URL}
       icon="people"
+      imageUrl={showImage === "off" ? "" : imageSrc(image) || COMMUNITY_PHOTO}
+      imageAlt={image?.alt || "Electric community volunteers"}
       anchorId={anchorId}
       bgColor={bgColor}
       cardColor={cardColor}

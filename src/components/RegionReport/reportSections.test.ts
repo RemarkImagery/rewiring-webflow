@@ -5,7 +5,7 @@
 // and in-page navigation across the shadow roots Webflow renders into.
 import { describe, expect, it, vi } from "vitest";
 import { EDITABLE_TEXT } from "./reportEditable";
-import { applyTextOverrides, findAnchor, scrollToAnchor, sub } from "./reportSections";
+import { applyTextOverrides, findAnchor, scrollToAnchor, setReportTitle, sub } from "./reportSections";
 
 describe("sub()", () => {
   it("fills every {{token}} from the fields", () => {
@@ -169,5 +169,21 @@ describe("installAnchorNav()", () => {
 describe("editable copy keys", () => {
   it("keys and defaults are a reviewed snapshot - a shifted key would silently re-attach a designer's override", () => {
     expect(EDITABLE_TEXT.map((e) => [e.key, e.def])).toMatchSnapshot();
+  });
+});
+
+describe("setReportTitle()", () => {
+  it("names the tab after the location and restores the old title on cleanup", () => {
+    document.title = "Rewiring Aotearoa";
+    const restore = setReportTitle("Hawke's Bay");
+    expect(document.title).toBe("Electrifying Hawke's Bay");
+    restore();
+    expect(document.title).toBe("Rewiring Aotearoa");
+  });
+
+  it("leaves the title alone when there's no location", () => {
+    document.title = "Rewiring Aotearoa";
+    setReportTitle("  ")();
+    expect(document.title).toBe("Rewiring Aotearoa");
   });
 });

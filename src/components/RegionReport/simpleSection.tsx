@@ -23,6 +23,13 @@ export interface SimpleSectionProps {
   secondaryLabel?: string;
   secondaryHref?: string;
   secondaryIcon?: SimpleIcon;
+  /**
+   * Optional banner photo across the top of the card, with the heading laid
+   * over it on a dark-green fade - the same treatment as the PDF's community
+   * card. Blank = the plain centred card.
+   */
+  imageUrl?: string;
+  imageAlt?: string;
   /** Anchor id so the report's jump cards still land here (#stories, #community). */
   anchorId?: string;
   /** Section background; "transparent" sits on whatever the page already has. */
@@ -86,6 +93,8 @@ export default function SimpleSection({
   secondaryLabel = "",
   secondaryHref = "",
   secondaryIcon = "download",
+  imageUrl = "",
+  imageAlt = "",
   anchorId = "",
   bgColor = "transparent",
   cardColor = "#ffffff",
@@ -99,6 +108,7 @@ export default function SimpleSection({
   const external = isExternal(link);
   const link2 = (secondaryHref || "").trim();
   const external2 = isExternal(link2);
+  const img = (imageUrl || "").trim();
 
   return (
     <div className={c("root")} {...(anchorId ? { id: anchorId } : {})}>
@@ -113,11 +123,25 @@ export default function SimpleSection({
         .${c("btn")} { display: inline-flex; align-items: center; gap: 10px; background: ${goldColor}; color: ${inkColor}; font-weight: 700; font-size: 16px; text-decoration: none; padding: 14px 26px; border-radius: 100px; border: none; cursor: pointer; transition: background-color .18s ease, transform .18s ease; font-family: inherit; }
         .${c("btn")}:hover { background: #ffc94d; transform: translateY(-2px); }
         .${c("btn")} svg { width: 18px; height: 18px; flex: none; }
-        @media (max-width: 780px) { .${c("root")} { padding: 56px 20px; } .${c("card")} { padding: 36px 24px; } }
+        .${c("card")}.${c("hasimg")} { padding: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch; }
+        .${c("banner")} { position: relative; height: 200px; flex: none; background: ${accentColor}; }
+        .${c("banner")} img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; display: block; }
+        .${c("banner")}::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, ${accentColor} 0%, rgba(35, 78, 76, 0.55) 45%, rgba(35, 78, 76, 0) 80%); }
+        .${c("banner")} .${c("title")} { position: absolute; left: 32px; right: 32px; bottom: 22px; z-index: 1; margin: 0; color: #fff; text-align: left; }
+        .${c("inner")} { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 32px 40px 44px; }
+        @media (max-width: 780px) { .${c("root")} { padding: 56px 20px; } .${c("card")} { padding: 36px 24px; } .${c("banner")} { height: 160px; } .${c("banner")} .${c("title")} { left: 24px; right: 24px; bottom: 18px; } .${c("inner")} { padding: 24px 24px 32px; } }
       `}</style>
 
-      <div className={c("card")}>
-        {heading ? <h2 className={c("title")}>{heading}</h2> : null}
+      <div className={img ? `${c("card")} ${c("hasimg")}` : c("card")}>
+        {img ? (
+          <div className={c("banner")}>
+            <img src={img} alt={imageAlt} loading="lazy" />
+            {heading ? <h2 className={c("title")}>{heading}</h2> : null}
+          </div>
+        ) : heading ? (
+          <h2 className={c("title")}>{heading}</h2>
+        ) : null}
+        <Body wrap={img ? c("inner") : ""}>
         {body ? <p className={c("body")}>{body}</p> : null}
         {(link && buttonLabel) || (link2 && secondaryLabel) ? (
           <div className={c("btns")}>
@@ -135,7 +159,13 @@ export default function SimpleSection({
             ) : null}
           </div>
         ) : null}
+        </Body>
       </div>
     </div>
   );
+}
+
+/** Wraps the body + buttons in a padded column only when there's a banner, so the plain card's markup is unchanged. */
+function Body({ wrap, children }: { wrap: string; children: React.ReactNode }) {
+  return wrap ? <div className={wrap}>{children}</div> : <>{children}</>;
 }

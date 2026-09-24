@@ -125,6 +125,25 @@ export function unmatchedLiveSlug(override?: string): string | null {
   return bundleKey(seg) ? null : seg;
 }
 
+/**
+ * Name the browser tab after the report's location ("Electrifying Dunedin").
+ * The Webflow page title is "Rewiring Aotearoa" on every report page (Jay,
+ * 25 Sep). Setting it in the Designer's page settings (bound to the CMS name)
+ * is still the proper fix for crawlers and link previews; this covers the tab.
+ * Returns a cleanup that puts the previous title back.
+ */
+export function setReportTitle(location?: string): () => void {
+  if (typeof document === "undefined") return () => {};
+  const name = (location ?? "").trim();
+  if (!name) return () => {};
+  const prev = document.title;
+  const next = `Electrifying ${name}`;
+  document.title = next;
+  return () => {
+    if (document.title === next) document.title = prev;
+  };
+}
+
 /** The visible notice rendered in place of a report when the slug matches nothing. */
 export function noDataHtml(slug: string): string {
   const safe = slug.replace(/[<>&"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c] as string));
