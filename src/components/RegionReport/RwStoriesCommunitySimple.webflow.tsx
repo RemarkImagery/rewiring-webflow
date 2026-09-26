@@ -27,6 +27,8 @@ export default declareComponent(RwStoriesCommunitySimple, {
     }),
     communityButtonLabel: props.Text({ name: "Community button label", defaultValue: "Find your nearest group", group: "Community groups" }),
     communitiesUrl: props.Link({ name: "Community button URL (blank = rewiring.nz/communities)", group: "Community groups" }),
+    communityImage: props.Image({ name: "Community banner photo (blank = volunteers photo from the PDF)", group: "Community groups" }),
+    showCommunityImage: props.Variant({ name: "Show community banner photo", options: ["on", "off"], defaultValue: "on", group: "Community groups" }),
     bgColor: props.Text({ name: "Section background", defaultValue: "transparent", group: "Style" }),
     cardColor: props.Text({ name: "Card background", defaultValue: "#ffffff", group: "Style" }),
     inkColor: props.Text({ name: "Text colour", defaultValue: "#1a3c3c", group: "Style" }),

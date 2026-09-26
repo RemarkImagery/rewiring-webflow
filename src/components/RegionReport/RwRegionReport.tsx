@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { type District } from "./districtData";
-import { resolveSlug, getDistrict, sub, installAnchorNav, applyTextOverrides, unmatchedLiveSlug, noDataHtml } from "./reportSections";
+import { resolveSlug, getDistrict, sub, installAnchorNav, setReportTitle, applyTextOverrides, unmatchedLiveSlug, noDataHtml } from "./reportSections";
 import { CSS, TEMPLATE } from "./reportContent";
 import {
   TabbedCharts,
@@ -139,12 +139,14 @@ export default function RwRegionReport(allProps: RwRegionReportProps) {
     // fallback for anchors this component doesn't own — e.g. #community, which
     // lives in the separate RwCommunityGroups island's shadow root
     const cleanupAnchors = installAnchorNav();
+    const restoreTitle = setReportTitle(d.fields.location);
 
     return () => {
       // defer: unmounting synchronously during a re-render commit is a React error
       roots.forEach((r) => setTimeout(() => { try { r.unmount(); } catch { /* node already gone */ } }, 0));
       cleanupInteractions();
       cleanupAnchors();
+      restoreTitle();
     };
   }, [districtSlug, JSON.stringify(allProps)]);
 
