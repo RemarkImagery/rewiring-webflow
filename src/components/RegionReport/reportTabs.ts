@@ -243,10 +243,11 @@ export const COOKTOP_TABS = {
 };
 
 export const EV_TABS = {
-  title: "Vehicle savings",
+  title: "New vehicle savings",
   tabs: [
     { label: "15 Year Lifetime", chart: {
       segments: [
+        { key: "upfront", label: "Upfront costs (new)", color: "#434343" },
         { key: "elec", label: "Electricity costs", color: "#3c78d8" },
         { key: "petrol", label: "Petrol costs", color: "#e06666" },
         { key: "diesel", label: "Diesel costs", color: "#cc4125" },
