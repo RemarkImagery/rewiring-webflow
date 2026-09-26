@@ -284,8 +284,12 @@ function HorizBarChart({ data, segments, xMax, xTicks, valuePrefix, valueSuffix,
                   shape={(props: any) => {
                     const { x, y, width, height } = props;
                     if (!width) return <g />;
-                    const idx = props.index;
-                    const isRight = rightKey(data[idx]) === s.key;
+                    // recharts 3 can call shape with an index from the PREVIOUS data set while
+                    // the group picker swaps to a shorter one (Medium SUVs -> Utes); data[idx] was
+                    // then undefined and rightKey() threw, unmounting the whole island. Prefer
+                    // the bar's own payload and never index past the current rows.
+                    const row = props.payload || data[props.index];
+                    const isRight = !!row && rightKey(row) === s.key;
                     const r = isRight ? 4 : 0;
                     if (r) {
                       const path = `M${x},${y} L${x + width - r},${y} Q${x + width},${y} ${x + width},${y + r} L${x + width},${y + height - r} Q${x + width},${y + height} ${x + width - r},${y + height} L${x},${y + height} Z`;
@@ -354,7 +358,7 @@ export function TabbedCharts({ title, tabs }: any) {
                       ))}
                     </select>
                   </div>
-                  <HorizBarChart {...t.groups[Math.min(gi, t.groups.length - 1)].chart} />
+                  <HorizBarChart key={gi} {...t.groups[Math.min(gi, t.groups.length - 1)].chart} />
                 </React.Fragment>
               ) : (
                 <HorizBarChart {...t.chart} />
