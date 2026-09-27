@@ -255,6 +255,31 @@ function HorizBarChart({ data, segments, xMax, xTicks, valuePrefix, valueSuffix,
   const STACK = segments.map((s: any) => s.key);
   const rightKey = (row: any) => [...STACK].reverse().find((k) => row[k] > 0);
   const chartH = Math.max(mobile ? 220 : 280, data.length * (mobile ? 46 : 62) + 50);
+  // Jenny 22 Sep: hover/tap a segment to read its value (upfront, volume, daily...), same as the bills chart
+  const [activeKey, setActiveKey] = useState<string | null>(null);
+  const [sticky, setSticky] = useState(false);
+  const LABELS = Object.fromEntries(segments.map((s: any) => [s.key, s.label]));
+  const COLORS = Object.fromEntries(segments.map((s: any) => [s.key, s.color]));
+  const clear = () => {
+    setActiveKey(null);
+    setSticky(false);
+  };
+  const SegTip = ({ active, payload }: any) => {
+    if (!active || !payload?.length || !activeKey) return null;
+    const row = payload[0].payload;
+    const val = row?.[activeKey];
+    if (!val) return null;
+    return (
+      <div style={{ background: "#111", color: "#fff", padding: "10px 14px", borderRadius: 8, fontFamily: "Rubik", fontSize: 13, boxShadow: "0 6px 20px rgba(0,0,0,0.18)", pointerEvents: "none", minWidth: 160 }}>
+        <div style={{ fontWeight: 600, marginBottom: 4 }}>{String(row.name).replace("\n", " ")}</div>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ width: 10, height: 10, borderRadius: 2, background: COLORS[activeKey], display: "inline-block" }} />
+          <span style={{ flex: 1 }}>{LABELS[activeKey]}</span>
+          <span style={{ fontWeight: 600 }}>{fmtFull(val)}</span>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div>
@@ -272,6 +297,7 @@ function HorizBarChart({ data, segments, xMax, xTicks, valuePrefix, valueSuffix,
             <BarChart data={data} layout="vertical" margin={{ top: 8, right: mobile ? 52 : 80, left: mobile ? 0 : 10, bottom: 8 }} barCategoryGap="6%" barSize={mobile ? 30 : 46}>
               <CartesianGrid stroke="#E3E3E3" strokeDasharray="6 6" horizontal={false} />
               <YAxis dataKey="name" type="category" tickLine={false} axisLine={false} width={mobile ? 104 : 188} tick={mobile ? <WrapTick /> : { fontFamily: "Rubik", fontSize: 12, fill: "#1a3c3c", fontWeight: 500 }} />
+              <Tooltip cursor={false} isAnimationActive={false} wrapperStyle={{ outline: "none" }} content={<SegTip />} />
               <XAxis type="number" tickFormatter={fmtVal} tickLine={false} axisLine={{ stroke: "#000", strokeWidth: 1.5 }} domain={[0, xMax]} ticks={mobile && xTicks.length > 4 ? xTicks.filter((_t: any, i: number) => i % 2 === 0) : xTicks} tick={{ fontFamily: "Rubik", fontSize: mobile ? 10 : 11, fill: "#5c7a78" }} />
               {segments.map((s: any, i: number) => (
                 <Bar
@@ -281,6 +307,19 @@ function HorizBarChart({ data, segments, xMax, xTicks, valuePrefix, valueSuffix,
                   fill={s.color}
                   isAnimationActive={false}
                   radius={0}
+                  onMouseEnter={() => {
+                    if (!sticky) setActiveKey(s.key);
+                  }}
+                  onMouseLeave={() => {
+                    if (!sticky) clear();
+                  }}
+                  onClick={() => {
+                    if (sticky && activeKey === s.key) clear();
+                    else {
+                      setActiveKey(s.key);
+                      setSticky(true);
+                    }
+                  }}
                   shape={(props: any) => {
                     const { x, y, width, height } = props;
                     if (!width) return <g />;
@@ -293,9 +332,9 @@ function HorizBarChart({ data, segments, xMax, xTicks, valuePrefix, valueSuffix,
                     const r = isRight ? 4 : 0;
                     if (r) {
                       const path = `M${x},${y} L${x + width - r},${y} Q${x + width},${y} ${x + width},${y + r} L${x + width},${y + height - r} Q${x + width},${y + height} ${x + width - r},${y + height} L${x},${y + height} Z`;
-                      return <path d={path} fill={s.color} />;
+                      return <path d={path} fill={s.color} opacity={activeKey == null || activeKey === s.key ? 1 : 0.35} style={{ cursor: "pointer" }} />;
                     }
-                    return <rect x={x} y={y} width={width} height={height} fill={s.color} />;
+                    return <rect x={x} y={y} width={width} height={height} fill={s.color} opacity={activeKey == null || activeKey === s.key ? 1 : 0.35} style={{ cursor: "pointer" }} />;
                   }}
                 >
                   {i === segments.length - 1 && (
