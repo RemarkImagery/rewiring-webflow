@@ -31,7 +31,7 @@ export interface RwLocalStoryCardProps {
   entitySize?: string;
   /** CMS: Headline stat 1, e.g. "$470" */
   headlineStat?: string;
-  /** CMS: Headline stat 1 label, e.g. "saved per month" */
+  /** CMS: Headline stat 1 label, e.g. "saved per year" */
   headlineStatLabel?: string;
   /** CMS: Stat 1 Label / Before / After, e.g. "Home bills" $445 → $145 */
   stat1Label?: string;
@@ -63,8 +63,8 @@ export default function RwLocalStoryCard({
   name = "First Last",
   location = "Tawa, Wellington",
   entitySize = "4 people, 206 m²",
-  headlineStat = "$470",
-  headlineStatLabel = "saved per month",
+  headlineStat = "$5,600",
+  headlineStatLabel = "saved per year",
   stat1Label = "Home bills",
   stat1Before = "$445 / month",
   stat1After = "$145 / month",
