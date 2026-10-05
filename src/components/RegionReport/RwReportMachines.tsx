@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { MACHINES_HTML, sub, mergeFields, getDistrict, ensureReportCss, initReveal, resolveSlug, applyTextOverrides, unmatchedLiveSlug, noDataHtml } from "./reportSections";
+import { MACHINES_HTML, sub, mergeFields, getDistrict, ensureReportCss, initReveal, resolveSlug, unmatchedLiveSlug, noDataHtml } from "./reportSections";
 import { TabbedCharts, mergeTabs, EV_TABS, HEATING_TABS, WATER_TABS, COOKTOP_TABS } from "./reportCharts";
 
 export interface RwReportMachinesProps {
@@ -37,8 +37,6 @@ export interface RwReportMachinesProps {
   // Induction
   cooktopSavings?: string;
   cooktopsGas?: string;
-  /** Copy edited in Webflow's properties panel - see reportEditable.ts. */
-  [key: string]: string | undefined;
 }
 
 export default function RwReportMachines(p: RwReportMachinesProps) {
@@ -82,7 +80,7 @@ export default function RwReportMachines(p: RwReportMachinesProps) {
       cooktop_savings: p.cooktopSavings,
       cooktops_gas: p.cooktopsGas,
     });
-    root.innerHTML = sub(applyTextOverrides(MACHINES_HTML, p), fields);
+    root.innerHTML = sub(MACHINES_HTML, fields);
 
     // v2: tabbed charts are PER-LOCATION (District.machineTabs overlays the
     // national fallbacks). The solar chart was removed per client feedback.

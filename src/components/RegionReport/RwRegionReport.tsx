@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { type District } from "./districtData";
-import { resolveSlug, getDistrict, sub, installAnchorNav, setReportTitle, applyTextOverrides, unmatchedLiveSlug, noDataHtml } from "./reportSections";
+import { resolveSlug, getDistrict, sub, installAnchorNav, setReportTitle, unmatchedLiveSlug, noDataHtml } from "./reportSections";
 import { CSS, TEMPLATE } from "./reportContent";
 import {
   TabbedCharts,
@@ -20,8 +20,6 @@ import {
 export interface RwRegionReportProps {
   /** District/region slug, e.g. "dunedin", "queenstown-lakes-district", "waikato-region" */
   districtSlug?: string;
-  /** Copy edited in Webflow's properties panel - see reportEditable.ts. */
-  [key: string]: string | undefined;
 }
 
 function mountCharts(root: HTMLElement, d: District): Root[] {
@@ -133,7 +131,7 @@ export default function RwRegionReport(allProps: RwRegionReportProps) {
     const d = getDistrict(slug);
     if (!d) return;
 
-    root.innerHTML = `<style>${CSS}</style>` + sub(applyTextOverrides(TEMPLATE, allProps), d.fields);
+    root.innerHTML = `<style>${CSS}</style>` + sub(TEMPLATE, d.fields);
     const roots = mountCharts(root, d);
     const cleanupInteractions = initInteractions(root);
     // fallback for anchors this component doesn't own — e.g. #community, which

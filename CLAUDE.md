@@ -14,9 +14,8 @@ plain preview page.
 
 - Run `npm run typecheck` and `npm test` before every commit. Never delete or skip a test to get a
   commit through; if behaviour is meant to change, change the test and say so.
-- Never hand-edit the generated files: `districtData.ts`, `reportContent.ts`, `reportTabs.ts`,
-  `reportEditable.ts`. They come from `build/build_components.py` and `build/build_editable_text.py`
-  in `rewiring-district-pages`.
+- Never hand-edit the generated files: `districtData.ts`, `reportContent.ts`, `reportTabs.ts`.
+  They come from `src/build_components.py` in `rewiring-district-pages`.
 - `npx webflow library share` publishes the WHOLE library to the client's workspace. Say so before
   running it. Designers still have to accept the update and republish the site; verify the live
   pages afterwards with `tests/e2e/live_report_check.py` in the sibling repo.

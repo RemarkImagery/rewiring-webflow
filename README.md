@@ -41,10 +41,9 @@ shows Dunedin so the layout is populated).
 |---|---|
 | `districtData.ts` | `src/build_components.py` — the 83-location data bundle (~3 MB, parsed on every page; the escape hatch is per-slug JSON on regional-reports.pages.dev, fetched at mount) |
 | `reportContent.ts`, `reportTabs.ts` | `src/build_components.py` — the page template, CSS and national chart fallbacks |
-| `reportEditable.ts` + the `BEGIN/END generated text props` blocks in the four report `.webflow.tsx` files | `src/build_editable_text.py` — every heading and paragraph as an editable prop |
 
 Regeneration order, run from the sibling repo after its `src/build_preview.py`:
-`python src/build_components.py && python src/build_editable_text.py`, then `npm run typecheck && npm test` here.
+`python src/build_components.py`, then `npm run typecheck && npm test` here.
 
 ### The shadow-root rule
 
@@ -57,7 +56,7 @@ tested in harnesses that mount them with `attachShadow`:
 - `/region-report-test?slug=x` — the monolith
 - `/region-chunks-test?slug=x` — the chunk trio stacked as a designer would
 - `/region-anchor-test?slug=x` — each chunk in its own shadow root; jump-link tests
-- `/region-simple-test`, `/region-text-test`, `/region-index-test`
+- `/region-simple-test`, `/region-index-test`
 
 ## Releasing
 

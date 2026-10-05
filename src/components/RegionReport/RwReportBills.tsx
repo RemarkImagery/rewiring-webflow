@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { BILLS_HTML, sub, mergeFields, getDistrict, ensureReportCss, initReveal, resolveSlug, applyTextOverrides, unmatchedLiveSlug, noDataHtml } from "./reportSections";
+import { BILLS_HTML, sub, mergeFields, getDistrict, ensureReportCss, initReveal, resolveSlug, unmatchedLiveSlug, noDataHtml } from "./reportSections";
 import { BillTabs, buildBillTabs } from "./reportCharts";
 
 export interface RwReportBillsProps {
@@ -11,8 +11,6 @@ export interface RwReportBillsProps {
   billSavings?: string;
   billsNetSavings?: string;
   billsNet15yr?: string;
-  /** Copy edited in Webflow's properties panel - see reportEditable.ts. */
-  [key: string]: string | undefined;
 }
 
 export default function RwReportBills(allProps: RwReportBillsProps) {
@@ -41,7 +39,7 @@ export default function RwReportBills(allProps: RwReportBillsProps) {
       bills_net_savings: billsNetSavings,
       bills_net_15yr: billsNet15yr,
     });
-    root.innerHTML = sub(applyTextOverrides(BILLS_HTML, allProps), fields);
+    root.innerHTML = sub(BILLS_HTML, fields);
 
     // Bill charts read the bundled per-location configs (not a CMS field).
     const roots: Root[] = [];
