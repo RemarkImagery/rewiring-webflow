@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { INTRO_HTML, sub, mergeFields, getDistrict, ensureReportCss, initReveal, resolveSlug, installAnchorNav, setReportTitle, applyTextOverrides, unmatchedLiveSlug, noDataHtml } from "./reportSections";
+import { INTRO_HTML, sub, mergeFields, getDistrict, ensureReportCss, initReveal, resolveSlug, installAnchorNav, setReportTitle, unmatchedLiveSlug, noDataHtml } from "./reportSections";
 import { CumulativeChart } from "./reportCharts";
 
 export interface RwReportIntroProps {
@@ -14,8 +14,6 @@ export interface RwReportIntroProps {
   jobsCreated?: string;
   billSavings?: string;
   cumulativeSavings?: string;
-  /** Copy edited in Webflow's properties panel - see reportEditable.ts. */
-  [key: string]: string | undefined;
 }
 
 export default function RwReportIntro(allProps: RwReportIntroProps) {
@@ -50,7 +48,7 @@ export default function RwReportIntro(allProps: RwReportIntroProps) {
       bill_savings: billSavings,
       cumulative_savings: cumulativeSavings,
     });
-    root.innerHTML = sub(applyTextOverrides(INTRO_HTML, allProps), fields);
+    root.innerHTML = sub(INTRO_HTML, fields);
 
     // Mount the cumulative savings chart into its placeholder (per-location data).
     const roots: Root[] = [];
