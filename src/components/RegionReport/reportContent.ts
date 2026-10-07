@@ -173,7 +173,7 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
           <h2><span class="squiggle-under">The opportunity for {{location}}</span></h2>
         </div>
         <div class="headline-stats">
-          <div class="hl-card"><div class="hl-num hl-green">{{elec_savings_annual}}</div><div class="hl-label">bill savings every year by electrifying {{location}} households and vehicles*</div></div>
+          <div class="hl-card"><div class="hl-num hl-green">{{elec_savings_daily}}</div><div class="hl-label">bill savings every day, {{elec_savings_annual}} every year, by electrifying {{location}} households and vehicles*</div></div>
           <div class="hl-card"><div class="hl-num hl-green">{{bills_net_savings}}</div><div class="hl-label">net savings per household, every year, including upfront costs</div></div>
           <div class="hl-card"><div class="hl-num hl-green">{{bill_savings}}</div><div class="hl-label">energy bill savings per household, every year</div></div>
           <div class="hl-card"><div class="hl-num hl-teal">{{machines_total}}</div><div class="hl-label">fossil fuel machines (cars, heaters and cooktops) in {{location}} homes</div></div>
@@ -215,17 +215,17 @@ export const TEMPLATE = `<a class="report-banner" href="https://pages.rewiring.n
         </div>
         <div class="two-col" style="margin-bottom:32px;">
           <div class="stat-card">
-            <div class="big" style="color:#27ae60;">{{elec_savings_annual}} saved</div>
-            <div class="label">every year</div>
+            <div class="big" style="color:#27ae60;">{{elec_savings_daily}} saved</div>
+            <div class="label">every day</div>
             <div class="prose" style="margin-top:16px; text-align:left;">
-              <p>Electrifying home appliances and vehicles, with 80% adopting rooftop solar and batteries, would cut total household energy-related bills <strong>from {{bills_annual_2040_no_elec}} to {{bills_annual_2040_electrified}} every year</strong>. That's <strong>{{elec_savings_daily}} saved every day</strong>, and meaningful cost of living relief for {{location}} households.</p>
+              <p>Electrifying home appliances and vehicles, with 80% adopting rooftop solar and batteries, would cut total household energy-related bills <strong>from {{bills_annual_2040_no_elec}} to {{bills_annual_2040_electrified}} every year</strong>. That's <strong>{{elec_savings_annual}} saved yearly</strong>, and meaningful cost of living relief for {{location}} households.</p>
             </div>
           </div>
           <div class="stat-card">
-            <div class="big" style="color:#c0392b;">{{fossil_spend_annual}} spent</div>
-            <div class="label">on fossil fuels every year</div>
+            <div class="big" style="color:#c0392b;">{{fossil_spend_daily}} spent</div>
+            <div class="label">on fossil fuels every day</div>
             <div class="prose" style="margin-top:16px; text-align:left;">
-              <p>That's <strong>{{fossil_spend_daily}} every day</strong> on fossil fuels by just households in {{location}}. Most of these fossil fuels are imported, meaning this money leaves the local economy. Plus, history shows fossil fuel costs are volatile, with <strong>prices rising faster than the rate of inflation</strong>.</p>
+              <p>That's <strong>{{fossil_spend_annual}} every year</strong> on fossil fuels by just households in {{location}}. Most of these fossil fuels are imported, meaning this money leaves the local economy. Plus, history shows fossil fuel costs are volatile, with <strong>prices rising faster than the rate of inflation</strong>.</p>
             </div>
           </div>
         </div>
