@@ -60,20 +60,32 @@ export default function TccFuelTracker(props: TccFuelTrackerProps) {
     if (window.location.hash !== `#${anchor}`) return releaseHost;
 
     // Lazy-loaded CMS items above keep growing the page after the first jump,
-    // pushing the tracker down. Re-pin it on every layout change until things
-    // settle or the reader starts scrolling themselves.
-    const jump = () => el.scrollIntoView();
-    jump();
+    // pushing the tracker down. Re-pin it on every layout change until the page
+    // has loaded and gone quiet for a few seconds (30s hard cap), or the reader
+    // starts scrolling themselves.
+    let quietTimer = 0;
+    const settle = () => {
+      window.clearTimeout(quietTimer);
+      if (document.readyState === "complete") quietTimer = window.setTimeout(stop, 3000);
+    };
+    const jump = () => {
+      el.scrollIntoView();
+      settle();
+    };
     const ro = new ResizeObserver(jump);
-    ro.observe(document.body);
     const userEvents = ["wheel", "touchstart", "keydown", "mousedown"];
     const stop = () => {
       ro.disconnect();
-      window.clearTimeout(timer);
+      window.clearTimeout(quietTimer);
+      window.clearTimeout(capTimer);
+      window.removeEventListener("load", settle);
       userEvents.forEach((e) => window.removeEventListener(e, stop));
     };
-    const timer = window.setTimeout(stop, 8000);
+    const capTimer = window.setTimeout(stop, 30000);
+    window.addEventListener("load", settle);
     userEvents.forEach((e) => window.addEventListener(e, stop, { passive: true }));
+    ro.observe(document.body);
+    jump();
     return () => {
       stop();
       releaseHost();
