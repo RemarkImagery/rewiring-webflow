@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useId } from "react";
+import React, { useEffect, useId, useRef } from "react";
 
 interface LinkValue {
   href: string;
@@ -18,6 +18,8 @@ interface TccFuelTrackerProps {
   accentColor?: string;
   textColor?: string;
   headingColor?: string;
+  /** Jump-link target, e.g. "fuel-tracker" for #fuel-tracker. Blank = no anchor. */
+  anchorId?: string;
 }
 
 export default function TccFuelTracker(props: TccFuelTrackerProps) {
@@ -32,13 +34,35 @@ export default function TccFuelTracker(props: TccFuelTrackerProps) {
     accentColor = "#f5b731",
     textColor = "#2a2a2a",
     headingColor = "#1a3c3c",
+    anchorId = "fuel-tracker",
   } = props;
 
   const uid = useId().replace(/:/g, "");
   const showButton = Boolean(buttonText && buttonText.trim().length > 0);
+  const anchor = anchorId.trim().replace(/^#/, "");
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Webflow renders code components in a shadow root, so an id on the section
+  // alone can't be reached by #hash links. Mirror it onto the shadow host, and
+  // scroll on mount in case the page loaded with the hash before we rendered.
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el || !anchor) return;
+    const root = el.getRootNode();
+    const host = root instanceof ShadowRoot ? (root.host as HTMLElement) : null;
+    if (host && !host.id) host.id = anchor;
+    if (window.location.hash === `#${anchor}`) (host ?? el).scrollIntoView();
+    return () => {
+      if (host && host.id === anchor) host.removeAttribute("id");
+    };
+  }, [anchor]);
 
   return (
-    <section className={`tcc-fuel-${uid}`}>
+    <section
+      ref={sectionRef}
+      className={`tcc-fuel-${uid}`}
+      {...(anchor ? { id: anchor } : {})}
+    >
       <div className={`tcc-fuel-inner-${uid}`}>
         <div className={`tcc-fuel-media-${uid}`}>
           <img
@@ -89,6 +113,7 @@ export default function TccFuelTracker(props: TccFuelTrackerProps) {
           padding: 80px 24px;
           box-sizing: border-box;
           font-family: 'Rubik', sans-serif;
+          scroll-margin-top: 80px;
         }
 
         .tcc-fuel-inner-${uid} {
