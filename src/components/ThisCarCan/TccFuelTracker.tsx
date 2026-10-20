@@ -50,10 +50,33 @@ export default function TccFuelTracker(props: TccFuelTrackerProps) {
     if (!el || !anchor) return;
     const root = el.getRootNode();
     const host = root instanceof ShadowRoot ? (root.host as HTMLElement) : null;
-    if (host && !host.id) host.id = anchor;
-    if (window.location.hash === `#${anchor}`) (host ?? el).scrollIntoView();
-    return () => {
+    if (host && !host.id) {
+      host.id = anchor;
+      host.style.scrollMarginTop = "80px";
+    }
+    const releaseHost = () => {
       if (host && host.id === anchor) host.removeAttribute("id");
+    };
+    if (window.location.hash !== `#${anchor}`) return releaseHost;
+
+    // Lazy-loaded CMS items above keep growing the page after the first jump,
+    // pushing the tracker down. Re-pin it on every layout change until things
+    // settle or the reader starts scrolling themselves.
+    const jump = () => el.scrollIntoView();
+    jump();
+    const ro = new ResizeObserver(jump);
+    ro.observe(document.body);
+    const userEvents = ["wheel", "touchstart", "keydown", "mousedown"];
+    const stop = () => {
+      ro.disconnect();
+      window.clearTimeout(timer);
+      userEvents.forEach((e) => window.removeEventListener(e, stop));
+    };
+    const timer = window.setTimeout(stop, 8000);
+    userEvents.forEach((e) => window.addEventListener(e, stop, { passive: true }));
+    return () => {
+      stop();
+      releaseHost();
     };
   }, [anchor]);
 
