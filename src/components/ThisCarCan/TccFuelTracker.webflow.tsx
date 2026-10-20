@@ -15,6 +15,7 @@ interface WebflowProps {
   accentColor?: string;
   textColor?: string;
   headingColor?: string;
+  anchorId?: string;
 }
 
 function TccFuelTrackerWrapper(webflowProps: WebflowProps) {
@@ -55,6 +56,12 @@ export default declareComponent(TccFuelTrackerWrapper, {
       defaultValue:
         "Running on New Zealand-made energy made economic sense before the fuel crisis kicked off and it makes even more sense now that fuel prices have gone through the roof. You could shop around and get slightly cheaper petrol or diesel, but history suggests the price will keep going up. As this live price tracker shows, the best bet is to go electric and, if you can, run on the sun.",
       group: "Content",
+    }),
+    anchorId: props.Text({
+      name: "Anchor id",
+      defaultValue: "fuel-tracker",
+      group: "Content",
+      tooltip: "Link here with #fuel-tracker (or whatever you set). Leave blank for no anchor.",
     }),
     buttonText: props.Text({
       name: "Button Text",
